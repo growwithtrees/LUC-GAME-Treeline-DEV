@@ -318,7 +318,9 @@ def read_stops():
 
 
 # What the answer key says beside an answer. The answers themselves come from app.js.
-KEY_NOTES = {2: "buttonbush max height, wall sheet 1", 4: "ChatTrain, Mrs. Webb"}
+KEY_NOTES = {2: "buttonbush max height, wall sheet 1"}
+KEY_FEATS = {4: "ChatTrain (Mrs. Webb)"}
+CODE_PHRASES = (4, 5)          # pass phrases shown in capitals; plant names are not
 
 
 def build_key(teams, out):
@@ -340,13 +342,13 @@ def build_key(teams, out):
         if i == 0:
             ans, also = "That team's word from Hannah (see the team table)", "None"
         else:
-            ans = acc[0].upper() if " " in acc[0] else acc[0].capitalize()
+            ans = acc[0].upper() if i in CODE_PHRASES else acc[0].capitalize()
             if i in KEY_NOTES:
                 ans += " (%s)" % KEY_NOTES[i]
             seen = {acc[0].replace(" ", "")}
             rest = [a for a in acc[1:] if not (a.replace(" ", "") in seen or seen.add(a.replace(" ", "")))]
             also = ", ".join(rest) or "None"
-        for c, v in zip(r, [str(i + 1), feat, ans, also]):
+        for c, v in zip(r, [str(i + 1), KEY_FEATS.get(i, feat), ans, also]):
             c.text = v
     doc.add_heading("Teams", 2)
     doc.add_paragraph("Every team walks all six stops, starting at a different one and wrapping "
