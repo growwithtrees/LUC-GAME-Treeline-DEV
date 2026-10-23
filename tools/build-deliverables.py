@@ -2,21 +2,26 @@
 """Regenerate every printable Field Guide Challenge deliverable from this repo.
 
 WHY THIS EXISTS
-    The wall sheets, QR cards and facilitator sheet all restate data that lives in
-    app.js — team numbers, slugs, box colours, fragments, reply words, and which stop
+    The wall sheets, QR cards, facilitator sheet and answer key all restate data that
+    lives in app.js — team numbers, slugs, finish codes, reply words, and which stop
     each team starts on. Hand-maintaining them guarantees the printed pack eventually
     disagrees with the live game. Everything here is derived from app.js and
     tools/plant-wall.json, so a change to the game is one rerun away from a correct
     print pack. Never hand-edit the generated PDFs.
 
 WHEN TO RUN
-    After ANY change to the TEAMS block in app.js (numbers, colours, words, fragments,
+    After ANY change to the TEAMS block in app.js (numbers, words, finish codes,
     `start` offsets), or to tools/plant-wall.json (which plant, which photo, which organ).
+
+WHERE IT WRITES
+    The project Deliverables folder, then an identical copy into every folder in MIRRORS
+    (the LUC client folder for Tree Line USA 2026). Both copies are generated; never edit
+    either by hand. Pass --no-mirror to skip the copy.
 
 USAGE
     python3 tools/build-deliverables.py              # -> the OneDrive Deliverables folder
     python3 tools/build-deliverables.py --out DIR    # -> somewhere else
-    python3 tools/build-deliverables.py --only wall  # wall | qr | facilitator | hannah | roles
+    python3 tools/build-deliverables.py --only wall  # wall | qr | facilitator | hannah | roles | key
 
 REQUIREMENTS
     pip install qrcode img2pdf pillow python-docx      (all installed as of 2026-09-18)
@@ -42,11 +47,15 @@ REPO = os.path.dirname(HERE)
 DEFAULT_OUT = os.path.expanduser(
     "~/Library/CloudStorage/OneDrive-GrowWithTrees/GWT Shortcuts/$GWT Info/"
     "LUC/Projects/Field Guide Challenge/Deliverables")
-BASE_URL = "https://growwithtrees.github.io/LUC-GAME-FieldChallenge-DEV"
+# Follows the repo name. GitHub does NOT redirect a Pages URL after a repo rename: the
+# FieldChallenge -> Treeline rename left every printed QR card pointing at a 404.
+BASE_URL = "https://growwithtrees.github.io/LUC-GAME-Treeline-DEV"
+MIRRORS = [os.path.expanduser(
+    "~/Library/CloudStorage/OneDrive-GrowWithTrees/1. GWT Clients/LUC/"
+    "LUC Presentations and Projects/2026 Treeline USA/Field Guide Challenge")]
 FONT_R = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_B = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-HEXC = {"Red": "#C0492F", "Green": "#2E7D46", "Blue": "#2563A8",
-        "Amber": "#C6841A", "Purple": "#6D4AA8"}
+GREEN = "#2E7D46"
 STOP_NAMES = ["Messages", "Field Guide", "Scan", "Field Clips", "ChatTrain", "Field Bites"]
 
 
@@ -54,9 +63,9 @@ def read_teams():
     """Parse the TEAMS block out of app.js. Single source of truth for every artifact."""
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     block = re.search(r"var TEAMS = \{(.*?)\n  \};", src, re.S).group(1)
-    pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*color: "(\w+)",\s*'
-           r'trainer: "(\w+)", word: "(\w+)",\s*frag: "(\d+)", start: (\d)')
-    teams = [dict(zip(["name", "slug", "color", "trainer", "word", "frag", "start"], m.groups()))
+    pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*'
+           r'trainer: "(\w+)", word: "(\w+)",\s*code: "(\d{4})", start: (\d)')
+    teams = [dict(zip(["name", "slug", "trainer", "word", "code", "start"], m.groups()))
              for m in re.finditer(pat, block)]
     if not teams:
         sys.exit("ERROR: could not parse TEAMS out of app.js — did its formatting change?")
@@ -108,7 +117,7 @@ def build_wall(out):
 
 
 def build_qr(teams, out):
-    """One card per team: number, box colour, QR, and the plain URL as a fallback."""
+    """One card per team: number, QR, and the plain URL as a fallback."""
     import qrcode, img2pdf
     from PIL import Image, ImageDraw, ImageFont
     tmp = os.path.join(HERE, "_qr"); os.makedirs(tmp, exist_ok=True)
@@ -121,13 +130,10 @@ def build_qr(teams, out):
         qi = q.make_image(fill_color="black", back_color="white").convert("RGB") \
               .resize((560, 560), Image.NEAREST)
         card = Image.new("RGB", (W, H), "white"); d = ImageDraw.Draw(card)
-        d.rectangle([0, 0, W, 18], fill=HEXC[t["color"]])
+        d.rectangle([0, 0, W, 18], fill=GREEN)
         card.paste(qi, (70, 150)); x = 700
         d.text((x, 160), "Team", font=ImageFont.truetype(FONT_R, 52), fill="#6b7280")
         d.text((x, 215), t["name"], font=ImageFont.truetype(FONT_B, 150), fill="#111111")
-        d.ellipse([x, 400, x + 38, 438], fill=HEXC[t["color"]])
-        d.text((x + 56, 397), "%s box" % t["color"],
-               font=ImageFont.truetype(FONT_B, 44), fill=HEXC[t["color"]])
         d.text((x, 485), "Scan to start your quest.",
                font=ImageFont.truetype(FONT_R, 38), fill="#374151")
         d.text((x, 537), "One phone can drive; everyone",
@@ -156,7 +162,7 @@ def build_qr(teams, out):
 
 
 def build_roles(out):
-    """Scanner / Navigator / Scribe, three to a page. Print 10x and cut."""
+    """Scanner / Navigator / Scribe, three to a page. Print one per team and cut."""
     import img2pdf
     from PIL import Image, ImageDraw, ImageFont
     ROLES = [
@@ -193,7 +199,7 @@ def build_roles(out):
     with open(os.path.join(dest, "Role Cards.pdf"), "wb") as f:
         f.write(img2pdf.convert([tmp]))
     os.remove(tmp)
-    print("  roles: 3 cards, 1 page (print 10x and cut)")
+    print("  roles: 3 cards, 1 page (print one per team and cut)")
 
 
 def _docx_to_pdf(path, dest):
@@ -248,7 +254,7 @@ def build_hannah(teams, out):
     r._element.rPr.rFonts.set(qn('w:eastAsia'), HEAD)
     para("Field Guide Challenge · Tree Line USA · this is your whole job", 10, MUTE,
          italic=True, after=12)
-    para("Ten teams will message you during the game. Each one sends:", 11, after=6)
+    para("Up to %d teams will message you during the game. Each one sends:" % len(teams), 11, after=6)
     p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(10)
     r = p.add_run("TEAM 4 CHECKING IN"); r.font.name = "Courier New"; r.font.size = Pt(15)
     r.font.bold = True
@@ -300,12 +306,94 @@ def build_hannah(teams, out):
     print("  hannah: Hannah Card.docx + .pdf")
 
 
+def read_stops():
+    """Feature name and accepted answers per stop, in canonical order, straight from app.js."""
+    src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
+    body = src[src.index("function buildStops"):src.index("function rotate")]
+    feats = re.findall(r'feat: "([^"]+)"', body)
+    accepts = [re.findall(r'"([^"]+)"', a) for a in re.findall(r'accept: \[([^\]]*)\]', body)]
+    if len(feats) != 6 or len(accepts) != 6:
+        sys.exit("ERROR: could not parse the six stops out of app.js")
+    return list(zip(feats, accepts))
+
+
+# What the answer key says beside an answer. The answers themselves come from app.js.
+KEY_NOTES = {2: "buttonbush max height, wall sheet 1", 4: "ChatTrain, Mrs. Webb"}
+
+
+def build_key(teams, out):
+    """The one-page answer key Lindsey keeps. Lives beside Deliverables, not inside it."""
+    from docx import Document
+    from docx.shared import Pt
+    stops = read_stops()
+    doc = Document()
+    st = doc.styles["Normal"]; st.font.name = "Arial"; st.font.size = Pt(10.5)
+    doc.add_heading("Field Guide Challenge: Answer Key", 1)
+    doc.add_paragraph("LUC conference icebreaker. Facilitator eyes only; do not give this to "
+                      "Hannah. Answers are not case-sensitive and spaces are ignored.")
+    doc.add_heading("Stops (same for every team)", 2)
+    t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
+    for c, h in zip(t.rows[0].cells, ["#", "Let Grow feature", "Answer", "Also accepted"]):
+        c.text = h
+    for i, (feat, acc) in enumerate(stops):
+        r = t.add_row().cells
+        if i == 0:
+            ans, also = "That team's word from Hannah (see the team table)", "None"
+        else:
+            ans = acc[0].upper() if " " in acc[0] else acc[0].capitalize()
+            if i in KEY_NOTES:
+                ans += " (%s)" % KEY_NOTES[i]
+            seen = {acc[0].replace(" ", "")}
+            rest = [a for a in acc[1:] if not (a.replace(" ", "") in seen or seen.add(a.replace(" ", "")))]
+            also = ", ".join(rest) or "None"
+        for c, v in zip(r, [str(i + 1), feat, ans, also]):
+            c.text = v
+    doc.add_heading("Teams", 2)
+    doc.add_paragraph("Every team walks all six stops, starting at a different one and wrapping "
+                      "around. The order does not change any answer. Every team finishes on its "
+                      "own: the last screen shows that team's finish code. Check the code against "
+                      "the team number below and write down the order teams arrive.")
+    t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
+    for c, h in zip(t.rows[0].cells, ["Team", "Starts at", "Hannah's word (Stop 1)", "Finish code"]):
+        c.text = h
+    for tm in teams:
+        for c, v in zip(t.add_row().cells, [tm["name"], "Stop %d" % (int(tm["start"]) + 1),
+                                             tm["word"], tm["code"]]):
+            c.text = v
+    doc.add_heading("Watch for", 2)
+    for b in ["Stop 3 decoy. Elderberry (wall sheet 9) also reads 12 ft in the app, so a team that "
+              "scans it passes without finding buttonbush. The clue points to the creamy white "
+              "pincushion flower.",
+              "Scan mismatches. If a scan returns the wrong plant, check the leaf / flower / fruit / "
+              "bark selector first. Roughleaf dogwood reads as red osier dogwood; its 10 ft height "
+              "is rejected, which is correct.",
+              "Source. Generated from app.js in LUC-GAME-Treeline-DEV by "
+              "tools/build-deliverables.py. Do not edit by hand; rerun the script."]:
+        doc.add_paragraph(b, style="List Bullet")
+    path = os.path.join(os.path.dirname(out.rstrip("/")), "Field Guide Challenge Answer Key.docx")
+    doc.save(path)
+    print("  key: %s" % path)
+
+
+def mirror(out):
+    """Copy the whole Field Guide Challenge folder (Deliverables + answer key) to each MIRROR."""
+    root = os.path.dirname(out.rstrip("/"))
+    for m in MIRRORS:
+        if not os.path.isdir(m):
+            print("  mirror SKIPPED, folder missing: %s" % m); continue
+        shutil.copytree(out, os.path.join(m, os.path.basename(out.rstrip("/"))),
+                        dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store"))
+        shutil.copy(os.path.join(root, "Field Guide Challenge Answer Key.docx"), m)
+        print("  mirrored -> %s" % m)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default=DEFAULT_OUT, help="deliverables folder")
-    ap.add_argument("--only", choices=["wall", "qr", "facilitator", "hannah", "roles"],
+    ap.add_argument("--only", choices=["wall", "qr", "facilitator", "hannah", "roles", "key"],
                     help="build just one artifact")
+    ap.add_argument("--no-mirror", action="store_true", help="skip copying to MIRRORS")
     a = ap.parse_args()
     teams = read_teams()
     print("Read %d teams from app.js: %s" % (len(teams), ", ".join(t["name"] for t in teams)))
@@ -316,6 +404,9 @@ def main():
     if want("facilitator"): build_facilitator(teams, a.out)
     if want("hannah"): build_hannah(teams, a.out)
     if want("roles"): build_roles(a.out)
+    if want("key"): build_key(teams, a.out)
+    if not a.no_mirror and a.out == DEFAULT_OUT:
+        mirror(a.out)
     print("Done -> %s" % a.out)
 
 

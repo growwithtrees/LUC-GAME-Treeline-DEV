@@ -4,17 +4,21 @@
 (function () {
   "use strict";
 
+  // Every team finishes on its own: the last stop shows that team's own 4-digit finish code,
+  // which they bring to the facilitator table. No team ever waits on another.
   var TEAMS = {
-    "1":  { slug: "team-1",  color: "Red",    trainer: "Hannah", word: "corridor",   frag: "47", start: 0 },
-    "2":  { slug: "team-2",  color: "Red",    trainer: "Hannah", word: "compatible", frag: "12", start: 1 },
-    "3":  { slug: "team-3",  color: "Green",  trainer: "Hannah", word: "selective",  frag: "58", start: 2 },
-    "4":  { slug: "team-4",  color: "Green",  trainer: "Hannah", word: "clearance",  frag: "36", start: 3 },
-    "5":  { slug: "team-5",  color: "Blue",   trainer: "Hannah", word: "foliar",     frag: "29", start: 4 },
-    "6":  { slug: "team-6",  color: "Blue",   trainer: "Hannah", word: "basal",      frag: "64", start: 5 },
-    "7":  { slug: "team-7",  color: "Amber",  trainer: "Hannah", word: "flashover",  frag: "81", start: 0 },
-    "8":  { slug: "team-8",  color: "Amber",  trainer: "Hannah", word: "conductor",  frag: "53", start: 1 },
-    "9":  { slug: "team-9",  color: "Purple", trainer: "Hannah", word: "sapling",    frag: "70", start: 2 },
-    "10": { slug: "team-10", color: "Purple", trainer: "Hannah", word: "encroach",   frag: "26", start: 3 }
+    "1":  { slug: "team-1",  trainer: "Hannah", word: "corridor",   code: "4712", start: 0 },
+    "2":  { slug: "team-2",  trainer: "Hannah", word: "compatible", code: "5836", start: 1 },
+    "3":  { slug: "team-3",  trainer: "Hannah", word: "selective",  code: "2964", start: 2 },
+    "4":  { slug: "team-4",  trainer: "Hannah", word: "clearance",  code: "8153", start: 3 },
+    "5":  { slug: "team-5",  trainer: "Hannah", word: "foliar",     code: "7026", start: 4 },
+    "6":  { slug: "team-6",  trainer: "Hannah", word: "basal",      code: "3591", start: 5 },
+    "7":  { slug: "team-7",  trainer: "Hannah", word: "flashover",  code: "6247", start: 0 },
+    "8":  { slug: "team-8",  trainer: "Hannah", word: "conductor",  code: "1938", start: 1 },
+    "9":  { slug: "team-9",  trainer: "Hannah", word: "sapling",    code: "9405", start: 2 },
+    "10": { slug: "team-10", trainer: "Hannah", word: "encroach",   code: "2679", start: 3 },
+    "11": { slug: "team-11", trainer: "Hannah", word: "easement",   code: "8314", start: 4 },
+    "12": { slug: "team-12", trainer: "Hannah", word: "canopy",     code: "5162", start: 5 }
   };
 
   var SPRITE = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">'
@@ -43,18 +47,18 @@
     + '<div class="hero">'
     + '<svg class="ic grass-deco"><use href="#ic-grass"/></svg>'
     + '<span class="eyebrow">Digital escape room</span>'
-    + '<h1>Crack the field guide, open the box</h1>'
-    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve six of them to earn your box number, then team up to open the prize.</p>'
+    + '<h1>Crack the field guide</h1>'
+    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve all six to earn your team\'s finish code.</p>'
     + '<ul class="outcome-list">'
     + '<li>Six stops, each hidden in a part of the Let Grow app</li>'
     + '<li>Every stop gives you a code that unlocks the next</li>'
-    + '<li>Finish to earn your team\'s number for the prize box</li>'
+    + '<li>Finish all six and bring your finish code to the facilitator table</li>'
     + '</ul>'
     + '</div>'
     + '<div class="card"><h3>What is a digital escape room?</h3>'
     + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Instead of a room, your clues live in the <b>Let Grow app</b>. Each stop points you to a real part of the app: Messages, the field guide, the plant wall, a video, a chat, a field log. Do the task, the app hands you a <b>code word or number</b>, and typing it here unlocks the next stop.</p></div>'
-    + '<div class="card"><h3>The goal: open the box</h3>'
-    + '<p>Clear all six stops and you get your team\'s secret <b>number</b>. That is half of a combination. Find the other team that shares your box color, put your two numbers together, and open the physical <b>prize box</b>.</p></div>'
+    + '<div class="card"><h3>The goal: finish fast</h3>'
+    + '<p>Clear all six stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to the <b>facilitator table</b>. Teams are ranked in the order they check in, and nobody has to wait for another team.</p></div>'
     + '<button class="btn btn-primary btn-block" id="beginBtn" style="margin-top:20px">Start the challenge</button>'
     + '</section>'
     + '<section id="quest">'
@@ -66,18 +70,18 @@
     + '<div class="finale-head">'
     + '<div class="trophy"><svg class="ic"><use href="#ic-trophy"/></svg></div>'
     + '<h2>All six stops cleared</h2>'
-    + '<p class="sub">You just used every part of the app a Liberty crew works with in the field. Here is your box number.</p>'
+    + '<p class="sub">You just used every part of the app a Liberty crew works with in the field. Here is your finish code.</p>'
     + '</div>'
     + '<div class="finale-body">'
     + '<div class="fragwrap">'
-    + '<p class="fraglabel">Your team\'s fragment</p>'
+    + '<p class="fraglabel">Your team\'s finish code</p>'
     + '<div class="fragnum" id="fragnum">--</div>'
     + '<div class="boxtag" id="boxtag"></div>'
     + '</div>'
     + '<ol class="reminders">'
-    + '<li>Take this number to a <b id="boxcolor2">--</b> prize box.</li>'
-    + '<li>Find <b>another team with the same box color.</b></li>'
-    + '<li>Put your two numbers together into the <b>4-digit combo</b> (your number goes first) and open the box.</li>'
+    + '<li>Bring this screen to the <b>facilitator table</b> right away.</li>'
+    + '<li>The facilitator checks your code and writes down your finish.</li>'
+    + '<li>Keep your code to yourselves. Other teams are still playing.</li>'
     + '</ol>'
     + '<div class="restart"><button id="restartBtn">start over</button></div>'
     + '</div>'
@@ -139,7 +143,7 @@
       {
         icon: "ic-note", feat: "Field Bites", title: "Finish the field bite",
         body: "Open <b>Field Bites</b> and work through the microlearning on compatible right-of-way plants."
-          + "<br><br>Read the cards and answer the checks all the way to the end. The <b>last card</b> gives you a keyword, enter it below for your box number.",
+          + "<br><br>Read the cards and answer the checks all the way to the end. The <b>last card</b> gives you a keyword. Enter it below.",
         accept: ["biological control", "biologicalcontrol"]
       }
     ];
@@ -171,14 +175,14 @@
 
   function renderIntro() {
     var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "<span class='sw " + t.color + "'></span>Team " + state.team;
+    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
     document.getElementById("stepCount").textContent = "";
     document.getElementById("introTeam").textContent = "Team " + state.team;
   }
 
   function renderQuest() {
     var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "<span class='sw " + t.color + "'></span>Team " + state.team;
+    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
     document.getElementById("stepCount").textContent = (state.stop + 1) + " / " + state.stops.length;
     document.getElementById("pfill").style.width = Math.round(state.stop / state.stops.length * 100) + "%";
     renderStop();
@@ -260,12 +264,11 @@
 
   function renderFinale() {
     var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "<span class='sw " + t.color + "'></span>Team " + state.team;
+    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
     document.getElementById("stepCount").textContent = state.stops.length + " / " + state.stops.length;
     document.getElementById("pfill").style.width = "100%";
-    document.getElementById("fragnum").textContent = t.frag;
-    document.getElementById("boxtag").innerHTML = "<span class='sw " + t.color + "'></span>" + t.color + " box";
-    document.getElementById("boxcolor2").textContent = t.color;
+    document.getElementById("fragnum").textContent = t.code;
+    document.getElementById("boxtag").textContent = "Team " + state.team;
   }
 
   function fail(msg) {

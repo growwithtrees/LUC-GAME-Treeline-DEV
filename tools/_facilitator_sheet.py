@@ -9,7 +9,6 @@ from docx.oxml import OxmlElement
 TEAMS = json.load(open("_teams.json"))
 HEAD, BODY = "Plus Jakarta Sans", "Inter"
 INK, MUTE, GREEN = RGBColor(0x11,0x11,0x11), RGBColor(0x6b,0x72,0x80), RGBColor(0x2E,0x7D,0x46)
-HEX = {"Red":"C0492F","Green":"2E7D46","Blue":"2563A8","Amber":"C6841A","Purple":"6D4AA8"}
 
 doc = Document()
 for s in doc.sections:
@@ -61,24 +60,23 @@ para("Liberty Utilities Central · Tree Line USA, October 2026 · keep this shee
      9, MUTE, italic=True, after=10)
 
 # ── the teams ─────────────────────────────────────────────────────────────
-h("1. Teams, boxes and combos", 14)
-para("Ten numbered teams in five colour pairs — 1+2, 3+4, 5+6, 7+8, 9+10. Hand the QR cards out IN "
-     "PAIRS; if you end up with fewer than ten teams, drop a whole colour so every box still has two.", 9.5, after=4)
+h("1. Teams and finish codes", 14)
+para(f"Up to {len(TEAMS)} numbered teams. Every team finishes on its own: their last screen shows a "
+     "4-digit finish code. They bring it to you, you check it against their number below and write "
+     "down the order teams arrive. Nobody waits on another team. Use as many QR cards as you have "
+     "teams, in any order.", 9.5, after=4)
 para("Every team does all six stops, but they START on different ones and wrap around, so the room "
      "is not all messaging Hannah at once and not all at the plant wall at once. A team on their "
      "\u201cfirst\u201d stop may well be at ChatTrain. The last column is where each team begins.",
      9.5, after=6)
 rows = []
 for t in TEAMS:
-    rows.append([("Team "+t["name"], True, None), ("●  " + t["color"], False, HEX[t["color"]]),
-                 t["frag"], t["word"].upper(), (t["startname"], True, None)])
-table(["Team", "Box", "Their number", "Hannah replies", "They START at"],
-      rows, [1.05, 1.05, 1.15, 1.55, 2.7])
-para("", 4, after=2)
-combos = " · ".join(f"{TEAMS[i]['color']} {TEAMS[i]['frag']}{TEAMS[i+1]['frag']}" for i in range(0, 10, 2))
-para("Box combinations:  " + combos, 10, bold=True, after=2)
-para("The first team in each pair puts their number first. Set the physical locks to these before "
-     "the room opens, and test each one.", 9, MUTE, after=8)
+    rows.append([("Team "+t["name"], True, None), (t["code"], True, None),
+                 t["word"].upper(), (t["startname"], True, None)])
+table(["Team", "Finish code", "Hannah replies", "They START at"],
+      rows, [1.15, 1.35, 1.9, 3.1])
+para("A code that doesn't match the team number means they read it off another team's screen.",
+     9, MUTE, space_before=4, after=8)
 
 # ── the six stops ─────────────────────────────────────────────────────────
 h("2. The six stops — answers, and how to unstick a team", 14)
@@ -89,7 +87,7 @@ para("Numbered in canonical order, which is NOT the order most teams meet them. 
 STOPS = [
  ("1", "Messages",
   "Message Hannah “TEAM <n> CHECKING IN”; she replies one word.",
-  "Their word (column 4 above)",
+  "Their word (column 3 above)",
   "“Have you actually sent the message yet?” If Hannah is swamped, just read them their word."),
  ("2", "Field Guide · Search",
   "Low compatible shrub, coral-pink berry clusters, deer browse it hard. Name it.",
@@ -138,9 +136,10 @@ para("Teams are numbered, so nothing on this wall can be mistaken for a team's o
 h("4. Hannah's job (stop 1)", 14)
 para("Every team messages Hannah “TEAM 1 CHECKING IN”, “TEAM 2 CHECKING IN” and so on. She reads the "
      "number and replies with that team's one word, nothing else.", 9.5, after=4)
-para("   ".join(f"TEAM {t['name']} → {t['word'].upper()}" for t in TEAMS[:5]), 9.5, after=2)
-para("   ".join(f"TEAM {t['name']} → {t['word'].upper()}" for t in TEAMS[5:]), 9.5, after=4)
-para("Wrong message? Reply: “Say again — send me your team name and CHECKING IN.” If ten teams at "
+half = (len(TEAMS) + 1) // 2
+para("   ".join(f"TEAM {t['name']} → {t['word'].upper()}" for t in TEAMS[:half]), 9.5, after=2)
+para("   ".join(f"TEAM {t['name']} → {t['word'].upper()}" for t in TEAMS[half:]), 9.5, after=4)
+para("Wrong message? Reply: “Say again — send me your team name and CHECKING IN.” If everyone at "
      "once turns out to be too much, just reply the same word to everybody and tell the room the "
      "word — the game still works, it only stops teams overhearing each other.", 9, MUTE, after=8)
 
@@ -152,7 +151,7 @@ for problem, fix in [
   ("The app won't identify a printed plant", "Nine times out of ten the flower/fruit/leaf/bark selector is on the wrong setting — check that first. If it still will not match, tell them the species; stop 3 only needs the height off the entry."),
   ("ChatTrain is slow", "Normal — it thinks for a few seconds a turn. Let them keep typing; it will land."),
   ("A team is miles behind", "Give them the answer to a stop and move them on. Finishing together matters more than every team solving every clue."),
-  ("Only one team of a pair finishes", "Give them their partner's number so they can open the box. Nobody should be stood next to a locked box at the end."),
+  ("Two teams arrive at once", "Check both codes and write them down in the order they reached you. Ties are your call."),
 ]:
     p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(3)
     r = p.add_run(problem + " — "); r.font.bold = True; r.font.size = Pt(9.5)

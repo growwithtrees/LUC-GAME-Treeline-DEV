@@ -89,7 +89,6 @@ button { font-family: inherit; cursor: pointer; }
   white-space: nowrap;
 }
 .team-badge .sw { width: 9px; height: 9px; border-radius: 50%; }
-.team-badge .sw.Red { background: #C0492F; } .team-badge .sw.Green { background: #2E7D46; } .team-badge .sw.Blue { background: #2563A8; } .team-badge .sw.Amber { background: #C6841A; } .team-badge .sw.Purple { background: #6D4AA8; }
 .stepcount { font-size: 0.8rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ─── Shell ─────────────────────────────────────────────── */
@@ -182,7 +181,6 @@ button { font-family: inherit; cursor: pointer; }
 .fraglabel { font-size: 0.7rem; letter-spacing: 1.3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 8px; }
 .fragnum { font-family: ui-monospace, Menlo, monospace; font-size: 3.4rem; font-weight: 700; letter-spacing: .08em; color: var(--brand-purple); line-height: 1; }
 .boxtag { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 700; font-size: 0.95rem; padding: 7px 15px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink); }
-.boxtag .sw { width: 12px; height: 12px; border-radius: 50%; } .boxtag .sw.Red { background: #C0492F; } .boxtag .sw.Green { background: #2E7D46; } .boxtag .sw.Blue { background: #2563A8; } .boxtag .sw.Amber { background: #C6841A; } .boxtag .sw.Purple { background: #6D4AA8; }
 
 /* numbered combine steps (engine ol.reminders) */
 ol.reminders { list-style: none; padding: 0; margin: 24px 0 0; text-align: left; counter-reset: reminders; }
@@ -225,7 +223,6 @@ ol.reminders li b { color: var(--ink); }
 }
 .hub a.teamrow:hover { border-color: var(--brand-purple); box-shadow: var(--shadow-md); }
 .hub a.teamrow .sw { width: 13px; height: 13px; border-radius: 50%; flex: none; }
-.hub a.teamrow .sw.Red { background: #C0492F; } .hub a.teamrow .sw.Green { background: #2E7D46; } .hub a.teamrow .sw.Blue { background: #2563A8; } .hub a.teamrow .sw.Amber { background: #C6841A; } .hub a.teamrow .sw.Purple { background: #6D4AA8; }
 .hub a.teamrow .slug { margin-left: auto; font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; color: var(--muted); font-weight: 600; }
 .hub .note { margin-top: 22px; font-size: 0.86rem; color: var(--ink-soft); background: var(--brand-purple-tint); border-left: 4px solid var(--brand-purple); border-radius: var(--r-md); padding: 12px 15px; }
 
