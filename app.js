@@ -39,7 +39,7 @@
     coralberry: { name: "coralberry",        ft: 0,   checked: false },  // ids 143/455, height not in any export
     dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Identify reads it as red osier, 120 in
     blackberry: { name: "blackberry",        ft: 6,   checked: true  },  // Rubus species, 72 in
-    pear:       { name: "Callery pear",      ft: 40,  checked: false },  // NS list 480 in; not in the LUC export
+    pear:       { name: "Callery pear",      ft: 40,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     redcedar:   { name: "eastern redcedar",  ft: 0,   checked: false },  // not in any export
     locust:     { name: "black locust",      ft: 100, checked: false },  // NS list 1200 in; not in the LUC export
     heaven:     { name: "tree of heaven",    ft: 60,  checked: false },  // NS list 720 in; not in the LUC export

@@ -67,7 +67,7 @@ The photos are a mix of flower, fruit, leaf and bark. Identify asks which one yo
 
 ### Heights still to read off the app
 
-Six wall plants are not in any LUC plant export, so their heights are unconfirmed: **Callery pear, black locust, tree of heaven, coralberry, eastern redcedar, hackberry.** Until they are set in `PLANTS` with `checked: true`, the game accepts any number for those six teams. To finish it: scan each sheet, read the max height, update `app.js`, rerun the build, push.
+Five wall plants are not in any LUC plant export, so their heights are unconfirmed: **black locust, tree of heaven, coralberry, eastern redcedar, hackberry.** (Callery pear read 40 ft in the app on 27 Oct, matching the NS list, so black locust is probably 100 ft and tree of heaven 60 ft.) Until they are set in `PLANTS` with `checked: true`, the game accepts any number for those six teams. To finish it: scan each sheet, read the max height, update `app.js`, rerun the build, push.
 
 ## 5. Setup and finale
 
