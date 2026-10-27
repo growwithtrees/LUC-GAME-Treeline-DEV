@@ -196,7 +196,7 @@
       },
       {
         icon: "ic-grass", feat: "Field Bites", title: "Finish the field bite",
-        body: "You find a young tree with leaves like a feather: two rows of small oval leaflets. Is it black locust or false indigo bush?"
+        body: "You find a young plant with leaves like a feather: two rows of small oval leaflets. Is it black locust or false indigo bush?"
           + "<br><br>Open <b>Field Bites</b> and work through <b>Black Locust vs False Indigo Bush</b>."
           + "<br><br>The bite says false indigo bush flowers look like little purple what? Type the word.",
         accept: ["foxtails", "foxtail", "fox tails", "fox tail"]
