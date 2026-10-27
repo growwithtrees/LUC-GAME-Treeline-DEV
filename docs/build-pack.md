@@ -12,7 +12,7 @@ Lindsey's goal: get everyone logged in to Let Grow and show them the resources a
 
 - **Messages stop removed.** GWT no longer uses in-app messages (notifications have their own buttons, and FirstEnergy saw unmonitored chat as a negative). Hannah no longer has a job in the game.
 - **ChatTrain (Mrs. Webb) removed.**
-- **Field Guide stop is now Search**, with a homeowner scenario Lindsey ran live: border zone, slow growing, host plant and bird food, 15 ft or less gives **holly** only.
+- **Field Guide stop is now Search**, with a homeowner scenario Lindsey ran live and Mike rechecked 27 Oct: wire zone no / border zone yes, slow growing, host plant and bird food, 15 ft or less gives **holly** only.
 - **Identify is per team.** Each team hunts its own plant on the wall and reads its max height. Lindsey's version: "go scan the blackberry and enter the maximum height."
 - **Field Clips, Field Notes and Field Bites** each ask for a detail only that resource gives. Experts are spread across teams, so a question they could answer from memory would let them skip the resource.
 - **Team names** come from Lindsey's badge set (Oak Titans to Thorn Guard). No name is a puzzle answer.

@@ -17,7 +17,7 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 
 ## The five stops
 
-1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters: border zone, slow growing, host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
+1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters: wire zone no / border zone yes (the zone filter is a single choice, Mike 27 Oct), slow growing, host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
 2. **Identify**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
 3. **Field Clips**, one of two by team (`clip` in `TEAMS`, alternating):
    - multiflora rose vs native rose: the invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.

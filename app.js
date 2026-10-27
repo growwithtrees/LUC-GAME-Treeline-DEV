@@ -169,10 +169,10 @@
     return [
       {
         icon: "ic-search", feat: "Search", title: "Help a homeowner pick a shrub",
-        body: "A homeowner watches your crew take out a tree near the line. They want to plant something in its place, and they love watching birds."
+        body: "A homeowner watches your crew take out a tree near the line. They want to plant something in its place, off to the side of the line, and they love watching birds."
           + "<br><br>Open <b>Search</b> in the Let Grow app and set these filters:"
           + "<ul class='fieldnotes'>"
-          + "<li>Border zone</li>"
+          + "<li>Not in the wire zone, OK in the border zone</li>"
           + "<li>Slow growing</li>"
           + "<li>Host plant and bird food</li>"
           + "<li>15 feet tall or less</li>"

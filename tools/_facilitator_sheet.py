@@ -96,9 +96,9 @@ para("Numbered for reference only; each team meets them in its own order (last c
 
 STOPS = [
  ("1", "Search",
-  "Homeowner wants a bird-friendly replacement shrub. Filter Search: border zone, slow growing, host plant and bird food, 15 ft or less. One plant fits.",
+  "Homeowner wants a bird-friendly replacement shrub. Filter Search: wire zone no / border zone yes, slow growing, host plant and bird food, 15 ft or less. One plant fits.",
   "HOLLY",
-  "“Did you set all four filters?” Leaving one off brings up more than one plant."),
+  "“Did you set all four filters?” Leaving one off brings up more than one plant. The zone filter is one choice: wire zone no, border zone yes."),
  ("2", "Identify",
   "Find their own plant on the wall (named on their screen) by scanning photos with Identify, then read its MAX HEIGHT off its Let Grow page.",
   "That team's height (table above)",
