@@ -67,7 +67,7 @@ The photos are a mix of flower, fruit, leaf and bark. Identify asks which one yo
 
 ### Heights
 
-All twelve confirmed on 27 Oct. Six came from the LUC plant export; Mike read Callery pear (40), black locust (100), tree of heaven (60), coralberry (5) and hackberry (60) off the app. **Eastern redcedar has no page in the LUC app** (only creeping juniper, 1 ft), so sheet 6 became **burning bush** (LUC list, 20 ft), leaf on white. **Scan sheet 6 before printing.**
+All twelve confirmed on 27 Oct. Six came from the LUC plant export; Mike read Callery pear (40), black locust (100), tree of heaven (60), coralberry (5) and hackberry (60) off the app. **Eastern redcedar has no page in the LUC app** (only creeping juniper, 1 ft), so sheet 6 became **burning bush** (LUC list, 20 ft), leaf on white, confirmed in the app at 20 ft. All 12 sheets scan.
 
 Pairs that share a height, so a team scanning the other one still passes: buttonbush and elderberry (12 ft), tree of heaven and hackberry (60 ft).
 
