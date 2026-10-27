@@ -42,7 +42,7 @@
     pear:       { name: "Callery pear",      ft: 40,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     redcedar:   { name: "eastern redcedar",  ft: 0,   checked: false },  // not in any export
     locust:     { name: "black locust",      ft: 100, checked: false },  // NS list 1200 in; not in the LUC export
-    heaven:     { name: "tree of heaven",    ft: 60,  checked: false },  // NS list 720 in; not in the LUC export
+    heaven:     { name: "tree of heaven",    ft: 60,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     elderberry: { name: "elderberry",        ft: 12,  checked: true  },  // Sambucus species, 144 in
     hackberry:  { name: "hackberry",         ft: 0,   checked: false },  // not in any export
     olive:      { name: "autumn olive",      ft: 16,  checked: true  },  // 192 in
