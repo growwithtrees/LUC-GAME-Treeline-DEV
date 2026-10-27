@@ -44,9 +44,9 @@ Every team walks the stops in its own order. The 12 orders came from a random se
 |---|---|---|---|---|
 | 1 | Search | Bird-friendly replacement shrub, four filters | `HOLLY` | Lindsey's live search, 27 Oct |
 | 2 | Identify | Find your plant, read max height | per team | `PLANTS` in `app.js` |
-| 3a | Field Clips (odd teams) | Invasive rose leaf base "covered in like ___" | `EYELASHES` | Roses clip (2026.03.13), ~1:17 |
-| 3b | Field Clips (even teams) | Poison ivy's roots make the vine look fuzzy or ___-like | `ROPE` | Poison Ivy vs Virginia Creeper clip, ~1:08 |
-| 4a | Field Notes (teams 1, 4, 7, 10) | Johnsongrass seeds stay viable up to how many years? | `20` | Johnsongrass tailgate, Reproduction box |
+| 3a | Field Clips (odd teams) | Invasive rose leaf base "covered in like ___" | `EYELASHES` | Roses clip (2026.03.13), about two-thirds in |
+| 3b | Field Clips (even teams) | Virginia creeper's tendrils end in sticky ___ | `PADS` | Poison Ivy vs Virginia Creeper clip |
+| 4a | Field Notes (teams 1, 4, 7, 10) | How far can Johnsongrass rhizomes travel from the mother plant, in feet? | `200` | Johnsongrass tailgate, Reproduction box |
 | 4b | Field Notes (teams 2, 5, 8, 11) | Elderberry flowers feed bees, flies and ___ | `BEETLES` | Elderberry Bloom BOLO, main paragraph |
 | 4c | Field Notes (teams 3, 6, 9, 12) | Wanted dead or ___ | `CONTROLLED` | Wanted: Autumn Olive poster headline |
 | 5 | Field Bites | Indigo bush flowers look like little purple ___ | `FOXTAILS` | Black Locust vs False Indigo Bush (field-bites/7), flowers card |
@@ -79,3 +79,16 @@ Pairs that share a height, so a team scanning the other one still passes: button
 ## 6. Before printing
 
 Walk one team through all five stops in the real Let Grow app. The browser walk-through covers the game page, not the app: confirm the Search filters still give only holly, and that the rose clip, the Johnsongrass note and the Black Locust bite are all visible to a Liberty login.
+
+## 7. Adversarial QA, October 27
+
+Two read-only reviewer passes (source alignment; strict editor plus first-time player plus facilitator) and an edge-case browser test. Fixed:
+- **Double tap on Unlock skipped stops** (three taps went from stop 1 to stop 4). Unlock now ignores taps during the animation.
+- **Inches matched across plants**: coralberry's 5 ft = 60 in passed on tree of heaven's or hackberry's 60 ft. Feet only now; the first number is read from what was typed, so 12'0" is 12.
+- **Typing every answer at once** unlocked every word stop. Word answers are capped at four words.
+- **Guessable questions**: poison ivy ROPE (field rhyme) became PADS; Johnsongrass 20 years (guessable by stepping 10, 15, 20) became 200 feet.
+- Blackberry is named "blackberry (Rubus)", since Let Grow files it as Rubus species. "hollies" accepted.
+- Copy: "Welcome, the Sassafras Wardens" bug; intro now says to keep this page open and switch to Let Grow; ranking is "for bragging rights"; hero says "Crack the Let Grow app" (the Field Guide section is no longer a stop); app section names used throughout; "Start over" asks to confirm.
+- Print pack: page 1 is a check-in table with a write-in "Finished #" column; stops are named by section, not number (each team counts in its own order); answer key lists every accepted alternate instead of "see app.js"; QR card says "Have Let Grow open and signed in" and the URL is darker; folders renumbered 1 to 3; US spelling and dates.
+
+Rejected: answer-key heading order (an artifact of the reviewer's text export, the .docx is in order); unused SVG icons in app.js (never shown); "tap the match to open its page" (the app's exact UI is unverified).

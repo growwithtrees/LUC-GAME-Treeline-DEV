@@ -39,7 +39,7 @@
     buttonbush: { name: "buttonbush",        ft: 12,  checked: true  },  // LUC list id 75, 144 in
     coralberry: { name: "coralberry",        ft: 5,   checked: true  },  // read off the LUC app by Mike, 27 Oct
     dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Identify reads it as red osier, 120 in
-    blackberry: { name: "blackberry",        ft: 6,   checked: true  },  // Rubus species, 72 in
+    blackberry: { name: "blackberry (Rubus)", ft: 6,   checked: true  },  // Rubus species, 72 in
     pear:       { name: "Callery pear",      ft: 40,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     burningbush:{ name: "burning bush",      ft: 20,  checked: true  },  // LUC list id 61, 240 in. Replaced eastern redcedar 27 Oct: no redcedar page in the LUC app
     locust:     { name: "black locust",      ft: 100, checked: true  },  // read off the LUC app by Mike, 27 Oct
@@ -56,32 +56,34 @@
       title: "Watch the rose clip",
       body: "You are clearing a fence line and run into a thorny rose. Is it the invasive one or the native one?"
         + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>multiflora rose and native rose</b>."
-        + "<br><br>Look at the base of each leaf. The clip says the invasive rose's little leaflet is covered in something. Covered in what? Type the word.",
+        + "<br><br>Watch for the part about the base of the leaf. The clip says the invasive rose's little leaflet is covered in something. Covered in what? Type the word.",
       accept: ["eyelashes", "eyelash", "eye lashes", "lashes", "little legs", "legs"]
     },
-    ivy: {     // Poison Ivy vs Virginia Creeper: "hairy-looking aerial roots, giving the vine a fuzzy or rope-like appearance" (~1:08)
+    ivy: {     // Poison Ivy vs Virginia Creeper: "Virginia creeper climbs with small tendrils that end in sticky pads"
+               // Not the rope-like roots: "hairy rope, don't be a dope" lets an expert answer without watching.
       title: "Watch the vine clip",
       body: "A vine is climbing the pole you need to work on. Is it poison ivy or Virginia creeper?"
         + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>poison ivy and Virginia creeper</b>."
-        + "<br><br>Poison ivy climbs with hairy-looking roots. The clip says they make the vine look fuzzy, or like a what? Type the word.",
-      accept: ["rope", "ropes", "ropelike", "rope like"]
+        + "<br><br>Virginia creeper climbs with small tendrils. The clip says each tendril ends in a sticky what? Type the word.",
+      accept: ["pads", "pad"]
     }
   };
   var NOTES = {
-    johnson: { // Johnsongrass tailgate, Reproduction box: "seeds stay viable in the soil for up to 20 years"
+    johnson: { // Johnsongrass tailgate, Reproduction box: rhizomes "can travel up to 200 feet from the mother plant".
+               // Not the 20-year seed figure: a team could guess its way there (10, 15, 20).
       body: "Along the right-of-way you see a tall, thick grass. Its leaves have a white stripe down the middle."
         + "<br><br>Open <b>Field Notes</b> and read the one on <b>Johnsongrass</b>."
-        + "<br><br>How many years can its seeds stay alive in the soil? Type the number.",
-      number: 20, accept: ["twenty"]
+        + "<br><br>Its underground stems (rhizomes) spread a long way. How far can they travel from the mother plant? Type the number of feet.",
+      number: 200
     },
     elder: {   // Elderberry Bloom BOLO: "flowers provide pollen for insects, including bees, flies, and beetles"
       body: "You find a shrub covered in big, flat clusters of tiny white flowers. It looks like elderberry."
         + "<br><br>Open <b>Field Notes</b> and read the <b>Elderberry Bloom</b> note."
-        + "<br><br>Its flowers feed bees, flies and one more kind of insect. Which one? Type the word.",
+        + "<br><br>The note says its flowers give pollen to bees, flies and one more kind of insect. Which one? Type the word.",
       accept: ["beetles", "beetle"]
     },
     olive: {   // Wanted: Autumn Olive poster headline: "DEAD or CONTROLLED"
-      body: "A shrub with silvery leaves and speckled red berries is spreading along the right-of-way."
+      body: "A shrub with leaves silvery underneath and speckled red berries is spreading along the right-of-way."
         + "<br><br>Open <b>Field Notes</b> and find the <b>Wanted: Autumn Olive</b> poster."
         + "<br><br>The poster says autumn olive is wanted dead or what? Type the word.",
       accept: ["controlled", "control"]
@@ -114,18 +116,18 @@
     + '<div class="hero">'
     + '<img class="hero-badge" id="introBadge" alt="">'
     + '<span class="eyebrow">Digital escape room</span>'
-    + '<h1>Crack the field guide</h1>'
-    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve all five to earn your team\'s finish code.</p>'
+    + '<h1>Crack the Let Grow app</h1>'
+    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve all five stops to earn your team\'s finish code.</p>'
     + '<ul class="outcome-list">'
-    + '<li>Five stops, each in a different part of the Let Grow app</li>'
-    + '<li>Each stop asks a question. The app has the answer.</li>'
-    + '<li>Finish all five and bring your finish code to the facilitator table</li>'
+    + '<li>Keep this page open. Switch to the Let Grow app to find each answer, then come back here to type it.</li>'
+    + '<li>Five stops, each in a different part of the app.</li>'
+    + '<li>Finish all five and bring your finish code to the facilitator table.</li>'
     + '</ul>'
     + '</div>'
     + '<div class="card"><h3>What is a digital escape room?</h3>'
-    + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Your clues live in the <b>Let Grow app</b>. Each stop sends you to a real part of the app: <b>Search</b>, <b>Identify</b>, a <b>field clip</b>, a <b>field note</b> and a <b>field bite</b>. Find the answer in the app, type it here, and the next stop unlocks.</p></div>'
-    + '<div class="card"><h3>The goal: finish fast</h3>'
-    + '<p>Clear all five stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to the <b>facilitator table</b>. Teams are ranked in the order they check in, and nobody has to wait for another team.</p></div>'
+    + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Your clues live in the <b>Let Grow app</b>. Each stop sends you to a real part of the app: <b>Search</b>, <b>Identify</b>, <b>Field Clips</b>, <b>Field Notes</b> and <b>Field Bites</b>. Find the answer in the app, type it here, and the next stop unlocks.</p></div>'
+    + '<div class="card"><h3>Finish fast</h3>'
+    + '<p>Clear all five stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to the <b>facilitator table</b>. We note the order teams finish, for bragging rights. Nobody waits for another team.</p></div>'
     + '<button class="btn btn-primary btn-block" id="beginBtn" style="margin-top:20px">Start the challenge</button>'
     + '</section>'
     + '<section id="quest">'
@@ -137,7 +139,7 @@
     + '<div class="finale-head">'
     + '<img class="finale-badge" id="finaleBadge" alt="">'
     + '<h2>All five stops cleared</h2>'
-    + '<p class="sub">You just used Search, Identify, a field clip, a field note and a field bite. They are all in the app whenever you need them. Here is your finish code.</p>'
+    + '<p class="sub">You just used Search, Identify, Field Clips, Field Notes and Field Bites. They are all in the app whenever you need them. Here is your finish code.</p>'
     + '</div>'
     + '<div class="finale-body">'
     + '<div class="fragwrap">'
@@ -150,7 +152,7 @@
     + '<li>The facilitator checks your code and writes down your finish.</li>'
     + '<li>Keep your code to yourselves. Other teams are still playing.</li>'
     + '</ol>'
-    + '<div class="restart"><button id="restartBtn">start over</button></div>'
+    + '<div class="restart"><button id="restartBtn">Start over</button></div>'
     + '</div>'
     + '</div>'
     + '</section>'
@@ -169,7 +171,7 @@
     return [
       {
         icon: "ic-search", feat: "Search", title: "Help a homeowner pick a shrub",
-        body: "A homeowner watches your crew take out a tree near the line. They want to plant something in its place, off to the side of the line, and they love watching birds."
+        body: "A homeowner watches your crew take out a tree near the line. They want to plant a shrub off to the side of the line, and they love watching birds."
           + "<br><br>Open <b>Search</b> in the Let Grow app and set these filters:"
           + "<ul class='fieldnotes'>"
           + "<li>Not in the wire zone, OK in the border zone</li>"
@@ -178,11 +180,11 @@
           + "<li>15 feet tall or less</li>"
           + "</ul>"
           + "Only one plant fits. Type its name.",
-        accept: ["holly", "american holly", "ilex", "holly species"]
+        accept: ["holly", "hollies", "american holly", "ilex", "holly species"]
       },
       {
         icon: "ic-cam", feat: "Identify", title: "Find your plant on the wall",
-        body: "Your team's plant is <b class='target'>" + p.name.toUpperCase() + "</b>."
+        body: "Your team's plant: <b class='target'>" + p.name.toUpperCase() + "</b>"
           + "<br><br>It is one of the numbered photos on the <b>plant wall</b>, but the photos have no names. Use <b>Identify</b> to scan photos until the app tells you it is " + p.name + "."
           + "<br><br>Before each scan, tell Identify what the photo shows: <b>leaf, flower, fruit or bark</b>. Pick the wrong one and the app will guess wrong."
           + "<br><br>Open your plant's page in Let Grow and find its <b>maximum height</b>. Type the number of feet.",
@@ -197,7 +199,7 @@
       },
       {
         icon: "ic-grass", feat: "Field Bites", title: "Finish the field bite",
-        body: "You find a young plant with leaves like a feather: two rows of small oval leaflets. Is it black locust or false indigo bush?"
+        body: "You find a plant with leaves like a feather, with two rows of small oval leaflets. Is it black locust or false indigo bush?"
           + "<br><br>Open <b>Field Bites</b> and work through <b>Black Locust vs False Indigo Bush</b>."
           + "<br><br>The bite says false indigo bush flowers look like little purple what? Type the word.",
         accept: ["foxtails", "foxtail", "fox tails", "fox tail"]
@@ -261,7 +263,7 @@
       + "<input id='codein' autocomplete='off' autocapitalize='characters' spellcheck='false' placeholder='type it here'"
       + (s.number !== undefined ? " inputmode='" + (s.accept ? "text" : "numeric") + "'" : "") + ">"
       + "<button class='btn btn-primary btn-block' id='goBtn'>Unlock</button>"
-      + "<div class='wrongmsg hidden' id='wrongmsg'>Not quite. Check the app and try again.</div>"
+      + "<div class='wrongmsg hidden' id='wrongmsg' role='alert'>Not quite. Check the app and try again.</div>"
       + "</div>";
     html += "</div>";
     document.getElementById("stopmount").innerHTML = html;
@@ -272,24 +274,33 @@
     input.focus();
   }
 
+  // True while the unlock animation runs. Without it a double tap on Unlock (or Enter then
+  // Unlock) queued one advance per tap and skipped stops.
+  var unlocking = false;
+
   function check() {
+    if (unlocking) return;
     var s = state.stops[state.stop];
     var input = document.getElementById("codein");
     var val = norm(input.value);
     if (!val) return;
     var vns = val.replace(/ /g, "");
-    var ok = (s.accept || []).some(function (a) {
+    // A word answer is a few words at most. Without this cap, typing every answer in one line
+    // ("eyelashes pads beetles controlled foxtails holly") unlocked every word stop.
+    var ok = val.split(" ").length <= 4 && (s.accept || []).some(function (a) {
       var n = norm(a);
       return val.indexOf(n) !== -1 || vns.indexOf(n.replace(/ /g, "")) !== -1;
     });
-    // Numbers match whole, never as a substring: "120" must not pass for 12. The first
-    // number typed counts, so "12 ft 0 in" reads as 12. Feet or inches both pass.
-    var m = val.match(/\d+/);
+    // Numbers match whole, never as a substring: "120" must not pass for 12. The first number
+    // in what they TYPED counts (read before norm() strips punctuation, so 12'0" stays 12).
+    // Feet only: the app shows feet and inches, and accepting inches let coralberry (5 ft = 60 in)
+    // pass on tree of heaven's or hackberry's 60 ft.
+    var m = input.value.match(/\d+/);
     if (!ok && m && s.number !== undefined) {
       var n = parseInt(m[0], 10);
-      ok = s.number === "any" || n === s.number || n === s.number * 12;
+      ok = s.number === "any" || n === s.number;
     }
-    if (ok) { playUnlock(advance); }
+    if (ok) { unlocking = true; playUnlock(function () { unlocking = false; advance(); }); }
     else {
       input.classList.remove("wrong"); void input.offsetWidth; input.classList.add("wrong");
       document.getElementById("wrongmsg").classList.remove("hidden");
@@ -359,6 +370,8 @@
       show("quest"); renderQuest();
     });
     $("#restartBtn").addEventListener("click", function () {
+      // It sits right under the finish code; one stray tap would wipe a finished team.
+      if (!window.confirm("Start over? Your team's progress on this phone will be cleared.")) return;
       try { localStorage.removeItem(keyFor(team)); } catch (e) {}
       state.stop = 0; show("intro"); renderIntro();
     });

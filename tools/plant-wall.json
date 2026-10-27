@@ -23,7 +23,7 @@
   "key": "dogwood",
   "comp": "Compatible",
   "organ": "FLOWER",
-  "note": "Identify reads it as red osier dogwood (10 ft). Its team is told to find \"dogwood\", so either name is right.",
+  "note": "Identify calls it red osier dogwood. The team is told “dogwood,” so either name is right.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/roughleaf dogwood/roughleaf dogwood flower real.jpg"
  },
  {
@@ -32,7 +32,7 @@
   "key": "blackberry",
   "comp": "Compatible",
   "organ": "LEAF",
-  "note": "",
+  "note": "Let Grow files it as Rubus species.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/blackberry/blackberry leaf.jpg"
  },
  {
@@ -50,7 +50,7 @@
   "key": "burningbush",
   "comp": "Incompatible",
   "organ": "LEAF",
-  "note": "Replaced eastern redcedar 27 Oct (no redcedar page in the LUC app). Red fall leaves isolated on white. Confirmed in the app by Mike the same day, 20 ft.",
+  "note": "A few berries are in the photo; select Leaf.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/burning bush_20087206.jpg"
  },
  {
@@ -59,7 +59,7 @@
   "key": "locust",
   "comp": "Incompatible",
   "organ": "LEAF",
-  "note": "Leaf on white. Its bark read as salt cedar, so the leaf went up instead.",
+  "note": "Black Locust vs False Indigo Bush says 60 ft in one place; the plant page says 100.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Black Locust/Acacia or Black Locust leaf isolated on white background.jpg"
  },
  {
@@ -77,7 +77,7 @@
   "key": "elderberry",
   "comp": "Compatible",
   "organ": "LEAF",
-  "note": "Reads 12 ft, the same as buttonbush (sheet 1). A team that scans the wrong one of the two still passes.",
+  "note": "Reads 12 ft, the same as buttonbush (sheet 1).",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Elderberry/American black elderberry leaves (Sambucus canadensis).jpg"
  },
  {
@@ -86,7 +86,7 @@
   "key": "hackberry",
   "comp": "Incompatible",
   "organ": "BARK",
-  "note": "Bark sheet. Corky warts. Confirmed in the app 15 Sep. Reads 60 ft, the same as tree of heaven (sheet 8).",
+  "note": "Bark photo. Reads 60 ft, the same as tree of heaven (sheet 8).",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Common Hackberry/common hackberry bark.jpg"
  },
  {
@@ -95,7 +95,7 @@
   "key": "olive",
   "comp": "Incompatible",
   "organ": "FRUIT",
-  "note": "Added 27 Oct; confirmed in the app by Mike the same day. Speckled red berries, silvery leaves.",
+  "note": "",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Autumn Olive/autumn olive fruit.jpg"
  },
  {
@@ -104,7 +104,7 @@
   "key": "sumac",
   "comp": "Compatible",
   "organ": "LEAF",
-  "note": "Added 27 Oct; confirmed in the app by Mike the same day. Compound leaves with red fruit cones in frame.",
+  "note": "Red fruit cones are in the photo; select Leaf.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/smooth sumac_2345935715.jpg"
  }
 ]

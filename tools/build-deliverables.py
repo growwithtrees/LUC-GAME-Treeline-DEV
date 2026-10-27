@@ -91,7 +91,7 @@ def read_teams():
         for k in ("clip", "note"):
             if t[k] not in variants[k]:
                 sys.exit("ERROR: team %s's %s '%s' is not in app.js" % (t["name"], k, t[k]))
-            t[k + "label"], t[k + "answer"] = variants[k][t[k]]
+            t[k + "label"], t[k + "answer"], t[k + "also"] = variants[k][t[k]]
     unchecked = [t["plantname"] for t in teams if not t["checked"]]
     if unchecked:
         print("  WARNING: heights not yet read off the LUC app, game accepts any number: "
@@ -114,8 +114,11 @@ def read_variants(src):
         out[kind] = {}
         for key, body in re.findall(r"\n    (\w+): \{(.*?)\n    \}", block, re.S):
             num = re.search(r"number: (\d+)", body)
-            acc = re.findall(r'"([^"]+)"', re.search(r"accept: \[([^\]]*)\]", body).group(1))
-            out[kind][key] = (VARIANT_LABELS[kind].get(key, key), (num.group(1) if num else acc[0]).upper())
+            am = re.search(r"accept: \[([^\]]*)\]", body)
+            acc = re.findall(r'"([^"]+)"', am.group(1)) if am else []
+            ans = (num.group(1) if num else acc[0]).upper()
+            out[kind][key] = (VARIANT_LABELS[kind].get(key, key), ans,
+                              [a for a in acc if a.upper() != ans])
     return out
 
 
@@ -143,7 +146,7 @@ def build_wall(out):
                         os.path.join(tmp, "%02d.jpg" % p["n"])], check=True)
         p["orient"] = "landscape" if land else "portrait"
     files = sorted(glob.glob(os.path.join(tmp, "*.jpg")))
-    dest = os.path.join(out, "2 Print - Plant Wall")
+    dest = os.path.join(out, "1 Print - Plant Wall")
     os.makedirs(os.path.join(dest, "Individual Sheets"), exist_ok=True)
     # NO layout_fun: each page takes its own image's orientation. See module docstring.
     with open(os.path.join(dest, "Plant Wall - Print Sheets.pdf"), "wb") as f:
@@ -185,9 +188,9 @@ def build_qr(teams, out):
         d.text((cx, 405), t["name"], font=fb, fill="#111111", anchor="mt")
         d.text((cx, 495), "Scan to start your quest.",
                font=ImageFont.truetype(FONT_R, 36), fill="#374151", anchor="mt")
-        d.text((cx, 550), "One phone drives; everyone helps.",
+        d.text((cx, 550), "Have Let Grow open and signed in.",
                font=ImageFont.truetype(FONT_R, 30), fill="#6b7280", anchor="mt")
-        d.text((70, 745), url, font=ImageFont.truetype(FONT_R, 26), fill="#9ca3af")
+        d.text((70, 735), url, font=ImageFont.truetype(FONT_R, 30), fill="#4b5563")
         card.save(os.path.join(tmp, "%02d.jpg" % i), quality=92, dpi=(150, 150))
     pages = []
     for i in range(0, len(teams), 2):
@@ -200,7 +203,7 @@ def build_qr(teams, out):
         p.save(fn, quality=92, dpi=(150, 150)); pages.append(fn)
     lay = img2pdf.get_layout_fun(pagesize=(img2pdf.in_to_pt(8.5), img2pdf.in_to_pt(11)),
                                  fit=img2pdf.FitMode.into)
-    dest = os.path.join(out, "3 Print - Team QR Cards"); os.makedirs(dest, exist_ok=True)
+    dest = os.path.join(out, "2 Print - Team QR Cards"); os.makedirs(dest, exist_ok=True)
     with open(os.path.join(dest, "Team QR Cards.pdf"), "wb") as f:
         f.write(img2pdf.convert(pages, layout_fun=lay))
     shutil.rmtree(tmp)
@@ -217,7 +220,7 @@ def _docx_to_pdf(path, dest):
 
 def build_facilitator(teams, out):
     """Lindsey's 4-page sheet. Delegates to _facilitator_sheet.py, which holds the layout."""
-    dest = os.path.join(out, "4 Print - Facilitator"); os.makedirs(dest, exist_ok=True)
+    dest = os.path.join(out, "3 Print - Facilitator"); os.makedirs(dest, exist_ok=True)
     json.dump(teams, open(os.path.join(HERE, "_teams.json"), "w"), indent=1)
     subprocess.run([sys.executable, os.path.join(HERE, "_facilitator_sheet.py")],
                    cwd=HERE, check=True)
@@ -252,28 +255,32 @@ def build_key(teams, out):
     doc = Document()
     st = doc.styles["Normal"]; st.font.name = "Arial"; st.font.size = Pt(10.5)
     doc.add_heading("Field Guide Challenge: Answer Key", 1)
-    doc.add_paragraph("LUC Tree Line USA icebreaker. Facilitator eyes only. Answers are not "
-                      "case-sensitive and spaces are ignored.")
+    doc.add_paragraph("LUC Tree Line USA icebreaker. Facilitator eyes only. Answers ignore "
+                      "capitals, spaces and punctuation.")
     doc.add_heading("Stops", 2)
-    t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
-    for c, h in zip(t.rows[0].cells, ["#", "Let Grow feature", "Answer", "Also accepted"]):
+    t = doc.add_table(rows=1, cols=3); t.style = "Table Grid"
+    for c, h in zip(t.rows[0].cells, ["Let Grow section", "Answer", "Also accepted"]):
         c.text = h
+    src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
+    variants = read_variants(src)
     for i, (feat, acc, num) in enumerate(stops):
         if feat == "Identify":
-            ans, also = "That team's plant height (see the team table)", "Feet or inches"
+            ans, also = "That team's plant height (see the team table)", "Feet only (12 ft 0 in reads as 12)"
         elif feat in ("Field Clips", "Field Notes"):
-            ans, also = "Depends on the team's %s (see the team table)" % (
-                "clip" if feat == "Field Clips" else "field note"), "See app.js"
+            v = variants["clip" if feat == "Field Clips" else "note"]
+            ans = "\n".join("%s: %s" % (lab, a) for lab, a, _ in v.values())
+            also = "\n".join("%s: %s" % (lab, ", ".join(al) or "None") for lab, a, al in v.values())
         else:
             words = [a for a in acc]
             ans = (num if num else words[0]).upper()
             also = ", ".join(w for w in words if w.upper() != ans) or "None"
-        for c, v in zip(t.add_row().cells, [str(i + 1), feat, ans, also]):
+        for c, v in zip(t.add_row().cells, [feat, ans, also]):
             c.text = v
     doc.add_heading("Teams", 2)
-    doc.add_paragraph("Every team walks all five stops in its own order. Stops 2 to 4 differ by team: each team hunts its own plant on the "
-                      "wall and gets one of two field clips and one of three field notes. Check each finish code against the team name and write down the order "
-                      "teams arrive.")
+    doc.add_paragraph("Every team walks all five stops in its own order. Three stops differ by "
+                      "team: each team hunts its own plant on the wall and gets one of two field "
+                      "clips and one of three field notes. Check each finish code against the team "
+                      "name and write down the order teams arrive.")
     t = doc.add_table(rows=1, cols=6); t.style = "Table Grid"
     for c, h in zip(t.rows[0].cells, ["Team", "Their plant (wall sheet) and height", "Field clip",
                                       "Field note", "Stop order", "Finish code"]):
@@ -293,8 +300,8 @@ def build_key(teams, out):
               "Scan mismatches. If a scan returns the wrong plant, check the leaf / flower / fruit / "
               "bark selector first. The roughleaf dogwood photo reads as red osier dogwood; either "
               "name is fine.",
-              "Source. Generated from app.js in LUC-GAME-Treeline-DEV by "
-              "tools/build-deliverables.py. Do not edit by hand; rerun the script."]:
+              "Black locust. Black Locust vs False Indigo Bush says it can reach 60 feet; its plant "
+              "page says 100. The game wants the plant page's number."]:
         doc.add_paragraph(b, style="List Bullet")
     path = os.path.join(os.path.dirname(out.rstrip("/")), "Field Guide Challenge Answer Key.docx")
     doc.save(path)
@@ -310,7 +317,7 @@ def mirror(out):
         dst = os.path.join(m, os.path.basename(out.rstrip("/")))
         # copytree only adds. Clear the generated wall sheets first, or a plant taken off the
         # wall lingers in the mirror (the 27 Oct redcedar -> burning bush swap did exactly that).
-        stale = os.path.join(dst, "2 Print - Plant Wall", "Individual Sheets")
+        stale = os.path.join(dst, "1 Print - Plant Wall", "Individual Sheets")
         for old in glob.glob(os.path.join(stale, "*.jpg")):
             os.remove(old)
         shutil.copytree(out, dst, dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store"))

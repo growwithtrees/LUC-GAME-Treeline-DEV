@@ -59,73 +59,78 @@ def table(headers, rows, widths, header_fill="1C5230"):
     return t
 
 # ── header ────────────────────────────────────────────────────────────────
-h("Field Guide Challenge — Facilitator Sheet", 22, GREEN, before=0, after=2)
+h("Field Guide Challenge: Facilitator Sheet", 22, GREEN, before=0, after=2)
 para("Liberty Utilities Central · Tree Line USA, October 2026 · keep this sheet face down",
      9, MUTE, italic=True, after=10)
 
-# ── the teams ─────────────────────────────────────────────────────────────
-h("1. Teams and finish codes", 14)
-para(f"Up to {len(TEAMS)} teams. Every team finishes on its own: their last screen shows a 4-digit "
-     "finish code. They bring it to you, you check it against their team name below and write "
-     "down the order teams arrive. Nobody waits on another team. Use as many QR cards as you have "
-     "teams, in any order.", 9.5, after=4)
-para("Every team does all five stops, each in its own order, so the whole room is never at the "
-     "plant wall at once: at any point no stop has more than three teams on it. Stops 2 to 4 differ by team: each team hunts its "
-     "own plant on the wall, and gets one of two field clips and one of three field notes, so "
-     "neighbouring teams are not chasing the same answer.", 9.5, after=6)
-rows = []
-for t in TEAMS:
-    rows.append([(t["name"], True, None), (t["code"], True, None),
-                 "%s (sheet %d): %s" % (t["plantname"], t["sheet"],
-                                        t["height"] if t["checked"] else "any number"),
-                 "%s: %s" % (t["cliplabel"], t["clipanswer"]),
-                 "%s: %s" % (t["notelabel"], t["noteanswer"]),
-                 t["ordernames"]])
-table(["Team", "Finish code", "Plant (sheet): height", "Field clip: answer", "Field note: answer",
-       "Their order"],
-      rows, [1.2, 0.6, 1.55, 1.5, 1.4, 1.25])
+# ── check-in ──────────────────────────────────────────────────────────────
+h("1. Check-in: finish codes", 14)
+para("Every team finishes on its own: their last screen shows a 4-digit finish code. Check it "
+     "against the team name, then write the next number in the Finished column. Nobody waits on "
+     "another team. Use as many QR cards as you have teams, in any order.", 9.5, after=6)
+ck = table(["Team", "Finish code", "Finished #", "Stop order"],
+           [[(t["name"], True, None), (t["code"], True, None), "", t["ordernames"]] for t in TEAMS],
+           [1.9, 1.1, 1.1, 3.4])
+from docx.enum.table import WD_ROW_HEIGHT_RULE
+for row in ck.rows[1:]:       # tall enough to write a number in by hand
+    row.height = Inches(0.42); row.height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
 para("A code that doesn't match the team means they read it off another team's screen.",
      9, MUTE, space_before=4, after=8)
 
+# ── per-team answers ──────────────────────────────────────────────────────
+doc.add_page_break()          # check-in is the page Lindsey keeps on top; answers go underneath
+h("2. Each team's answers", 14, before=0)
+para("Every team does all five stops, each in its own order, so the room starts spread out and the "
+     "plant wall never gets everyone at once. Three stops differ by team: each team hunts its own "
+     "plant on the wall and gets one of two field clips and one of three field notes, so "
+     "neighboring teams are not chasing the same answer. Search (HOLLY) and Field Bites (FOXTAILS) "
+     "are the same for everyone.", 9.5, after=6)
+table(["Team", "Identify: plant (sheet), height", "Field Clips: answer", "Field Notes: answer"],
+      [[(t["name"], True, None),
+        "%s (sheet %d): %s" % (t["plantname"], t["sheet"], t["height"] if t["checked"] else "any number"),
+        "%s: %s" % (t["cliplabel"], t["clipanswer"]),
+        "%s: %s" % (t["notelabel"], t["noteanswer"])] for t in TEAMS],
+      [1.55, 2.2, 1.95, 1.8])
+para("", 6, after=4)
+
 # ── the five stops ────────────────────────────────────────────────────────
-doc.add_page_break()          # the team table fills page 1; a stop table split across pages is unreadable
-h("2. The five stops: answers, and how to unstick a team", 14, before=0)
-para("Numbered for reference only; each team meets them in its own order (last column above). Teams type the "
-     "answer into their own page. If one has been stuck a few minutes, give the nudge, not the "
-     "answer. The answer column is your backstop only.", 9.5, after=6)
+h("3. The five stops and how to unstick a team", 14)
+para("Teams count stops in their own order, so \u201cwe\u2019re stuck on stop 2\u201d means a "
+     "different stop for each team. Ask which section is named at the top of their screen. If a "
+     "team has been stuck a few minutes, give the nudge, not the answer.", 9.5, after=6)
 
 STOPS = [
- ("1", "Search",
-  "Homeowner wants a bird-friendly replacement shrub. Filter Search: wire zone no / border zone yes, slow growing, host plant and bird food, 15 ft or less. One plant fits.",
+ ("Search",
+  "Homeowner wants a bird-friendly shrub off to the side of the line. Filters: wire zone no / border zone yes, slow growing, host plant and bird food, 15 ft or less. One plant fits.",
   "HOLLY",
-  "“Did you set all four filters?” Leaving one off brings up more than one plant. The zone filter is one choice: wire zone no, border zone yes."),
- ("2", "Identify",
-  "Find their own plant on the wall (named on their screen) by scanning photos with Identify, then read its MAX HEIGHT off its Let Grow page.",
-  "That team's height (table above)",
-  "First ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. Feet or inches both work. If they truly cannot find it, tell them the sheet number."),
- ("3", "Field Clips",
-  "Rose clip: at the base of each leaf, the invasive rose's little leaflet is covered in what?\nVine clip: poison ivy's hairy roots make the vine look fuzzy, or like a what?",
-  "Rose: EYELASHES\nVine: ROPE",
-  "Rose: “Watch the part about the base of the leaf, near the end.”\nVine: “Listen for how poison ivy climbs.”"),
- ("4", "Field Notes",
-  "Johnsongrass: how many years can its seeds stay alive in the soil?\nElderberry Bloom: its flowers feed bees, flies and what?\nAutumn Olive: wanted dead or what?",
-  "Johnsongrass: 20\nElderberry: BEETLES\nAutumn Olive: CONTROLLED",
-  "Johnsongrass: “Look in the Reproduction box.”\nElderberry: “Read the paragraph under the name.”\nAutumn Olive: “It's the headline.”"),
- ("5", "Field Bites",
+  "\u201cDid you set all four filters?\u201d Leaving one off brings up more than one plant. The zone filter is one choice: wire zone no, border zone yes."),
+ ("Identify",
+  "Find their own plant on the wall (named on their screen) by scanning photos with Identify, then read its max height off its Let Grow page.",
+  "That team's height (section 2)",
+  "Ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. They type the feet (12 ft 0 in reads as 12). Use the height on the plant's page, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
+ ("Field Clips",
+  "Rose clip: the invasive rose's little leaflet at the base of each leaf is covered in what?\nVine clip: Virginia creeper's tendrils end in sticky what?",
+  "Rose: EYELASHES\nVine: PADS",
+  "Rose: \u201cWatch the part about the base of the leaf, about two-thirds of the way in.\u201d\nVine: \u201cListen for how each vine climbs.\u201d"),
+ ("Field Notes",
+  "Johnsongrass: how far can its rhizomes travel from the mother plant, in feet?\nElderberry Bloom: the note names bees, flies and what other insect?\nAutumn Olive: wanted dead or what?",
+  "Johnsongrass: 200\nElderberry: BEETLES\nAutumn Olive: CONTROLLED",
+  "Johnsongrass: \u201cLook in the Reproduction box.\u201d\nElderberry: \u201cRead the paragraph under the name.\u201d\nAutumn Olive: \u201cIt's the headline.\u201d"),
+ ("Field Bites",
   "Work through Black Locust vs False Indigo Bush. False indigo bush flowers look like little purple what?",
   "FOXTAILS",
-  "“It's on the card about flowers.”"),
+  "\u201cIt's on the card about flowers.\u201d"),
 ]
-table(["#", "Feature", "What they have to do", "Answer", "If they’re stuck"],
-      [[(s[0], True, None), s[1], s[2], (s[3], True, None), s[4]] for s in STOPS],
-      [0.3, 1.0, 2.5, 1.45, 2.25])
-para("Answers are not case sensitive and ignore punctuation.", 9, MUTE, space_before=4, after=8)
+table(["Section", "What they have to do", "Answer", "If they\u2019re stuck"],
+      [[(s[0], True, None), s[1], (s[2], True, None), s[3]] for s in STOPS],
+      [1.0, 2.55, 1.5, 2.45])
+para("Answers ignore capitals, spaces and punctuation.", 9, MUTE, space_before=4, after=8)
 
 doc.add_page_break()
 
 # ── plant wall ────────────────────────────────────────────────────────────
-h("3. Plant wall key", 14, before=0)
-para(f"{len(TEAMS)} sheets, one plant each, numbered but deliberately NOT labelled. Each sheet is "
+h("4. Plant wall key", 14, before=0)
+para(f"{len(TEAMS)} sheets, one plant each, numbered but deliberately NOT labeled. Each sheet is "
      "one team's target. This is the only key.", 9.5, after=4)
 para("The photos are a MIX of flower, fruit, leaf and bark, because Identify asks which one you are "
      "photographing. Getting that selector right is the skill this stop teaches. The \u201cPhoto is "
@@ -135,17 +140,17 @@ WALL = json.load(open("_wallkey.json"))
 table(["Sheet", "What it is", "Photo is a", "Whose plant", "Notes"],
       [[(str(w["n"]), True, None), (w["name"], True, None), (w["organ"], True, None),
         owner.get(w["n"], ""), w.get("note", "")] for w in WALL],
-      [0.5, 1.5, 0.85, 1.5, 3.15])
+      [0.65, 1.5, 0.85, 1.6, 2.9])
 para("", 6, after=6)
 
 # ── if it goes wrong ──────────────────────────────────────────────────────
-h("4. If something goes wrong", 14)
+h("5. If something goes wrong", 14)
 for problem, fix in [
   ("A team's QR won't scan", "Type the address on the bottom of their card straight into the browser."),
   ("They closed the page / phone died", "Reopening the same link puts them back where they were; progress is saved on that phone. If they switch phones they start over, so keep one phone driving."),
   ("The app won't identify a printed plant", "Nine times out of ten the flower/fruit/leaf/bark selector is on the wrong setting. Check that first. If it still will not match, tell them which sheet is theirs; the stop only needs the height off the plant's page."),
   ("They're not logged in to Let Grow", "That is the point of the game. Get them logged in before they start."),
-  ("A team is miles behind", "Give them the answer to a stop and move them on. Finishing together matters more than every team solving every clue."),
+  ("A team is miles behind", "Give them the answer to a stop and move them on so they still finish."),
   ("Two teams arrive at once", "Check both codes and write them down in the order they reached you."),
 ]:
     p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(3)

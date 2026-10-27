@@ -21,16 +21,16 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 2. **Identify**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
 3. **Field Clips**, one of two by team (`clip` in `TEAMS`, alternating):
    - multiflora rose vs native rose: the invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.
-   - poison ivy vs Virginia creeper: the aerial roots give the vine "a fuzzy or rope-like appearance." Answer `ROPE`.
+   - poison ivy vs Virginia creeper: Virginia creeper's tendrils "end in sticky pads." Answer `PADS`. (Not the rope-like roots: "hairy rope, don't be a dope" lets an expert answer without watching.)
 4. **Field Notes**, one of three by team (`note` in `TEAMS`, cycling):
-   - Johnsongrass: seeds stay viable "up to 20 years." Answer `20`.
+   - Johnsongrass: rhizomes "can travel up to 200 feet from the mother plant." Answer `200`. (Not the 20-year seed figure: a team could guess its way there.)
    - Elderberry Bloom BOLO: flowers feed "bees, flies, and beetles." Answer `BEETLES`.
    - Wanted: Autumn Olive: "Dead or Controlled." Answer `CONTROLLED`.
 5. **Field Bites**: *Black Locust vs False Indigo Bush*. Indigo bush flowers are "like little purple foxtails." Answer `FOXTAILS`.
 
 Six clip-and-note combinations, each used by two teams, so neighbouring teams are not chasing the same answer, and no team's field note is about its own wall plant. Questions 3 to 5 ask for a detail only the resource gives, so a team of expert botanists still has to open it (Lindsey's ask: trainers and advanced ID people are spread across the teams).
 
-Every team walks the five stops in **its own order** (`order` in `TEAMS`). No two teams share an order, and at any step no stop has more than three teams on it. Progress is saved per team in `localStorage` (key `luc-escape-v3-N`), so a refresh or dropped signal keeps their place. Words match case- and punctuation-insensitively. **Numbers match whole**: the first number typed must equal the answer in feet or inches, so 120 never passes for 12.
+Every team walks the five stops in **its own order** (`order` in `TEAMS`). No two teams share an order, and at any step no stop has more than three teams on it. Progress is saved per team in `localStorage` (key `luc-escape-v3-N`), so a refresh or dropped signal keeps their place. Words match case- and punctuation-insensitively. **Numbers match whole**: the first number typed must equal the answer in feet, so 120 never passes for 12. Inches are not accepted (coralberry's 60 in would have matched tree of heaven's and hackberry's 60 ft). Unlock is locked during the unlock animation, so a double tap cannot skip a stop.
 
 ### Plant heights
 
