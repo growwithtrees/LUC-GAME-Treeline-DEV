@@ -44,11 +44,14 @@ Slugs stayed `team-1` to `team-12`, so the URLs did not change; only the cards w
 |---|---|---|---|---|
 | 1 | Search | Bird-friendly replacement shrub, four filters | `HOLLY` | Lindsey's live search, 27 Oct |
 | 2 | Identify | Find your plant, read max height | per team | `PLANTS` in `app.js` |
-| 3 | Field Clips | Invasive rose leaf base "covered in like ___" | `EYELASHES` | Roses clip (2026.03.13), ~1:17 |
-| 4 | Field Notes | Johnsongrass seeds stay viable up to how many years? | `20` | Johnsongrass tailgate, Reproduction box |
+| 3a | Field Clips (odd teams) | Invasive rose leaf base "covered in like ___" | `EYELASHES` | Roses clip (2026.03.13), ~1:17 |
+| 3b | Field Clips (even teams) | Poison ivy's roots make the vine look fuzzy or ___-like | `ROPE` | Poison Ivy vs Virginia Creeper clip, ~1:08 |
+| 4a | Field Notes (teams 1, 4, 7, 10) | Johnsongrass seeds stay viable up to how many years? | `20` | Johnsongrass tailgate, Reproduction box |
+| 4b | Field Notes (teams 2, 5, 8, 11) | Elderberry flowers feed bees, flies and ___ | `BEETLES` | Elderberry Bloom BOLO, main paragraph |
+| 4c | Field Notes (teams 3, 6, 9, 12) | Wanted dead or ___ | `CONTROLLED` | Wanted: Autumn Olive poster headline |
 | 5 | Field Bites | Indigo bush flowers look like little purple ___ | `FOXTAILS` | Black Locust vs False Indigo Bush (field-bites/7), flowers card |
 
-The two clips Lindsey downloaded were both transcribed. The poison ivy vs Virginia creeper clip is the spare: poison ivy's aerial roots give the vine "a fuzzy or rope-like appearance" (`ROPE`). The spare Field Bite is *Yarrow vs Poison Hemlock*. A *Tree of Heaven vs Sumac* Field Bite was mentioned but is not in the FieldBites repos or on S3 (field-bites 6 to 19).
+Clips and notes vary by team (Mike, 27 Oct) so neighbouring teams are not chasing the same answer. No team's field note is about its own wall plant. The spare Field Bite is *Yarrow vs Poison Hemlock*. A *Tree of Heaven vs Sumac* Field Bite was mentioned but is not in the FieldBites repos or on S3 (field-bites 6 to 19).
 
 ## 4. The plant wall
 

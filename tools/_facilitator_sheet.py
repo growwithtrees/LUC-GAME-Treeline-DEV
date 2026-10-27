@@ -70,15 +70,20 @@ para(f"Up to {len(TEAMS)} teams. Every team finishes on its own: their last scre
      "down the order teams arrive. Nobody waits on another team. Use as many QR cards as you have "
      "teams, in any order.", 9.5, after=4)
 para("Every team does all five stops, but they START on different ones and wrap around, so the "
-     "whole room is not at the plant wall at once. Only stop 2 is different for each team: every "
-     "team hunts its own plant on the wall.", 9.5, after=6)
+     "whole room is not at the plant wall at once. Stops 2 to 4 differ by team: each team hunts its "
+     "own plant on the wall, and gets one of two field clips and one of three field notes, so "
+     "neighbouring teams are not chasing the same answer.", 9.5, after=6)
 rows = []
 for t in TEAMS:
     rows.append([(t["name"], True, None), (t["code"], True, None),
-                 "%s (sheet %d)" % (t["plantname"], t["sheet"]), t["height"],
+                 "%s (sheet %d): %s" % (t["plantname"], t["sheet"],
+                                        t["height"] if t["checked"] else "any number"),
+                 "%s: %s" % (t["cliplabel"], t["clipanswer"]),
+                 "%s: %s" % (t["notelabel"], t["noteanswer"]),
                  t["startname"]])
-table(["Team", "Finish code", "Their plant", "Height answer", "They START at"],
-      rows, [1.6, 0.9, 1.9, 1.7, 1.4])
+table(["Team", "Finish code", "Plant (sheet): height", "Field clip: answer", "Field note: answer",
+       "They START at"],
+      rows, [1.3, 0.65, 1.7, 1.6, 1.45, 0.8])
 para("A code that doesn't match the team means they read it off another team's screen.",
      9, MUTE, space_before=4, after=8)
 
@@ -98,13 +103,13 @@ STOPS = [
   "That team's height (table above)",
   "First ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. Feet or inches both work. If they truly cannot find it, tell them the sheet number."),
  ("3", "Field Clips",
-  "Watch the multiflora rose vs native rose clip. At the base of each leaf, the invasive rose's little leaflet is covered in what?",
-  "EYELASHES  (little legs also works)",
-  "“Watch the part about the base of the leaf, near the end.”"),
+  "Rose clip: at the base of each leaf, the invasive rose's little leaflet is covered in what?\nVine clip: poison ivy's hairy roots make the vine look fuzzy, or like a what?",
+  "Rose: EYELASHES\nVine: ROPE",
+  "Rose: “Watch the part about the base of the leaf, near the end.”\nVine: “Listen for how poison ivy climbs.”"),
  ("4", "Field Notes",
-  "Read the Johnsongrass field note. How many years can its seeds stay alive in the soil?",
-  "20",
-  "“Look in the Reproduction box.”"),
+  "Johnsongrass: how many years can its seeds stay alive in the soil?\nElderberry Bloom: its flowers feed bees, flies and what?\nAutumn Olive: wanted dead or what?",
+  "Johnsongrass: 20\nElderberry: BEETLES\nAutumn Olive: CONTROLLED",
+  "Johnsongrass: “Look in the Reproduction box.”\nElderberry: “Read the paragraph under the name.”\nAutumn Olive: “It's the headline.”"),
  ("5", "Field Bites",
   "Work through Black Locust vs False Indigo Bush. False indigo bush flowers look like little purple what?",
   "FOXTAILS",

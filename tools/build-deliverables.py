@@ -65,8 +65,8 @@ def read_teams():
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     block = re.search(r"var TEAMS = \{(.*?)\n  \};", src, re.S).group(1)
     pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*name: "([^"]+)",\s*badge: "([\w-]+)",\s*'
-           r'plant: "(\w+)",\s*code: "(\d{4})", start: (\d)')
-    teams = [dict(zip(["num", "slug", "name", "badge", "plant", "code", "start"], m.groups()))
+           r'plant: "(\w+)",\s*clip: "(\w+)",\s*note: "(\w+)",\s*code: "(\d{4})", start: (\d)')
+    teams = [dict(zip(["num", "slug", "name", "badge", "plant", "clip", "note", "code", "start"], m.groups()))
              for m in re.finditer(pat, block)]
     pblock = re.search(r"var PLANTS = \{(.*?)\n  \};", src, re.S).group(1)
     plants = {m.group(1): {"name": m.group(2), "ft": int(m.group(3)), "checked": m.group(4) == "true"}
@@ -82,11 +82,37 @@ def read_teams():
         t["plantname"], t["sheet"] = p["name"], wall[t["plant"]]
         t["height"] = ("%d ft" % p["ft"]) if p["checked"] else "READ IN APP (game takes any number)"
         t["checked"] = p["checked"]
+    variants = read_variants(src)
+    for t in teams:
+        for k in ("clip", "note"):
+            if t[k] not in variants[k]:
+                sys.exit("ERROR: team %s's %s '%s' is not in app.js" % (t["name"], k, t[k]))
+            t[k + "label"], t[k + "answer"] = variants[k][t[k]]
     unchecked = [t["plantname"] for t in teams if not t["checked"]]
     if unchecked:
         print("  WARNING: heights not yet read off the LUC app, game accepts any number: "
               + ", ".join(unchecked))
     return teams
+
+
+# What each clip and note is called on the printed sheets. The answers come from app.js.
+VARIANT_LABELS = {
+    "clip": {"roses": "Multiflora rose vs native rose", "ivy": "Poison ivy vs Virginia creeper"},
+    "note": {"johnson": "Johnsongrass", "elder": "Elderberry Bloom", "olive": "Wanted: Autumn Olive"},
+}
+
+
+def read_variants(src):
+    """{'clip': {key: (label, ANSWER)}, 'note': {...}} from the CLIPS and NOTES blocks of app.js."""
+    out = {}
+    for kind, var in (("clip", "CLIPS"), ("note", "NOTES")):
+        block = re.search(r"var %s = \{(.*?)\n  \};" % var, src, re.S).group(1)
+        out[kind] = {}
+        for key, body in re.findall(r"\n    (\w+): \{(.*?)\n    \}", block, re.S):
+            num = re.search(r"number: (\d+)", body)
+            acc = re.findall(r'"([^"]+)"', re.search(r"accept: \[([^\]]*)\]", body).group(1))
+            out[kind][key] = (VARIANT_LABELS[kind].get(key, key), (num.group(1) if num else acc[0]).upper())
+    return out
 
 
 def build_wall(out):
@@ -205,7 +231,7 @@ def read_stops():
     stops = []
     for chunk in body.split("icon: ")[1:]:
         feat = re.search(r'feat: "([^"]+)"', chunk).group(1)
-        acc = re.search(r'accept: \[([^\]]*)\]', chunk)
+        acc = re.search(r'accept: \[([^\]]*)\]', chunk)  # absent for per-team stops
         num = re.search(r'number: (\d+)', chunk)
         stops.append((feat, re.findall(r'"([^"]+)"', acc.group(1)) if acc else [],
                       num.group(1) if num else None))
@@ -231,6 +257,9 @@ def build_key(teams, out):
     for i, (feat, acc, num) in enumerate(stops):
         if feat == "Identify":
             ans, also = "That team's plant height (see the team table)", "Feet or inches"
+        elif feat in ("Field Clips", "Field Notes"):
+            ans, also = "Depends on the team's %s (see the team table)" % (
+                "clip" if feat == "Field Clips" else "field note"), "See app.js"
         else:
             words = [a for a in acc]
             ans = (num if num else words[0]).upper()
@@ -239,16 +268,19 @@ def build_key(teams, out):
             c.text = v
     doc.add_heading("Teams", 2)
     doc.add_paragraph("Every team walks all five stops, starting at a different one and wrapping "
-                      "around. Only stop 2 differs by team: each team hunts its own plant on the "
-                      "wall. Check each finish code against the team name and write down the order "
+                      "around. Stops 2 to 4 differ by team: each team hunts its own plant on the "
+                      "wall and gets one of two field clips and one of three field notes. Check each finish code against the team name and write down the order "
                       "teams arrive.")
-    t = doc.add_table(rows=1, cols=5); t.style = "Table Grid"
-    for c, h in zip(t.rows[0].cells, ["Team", "Their plant (wall sheet)", "Height answer",
-                                      "Starts at", "Finish code"]):
+    t = doc.add_table(rows=1, cols=6); t.style = "Table Grid"
+    for c, h in zip(t.rows[0].cells, ["Team", "Their plant (wall sheet) and height", "Field clip",
+                                      "Field note", "Starts at", "Finish code"]):
         c.text = h
     for tm in teams:
-        for c, v in zip(t.add_row().cells, [tm["name"], "%s (sheet %d)" % (tm["plantname"], tm["sheet"]),
-                                             tm["height"], "Stop %d, %s" % (int(tm["start"]) + 1, tm["startname"]),
+        for c, v in zip(t.add_row().cells, [tm["name"],
+                                             "%s (sheet %d): %s" % (tm["plantname"], tm["sheet"], tm["height"]),
+                                             "%s: %s" % (tm["cliplabel"], tm["clipanswer"]),
+                                             "%s: %s" % (tm["notelabel"], tm["noteanswer"]),
+                                             "Stop %d, %s" % (int(tm["start"]) + 1, tm["startname"]),
                                              tm["code"]]):
             c.text = v
     doc.add_heading("Watch for", 2)

@@ -19,11 +19,16 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 
 1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters: border zone, slow growing, host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
 2. **Identify**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
-3. **Field Clips**: the multiflora rose vs native rose clip. The invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.
-4. **Field Notes**: the Johnsongrass tailgate. Seeds stay viable "up to 20 years." Answer `20`.
+3. **Field Clips**, one of two by team (`clip` in `TEAMS`, alternating):
+   - multiflora rose vs native rose: the invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.
+   - poison ivy vs Virginia creeper: the aerial roots give the vine "a fuzzy or rope-like appearance." Answer `ROPE`.
+4. **Field Notes**, one of three by team (`note` in `TEAMS`, cycling):
+   - Johnsongrass: seeds stay viable "up to 20 years." Answer `20`.
+   - Elderberry Bloom BOLO: flowers feed "bees, flies, and beetles." Answer `BEETLES`.
+   - Wanted: Autumn Olive: "Dead or Controlled." Answer `CONTROLLED`.
 5. **Field Bites**: *Black Locust vs False Indigo Bush*. Indigo bush flowers are "like little purple foxtails." Answer `FOXTAILS`.
 
-Questions 3 to 5 ask for a detail only the resource gives, so a team of expert botanists still has to open it (Lindsey's ask: trainers and advanced ID people are spread across the teams).
+Six clip-and-note combinations, each used by two teams, so neighbouring teams are not chasing the same answer, and no team's field note is about its own wall plant. Questions 3 to 5 ask for a detail only the resource gives, so a team of expert botanists still has to open it (Lindsey's ask: trainers and advanced ID people are spread across the teams).
 
 Every team does all five but starts at a different one and wraps around. Progress is saved per team in `localStorage` (key `luc-escape-v2-N`), so a refresh or dropped signal keeps their place. Words match case- and punctuation-insensitively. **Numbers match whole**: the first number typed must equal the answer in feet or inches, so 120 never passes for 12.
 

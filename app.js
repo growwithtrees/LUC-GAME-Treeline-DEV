@@ -1,26 +1,29 @@
 /* Liberty ROW Field Guide Challenge
    Per-team page: set window.TEAM_ID before loading this file.
    Team names come from Lindsey's badge set (badges/). No name is a puzzle answer: the
-   answers are HOLLY, a height in feet, EYELASHES, 20 and FOXTAILS. */
+   answers are HOLLY, a height in feet, a word or number from that team's clip and field note,
+   and FOXTAILS. */
 (function () {
   "use strict";
 
   // Every team finishes on its own: the last stop shows that team's own 4-digit finish code,
   // which they bring to the facilitator table. No team ever waits on another.
-  // `plant` is that team's target on the plant wall (stop 2); every other stop is shared.
+  // `plant` is that team's target on the plant wall. `clip` and `note` pick which field clip and
+  // which field note the team gets, so neighbouring teams are not chasing the same answer.
+  // Clips alternate and notes cycle every three, which gives six combinations, each used twice.
   var TEAMS = {
-    "1":  { slug: "team-1",  name: "Oak Titans",         badge: "oak-titans",         plant: "pear",       code: "4712", start: 0 },
-    "2":  { slug: "team-2",  name: "Pine Patrol",        badge: "pine-patrol",        plant: "buttonbush", code: "5836", start: 1 },
-    "3":  { slug: "team-3",  name: "Cedar Command",      badge: "cedar-command",      plant: "locust",     code: "2964", start: 2 },
-    "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "blackberry", code: "8153", start: 3 },
-    "5":  { slug: "team-5",  name: "Root Raiders",       badge: "root-raiders",       plant: "heaven",     code: "7026", start: 4 },
-    "6":  { slug: "team-6",  name: "Bark Brigade",       badge: "bark-brigade",       plant: "coralberry", code: "3591", start: 0 },
-    "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "redcedar",   code: "6247", start: 1 },
-    "8":  { slug: "team-8",  name: "Walnut Force",       badge: "walnut-force",       plant: "dogwood",    code: "1938", start: 2 },
-    "9":  { slug: "team-9",  name: "Sassafras Wardens",  badge: "sassafras-wardens",  plant: "sumac",      code: "9405", start: 3 },
-    "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "hackberry",  code: "2679", start: 4 },
-    "11": { slug: "team-11", name: "Sycamore Syndicate", badge: "sycamore-syndicate", plant: "olive",      code: "8314", start: 0 },
-    "12": { slug: "team-12", name: "Thorn Guard",        badge: "thorn-guard",        plant: "elderberry", code: "5162", start: 1 }
+    "1":  { slug: "team-1",  name: "Oak Titans",         badge: "oak-titans",         plant: "pear",        clip: "roses",  note: "johnson", code: "4712", start: 0 },
+    "2":  { slug: "team-2",  name: "Pine Patrol",        badge: "pine-patrol",        plant: "buttonbush",  clip: "ivy",    note: "elder",   code: "5836", start: 1 },
+    "3":  { slug: "team-3",  name: "Cedar Command",      badge: "cedar-command",      plant: "locust",      clip: "roses",  note: "olive",   code: "2964", start: 2 },
+    "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "blackberry",  clip: "ivy",    note: "johnson", code: "8153", start: 3 },
+    "5":  { slug: "team-5",  name: "Root Raiders",       badge: "root-raiders",       plant: "heaven",      clip: "roses",  note: "elder",   code: "7026", start: 4 },
+    "6":  { slug: "team-6",  name: "Bark Brigade",       badge: "bark-brigade",       plant: "coralberry",  clip: "ivy",    note: "olive",   code: "3591", start: 0 },
+    "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "redcedar",    clip: "roses",  note: "johnson", code: "6247", start: 1 },
+    "8":  { slug: "team-8",  name: "Walnut Force",       badge: "walnut-force",       plant: "dogwood",     clip: "ivy",    note: "elder",   code: "1938", start: 2 },
+    "9":  { slug: "team-9",  name: "Sassafras Wardens",  badge: "sassafras-wardens",  plant: "sumac",       clip: "roses",  note: "olive",   code: "9405", start: 3 },
+    "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "hackberry",   clip: "ivy",    note: "johnson", code: "2679", start: 4 },
+    "11": { slug: "team-11", name: "Sycamore Syndicate", badge: "sycamore-syndicate", plant: "olive",       clip: "roses",  note: "elder",   code: "8314", start: 0 },
+    "12": { slug: "team-12", name: "Thorn Guard",        badge: "thorn-guard",        plant: "elderberry",  clip: "ivy",    note: "olive",   code: "5162", start: 1 }
   };
 
   // Max height as the Let Grow entry shows it, in feet. `checked: false` means nobody has read
@@ -40,6 +43,44 @@
     hackberry:  { name: "hackberry",         ft: 0,   checked: false },  // not in any export
     olive:      { name: "autumn olive",      ft: 16,  checked: true  },  // 192 in
     sumac:      { name: "smooth sumac",      ft: 15,  checked: true  }   // 180 in
+  };
+
+  // Each asks for a detail only that resource gives, so an expert IDer still has to open it.
+  var CLIPS = {
+    roses: {   // 2026.03.13 Roses, Johnny: "this little leaflet is covered in like eyelashes" (~1:17)
+      title: "Watch the rose clip",
+      body: "You are clearing a fence line and run into a thorny rose. Is it the invasive one or the native one?"
+        + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>multiflora rose and native rose</b>."
+        + "<br><br>Look at the base of each leaf. The clip says the invasive rose's little leaflet is covered in something. Covered in what? Type the word.",
+      accept: ["eyelashes", "eyelash", "eye lashes", "lashes", "little legs", "legs"]
+    },
+    ivy: {     // Poison Ivy vs Virginia Creeper: "hairy-looking aerial roots, giving the vine a fuzzy or rope-like appearance" (~1:08)
+      title: "Watch the vine clip",
+      body: "A vine is climbing the pole you need to work on. Is it poison ivy or Virginia creeper?"
+        + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>poison ivy and Virginia creeper</b>."
+        + "<br><br>Poison ivy climbs with hairy-looking roots. The clip says they make the vine look fuzzy, or like a what? Type the word.",
+      accept: ["rope", "ropes", "ropelike", "rope like"]
+    }
+  };
+  var NOTES = {
+    johnson: { // Johnsongrass tailgate, Reproduction box: "seeds stay viable in the soil for up to 20 years"
+      body: "Along the right-of-way you see a tall, thick grass. Its leaves have a white stripe down the middle."
+        + "<br><br>Open <b>Field Notes</b> and read the one on <b>Johnsongrass</b>."
+        + "<br><br>How many years can its seeds stay alive in the soil? Type the number.",
+      number: 20, accept: ["twenty"]
+    },
+    elder: {   // Elderberry Bloom BOLO: "flowers provide pollen for insects, including bees, flies, and beetles"
+      body: "You find a shrub covered in big, flat clusters of tiny white flowers. It looks like elderberry."
+        + "<br><br>Open <b>Field Notes</b> and read the <b>Elderberry Bloom</b> note."
+        + "<br><br>Its flowers feed bees, flies and one more kind of insect. Which one? Type the word.",
+      accept: ["beetles", "beetle"]
+    },
+    olive: {   // Wanted: Autumn Olive poster headline: "DEAD or CONTROLLED"
+      body: "A shrub with silvery leaves and speckled red berries is spreading along the right-of-way."
+        + "<br><br>Open <b>Field Notes</b> and find the <b>Wanted: Autumn Olive</b> poster."
+        + "<br><br>The poster says autumn olive is wanted dead or what? Type the word.",
+      accept: ["controlled", "control"]
+    }
   };
 
   var SPRITE = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">'
@@ -119,7 +160,7 @@
     + '</div>';
 
   function buildStops(team) {
-    var t = TEAMS[team], p = PLANTS[t.plant];
+    var t = TEAMS[team], p = PLANTS[t.plant], c = CLIPS[t.clip], n = NOTES[t.note];
     return [
       {
         icon: "ic-search", feat: "Search", title: "Help a homeowner pick a shrub",
@@ -143,18 +184,11 @@
         number: p.checked ? p.ft : "any"
       },
       {
-        icon: "ic-video", feat: "Field Clips", title: "Watch the rose clip",
-        body: "You are clearing a fence line and run into a thorny rose. Is it the invasive one or the native one?"
-          + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>multiflora rose and native rose</b>."
-          + "<br><br>Look at the base of each leaf. The clip says the invasive rose's little leaflet is covered in something. Covered in what? Type the word.",
-        accept: ["eyelashes", "eyelash", "eye lashes", "lashes", "little legs", "legs"]
+        icon: "ic-video", feat: "Field Clips", title: c.title, body: c.body, accept: c.accept
       },
       {
-        icon: "ic-note", feat: "Field Notes", title: "Read the field note",
-        body: "Along the right-of-way you see a tall, thick grass. Its leaves have a white stripe down the middle."
-          + "<br><br>Open <b>Field Notes</b> and read the one on <b>Johnsongrass</b>."
-          + "<br><br>How many years can its seeds stay alive in the soil? Type the number.",
-        number: 20, accept: ["twenty"]
+        icon: "ic-note", feat: "Field Notes", title: "Read the field note", body: n.body,
+        number: n.number, accept: n.accept
       },
       {
         icon: "ic-grass", feat: "Field Bites", title: "Finish the field bite",
