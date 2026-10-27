@@ -34,7 +34,7 @@ Every team walks the five stops in **its own order** (`order` in `TEAMS`). No tw
 
 ### Plant heights
 
-`PLANTS` in `app.js` holds each wall plant's max height in feet. Seven are confirmed (six from the LUC plant export, Callery pear read off the app). The other five (black locust, tree of heaven, coralberry, eastern redcedar, hackberry) are `checked: false`: they are not in any LUC export, so somebody has to read them off the app. Until they are, **the game accepts any number** for those teams, so nobody gets stuck on the day. The build prints a warning while any remain.
+`PLANTS` in `app.js` holds each wall plant's max height in feet, all confirmed as of 27 Oct: six from the LUC plant export, the rest read off the app by Mike. Eastern redcedar has no page in the LUC app, so sheet 6 became burning bush (20 ft). A plant with `checked: false` makes the game take any number for that team, and the build prints a warning; use it only as a stopgap.
 
 ## Changing teams
 

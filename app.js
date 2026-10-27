@@ -22,7 +22,7 @@
     "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "blackberry",  clip: "ivy",    note: "johnson", code: "8153", order: "14230" },
     "5":  { slug: "team-5",  name: "Root Raiders",       badge: "root-raiders",       plant: "heaven",      clip: "roses",  note: "elder",   code: "7026", order: "42103" },
     "6":  { slug: "team-6",  name: "Bark Brigade",       badge: "bark-brigade",       plant: "coralberry",  clip: "ivy",    note: "olive",   code: "3591", order: "32041" },
-    "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "redcedar",    clip: "roses",  note: "johnson", code: "6247", order: "13042" },
+    "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "burningbush", clip: "roses",  note: "johnson", code: "6247", order: "13042" },
     "8":  { slug: "team-8",  name: "Walnut Force",       badge: "walnut-force",       plant: "dogwood",     clip: "ivy",    note: "elder",   code: "1938", order: "13402" },
     "9":  { slug: "team-9",  name: "Sassafras Wardens",  badge: "sassafras-wardens",  plant: "sumac",       clip: "roses",  note: "olive",   code: "9405", order: "01423" },
     "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "hackberry",   clip: "ivy",    note: "johnson", code: "2679", order: "20134" },
@@ -33,18 +33,19 @@
   // Max height as the Let Grow entry shows it, in feet. `checked: false` means nobody has read
   // it off the LUC app yet: the game then takes ANY number for that team, so a wrong guess here
   // can never strand a team on the day. Read it in the app, fix `ft`, set `checked: true`.
-  // Buttonbush and elderberry both read 12 ft, so a team scanning the other one still passes.
+  // Buttonbush and elderberry both read 12 ft, and tree of heaven and hackberry both read 60 ft,
+  // so a team that scans the other one of a pair still passes.
   var PLANTS = {
     buttonbush: { name: "buttonbush",        ft: 12,  checked: true  },  // LUC list id 75, 144 in
-    coralberry: { name: "coralberry",        ft: 0,   checked: false },  // ids 143/455, height not in any export
+    coralberry: { name: "coralberry",        ft: 5,   checked: true  },  // read off the LUC app by Mike, 27 Oct
     dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Identify reads it as red osier, 120 in
     blackberry: { name: "blackberry",        ft: 6,   checked: true  },  // Rubus species, 72 in
     pear:       { name: "Callery pear",      ft: 40,  checked: true  },  // read off the LUC app by Mike, 27 Oct
-    redcedar:   { name: "eastern redcedar",  ft: 0,   checked: false },  // not in any export
-    locust:     { name: "black locust",      ft: 100, checked: false },  // NS list 1200 in; not in the LUC export
+    burningbush:{ name: "burning bush",      ft: 20,  checked: true  },  // LUC list id 61, 240 in. Replaced eastern redcedar 27 Oct: no redcedar page in the LUC app
+    locust:     { name: "black locust",      ft: 100, checked: true  },  // read off the LUC app by Mike, 27 Oct
     heaven:     { name: "tree of heaven",    ft: 60,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     elderberry: { name: "elderberry",        ft: 12,  checked: true  },  // Sambucus species, 144 in
-    hackberry:  { name: "hackberry",         ft: 0,   checked: false },  // not in any export
+    hackberry:  { name: "hackberry",         ft: 60,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     olive:      { name: "autumn olive",      ft: 16,  checked: true  },  // 192 in
     sumac:      { name: "smooth sumac",      ft: 15,  checked: true  }   // 180 in
   };

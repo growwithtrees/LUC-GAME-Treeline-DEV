@@ -287,8 +287,9 @@ def build_key(teams, out):
                                              tm["code"]]):
             c.text = v
     doc.add_heading("Watch for", 2)
-    for b in ["Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, so Pine Patrol and "
-              "Thorn Guard pass even if they scan the other one.",
+    for b in ["Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, and tree of heaven "
+              "(sheet 8) and hackberry (sheet 10) both read 60 ft, so those teams pass even if they "
+              "scan the other one of the pair.",
               "Scan mismatches. If a scan returns the wrong plant, check the leaf / flower / fruit / "
               "bark selector first. The roughleaf dogwood photo reads as red osier dogwood; either "
               "name is fine.",
@@ -306,8 +307,13 @@ def mirror(out):
     for m in MIRRORS:
         if not os.path.isdir(m):
             print("  mirror SKIPPED, folder missing: %s" % m); continue
-        shutil.copytree(out, os.path.join(m, os.path.basename(out.rstrip("/"))),
-                        dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store"))
+        dst = os.path.join(m, os.path.basename(out.rstrip("/")))
+        # copytree only adds. Clear the generated wall sheets first, or a plant taken off the
+        # wall lingers in the mirror (the 27 Oct redcedar -> burning bush swap did exactly that).
+        stale = os.path.join(dst, "2 Print - Plant Wall", "Individual Sheets")
+        for old in glob.glob(os.path.join(stale, "*.jpg")):
+            os.remove(old)
+        shutil.copytree(out, dst, dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store"))
         shutil.copy(os.path.join(root, "Field Guide Challenge Answer Key.docx"), m)
         print("  mirrored -> %s" % m)
 

@@ -29,14 +29,14 @@ Lindsey's goal: get everyone logged in to Let Grow and show them the resources a
 | Maple Marauders | `/team-4` | `8153` | Blackberry (4) | Identify > Bite > Clip > Note > Search |
 | Root Raiders | `/team-5` | `7026` | Tree of heaven (8) | Bite > Clip > Identify > Search > Note |
 | Bark Brigade | `/team-6` | `3591` | Coralberry (2) | Note > Clip > Search > Bite > Identify |
-| Dogwood Legion | `/team-7` | `6247` | Eastern redcedar (6) | Identify > Note > Search > Bite > Clip |
+| Dogwood Legion | `/team-7` | `6247` | Burning bush (6) | Identify > Note > Search > Bite > Clip |
 | Walnut Force | `/team-8` | `1938` | Dogwood (3) | Identify > Note > Bite > Search > Clip |
 | Sassafras Wardens | `/team-9` | `9405` | Smooth sumac (12) | Search > Identify > Bite > Clip > Note |
 | Redbud Rangers | `/team-10` | `2679` | Hackberry (10) | Clip > Search > Identify > Note > Bite |
 | Sycamore Syndicate | `/team-11` | `8314` | Autumn olive (11) | Search > Clip > Bite > Note > Identify |
 | Thorn Guard | `/team-12` | `5162` | Elderberry (9) | Bite > Search > Identify > Clip > Note |
 
-Every team walks the stops in its own order. The 12 orders came from a random search over all 120 orders of five stops, keeping a set where no two teams match and no stop ever has more than three teams on it at the same step (Mike, 27 Oct: "make sure they don't go all in the same order"). Slugs stayed `team-1` to `team-12`, so the URLs did not change; only the cards were reprinted. No team got its namesake plant (Cedar Command is not on the redcedar, Dogwood Legion is not on the dogwood).
+Every team walks the stops in its own order. The 12 orders came from a random search over all 120 orders of five stops, keeping a set where no two teams match and no stop ever has more than three teams on it at the same step (Mike, 27 Oct: "make sure they don't go all in the same order"). Slugs stayed `team-1` to `team-12`, so the URLs did not change; only the cards were reprinted. No team got its namesake plant (Dogwood Legion is not on the dogwood).
 
 ## 3. The stops and their sources
 
@@ -57,17 +57,19 @@ Clips and notes vary by team (Mike, 27 Oct) so neighbouring teams are not chasin
 
 **Twelve sheets, one per team, numbered but deliberately UNLABELLED.** The key is section 3 of the facilitator sheet.
 
-The photos are a mix of flower, fruit, leaf and bark. Identify asks which one you are photographing, and setting that correctly is the skill the stop teaches. Mix: 2 flower, 3 fruit, 5 leaf, 2 bark.
+The photos are a mix of flower, fruit, leaf and bark. Identify asks which one you are photographing, and setting that correctly is the skill the stop teaches. Mix: 2 flower, 3 fruit, 6 leaf, 1 bark.
 
 - **Sheets 1 to 10** were all confirmed in the app by Mike on 15 Sep.
 - **Sheets 11 (autumn olive fruit) and 12 (smooth sumac leaf)** were added 27 Oct and confirmed in the app by Mike the same day. All 12 sheets now scan.
 - **Buttonbush (1) and elderberry (9) both read 12 ft**, so Pine Patrol and Thorn Guard pass even if they scan the other. Harmless now that each team is told its plant by name.
 - **Roughleaf dogwood (3) reads as red osier dogwood**, 10 ft. Walnut Force is told to find "dogwood", so either name is right.
-- **Bark is the fragile mode.** Black locust bark read as salt cedar, so its leaf went up instead. Redcedar and hackberry bark both work.
+- **Bark is the fragile mode.** Black locust bark read as salt cedar, so its leaf went up instead. Hackberry bark works. Redcedar bark scanned, but the LUC app has no redcedar page, so it came off the wall.
 
-### Heights still to read off the app
+### Heights
 
-Five wall plants are not in any LUC plant export, so their heights are unconfirmed: **black locust, tree of heaven, coralberry, eastern redcedar, hackberry.** (Callery pear read 40 ft in the app on 27 Oct, matching the NS list, so black locust is probably 100 ft and tree of heaven 60 ft.) Until they are set in `PLANTS` with `checked: true`, the game accepts any number for those six teams. To finish it: scan each sheet, read the max height, update `app.js`, rerun the build, push.
+All twelve confirmed on 27 Oct. Six came from the LUC plant export; Mike read Callery pear (40), black locust (100), tree of heaven (60), coralberry (5) and hackberry (60) off the app. **Eastern redcedar has no page in the LUC app** (only creeping juniper, 1 ft), so sheet 6 became **burning bush** (LUC list, 20 ft), leaf on white. **Scan sheet 6 before printing.**
+
+Pairs that share a height, so a team scanning the other one still passes: buttonbush and elderberry (12 ft), tree of heaven and hackberry (60 ft).
 
 ## 5. Setup and finale
 
