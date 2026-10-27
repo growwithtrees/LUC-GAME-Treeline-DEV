@@ -22,6 +22,9 @@ exclude:
   - "*.sh"
   - build
   - tests
+  # The print-pack builder and its data. plant-wall.json is the wall key (which sheet is which
+  # plant) and carries OneDrive paths; it was publicly served until 27 Oct.
+  - tools
 
   # Build intermediates and packaging manifests. The SCORM manifest lists source files and
   # has no meaning to a browser.

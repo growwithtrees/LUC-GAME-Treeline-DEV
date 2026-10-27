@@ -296,3 +296,19 @@ ol.reminders li b { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation-duration: 0.01ms !important; }
 }
+
+/* ─── Team badges (Lindsey's emblem set, badges/*.png) ──── */
+.team-badge { padding: 3px 11px 3px 4px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.team-badge img { width: 26px; height: 26px; flex: none; }
+.hero-badge {
+  float: right; width: 112px; height: 112px; margin: -6px -6px 6px 12px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+}
+.finale-badge { display: block; width: 120px; height: 120px; margin: 0 auto 10px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+b.target { color: var(--brand-purple-deep); background: var(--brand-purple-soft); padding: 1px 7px; border-radius: 6px; letter-spacing: .02em; }
+.hub a.teamrow img { width: 40px; height: 40px; flex: none; }
+/* The team name and the logo share one bar; on a phone the name wins. */
+@media (max-width: 440px) {
+  .tb-logo span { display: none; }
+  .hero-badge { width: 88px; height: 88px; }
+}

@@ -2,84 +2,109 @@
  {
   "n": 1,
   "name": "Buttonbush",
+  "key": "buttonbush",
   "comp": "Compatible",
   "organ": "FLOWER",
-  "tag": "STOP 3 ANSWER",
-  "role": "STOP 3'S ANSWER — the creamy white pincushion ball the clue describes.",
+  "note": "Reads 12 ft, the same as elderberry (sheet 9).",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Buttonbush/buttonbush flower closeup.jpg"
  },
  {
   "n": 2,
   "name": "Coralberry / buckbrush",
+  "key": "coralberry",
   "comp": "Compatible",
   "organ": "FRUIT",
-  "role": "Stop 2's answer — the coral-pink berries the clue describes.",
+  "note": "",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/coralberry/coralberry berry.jpg"
  },
  {
   "n": 3,
   "name": "Roughleaf dogwood",
+  "key": "dogwood",
   "comp": "Compatible",
   "organ": "FLOWER",
-  "role": "Near miss. Flat white cluster — the contrast with sheet 1's ball. App often calls it RED OSIER dogwood; harmless, red osier reads 10 ft so the game bounces it.",
+  "note": "Identify reads it as red osier dogwood (10 ft). Its team is told to find \"dogwood\", so either name is right.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/roughleaf dogwood/roughleaf dogwood flower real.jpg"
  },
  {
   "n": 4,
   "name": "Blackberry",
+  "key": "blackberry",
   "comp": "Compatible",
   "organ": "LEAF",
-  "role": "Near miss.",
+  "note": "",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/blackberry/blackberry leaf.jpg"
  },
  {
   "n": 5,
   "name": "Callery pear",
+  "key": "pear",
   "comp": "Incompatible",
   "organ": "FRUIT",
-  "tag": "STOP 4 ANSWER",
-  "role": "STOP 4'S ANSWER — the little pears Johnny points at in the clip.",
+  "note": "",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Bradford Pear/bradford pear fruit.jpg"
  },
  {
   "n": 6,
   "name": "Eastern redcedar",
+  "key": "redcedar",
   "comp": "Incompatible",
   "organ": "BARK",
-  "role": "Near miss. Reddish fibrous bark peeling in strips, with the scale foliage in frame.",
+  "note": "Bark sheet. Fibrous strips, foliage in frame. Confirmed in the app 15 Sep.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Client Submitted Plant Images/FE/Cedar/6-29-2023_Eastern Red Cedar bark_Marie Maiuro.jpg"
  },
  {
   "n": 7,
   "name": "Black locust",
+  "key": "locust",
   "comp": "Incompatible",
   "organ": "LEAF",
-  "role": "Near miss. Pinnate, rounded leaflets, isolated on white. Its BARK was tried and failed — it reads as salt cedar.",
+  "note": "Leaf on white. Its bark read as salt cedar, so the leaf went up instead.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Black Locust/Acacia or Black Locust leaf isolated on white background.jpg"
  },
  {
   "n": 8,
   "name": "Tree of heaven",
+  "key": "heaven",
   "comp": "Incompatible",
   "organ": "LEAF",
-  "role": "Near miss. Pinnate with samaras.",
+  "note": "",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Tree of Heaven/tree of heaven leaf and fruit.jpg"
  },
  {
   "n": 9,
   "name": "Elderberry",
+  "key": "elderberry",
   "comp": "Compatible",
   "organ": "LEAF",
-  "tag": "decoy - also reads 12 ft",
-  "role": "Near miss and the ONE to watch — its app entry reads the same 12 ft as buttonbush, so a team scanning it clears stop 3 on the wrong plant.",
+  "note": "Reads 12 ft, the same as buttonbush (sheet 1). A team that scans the wrong one of the two still passes.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Elderberry/American black elderberry leaves (Sambucus canadensis).jpg"
  },
  {
   "n": 10,
   "name": "Common hackberry",
+  "key": "hackberry",
   "comp": "Incompatible",
   "organ": "BARK",
-  "role": "Near miss. Corky warts — tested and confirmed in the app.",
+  "note": "Bark sheet. Corky warts. Confirmed in the app 15 Sep.",
   "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Common Hackberry/common hackberry bark.jpg"
+ },
+ {
+  "n": 11,
+  "name": "Autumn olive",
+  "key": "olive",
+  "comp": "Incompatible",
+  "organ": "FRUIT",
+  "note": "Added 27 Oct. Not yet tested in the app. Speckled red berries, silvery leaves.",
+  "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/Autumn Olive/autumn olive fruit.jpg"
+ },
+ {
+  "n": 12,
+  "name": "Smooth sumac",
+  "key": "sumac",
+  "comp": "Compatible",
+  "organ": "LEAF",
+  "note": "Added 27 Oct. Not yet tested in the app. Compound leaves with red fruit cones in frame.",
+  "src": "~/Library/CloudStorage/OneDrive-GrowWithTrees/8. GWT Image Resources/Stock Assets/Shutterstock/smooth sumac_2345935715.jpg"
  }
 ]

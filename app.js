@@ -1,24 +1,45 @@
 /* Liberty ROW Field Guide Challenge
    Per-team page: set window.TEAM_ID before loading this file.
-   Teams are plain numbers, so no name can ever collide with a puzzle answer. */
+   Team names come from Lindsey's badge set (badges/). No name is a puzzle answer: the
+   answers are HOLLY, a height in feet, EYELASHES, 20 and FOXTAILS. */
 (function () {
   "use strict";
 
   // Every team finishes on its own: the last stop shows that team's own 4-digit finish code,
   // which they bring to the facilitator table. No team ever waits on another.
+  // `plant` is that team's target on the plant wall (stop 2); every other stop is shared.
   var TEAMS = {
-    "1":  { slug: "team-1",  trainer: "Hannah", word: "corridor",   code: "4712", start: 0 },
-    "2":  { slug: "team-2",  trainer: "Hannah", word: "compatible", code: "5836", start: 1 },
-    "3":  { slug: "team-3",  trainer: "Hannah", word: "selective",  code: "2964", start: 2 },
-    "4":  { slug: "team-4",  trainer: "Hannah", word: "clearance",  code: "8153", start: 3 },
-    "5":  { slug: "team-5",  trainer: "Hannah", word: "foliar",     code: "7026", start: 4 },
-    "6":  { slug: "team-6",  trainer: "Hannah", word: "basal",      code: "3591", start: 5 },
-    "7":  { slug: "team-7",  trainer: "Hannah", word: "flashover",  code: "6247", start: 0 },
-    "8":  { slug: "team-8",  trainer: "Hannah", word: "conductor",  code: "1938", start: 1 },
-    "9":  { slug: "team-9",  trainer: "Hannah", word: "sapling",    code: "9405", start: 2 },
-    "10": { slug: "team-10", trainer: "Hannah", word: "encroach",   code: "2679", start: 3 },
-    "11": { slug: "team-11", trainer: "Hannah", word: "easement",   code: "8314", start: 4 },
-    "12": { slug: "team-12", trainer: "Hannah", word: "canopy",     code: "5162", start: 5 }
+    "1":  { slug: "team-1",  name: "Oak Titans",         badge: "oak-titans",         plant: "pear",       code: "4712", start: 0 },
+    "2":  { slug: "team-2",  name: "Pine Patrol",        badge: "pine-patrol",        plant: "buttonbush", code: "5836", start: 1 },
+    "3":  { slug: "team-3",  name: "Cedar Command",      badge: "cedar-command",      plant: "locust",     code: "2964", start: 2 },
+    "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "blackberry", code: "8153", start: 3 },
+    "5":  { slug: "team-5",  name: "Root Raiders",       badge: "root-raiders",       plant: "heaven",     code: "7026", start: 4 },
+    "6":  { slug: "team-6",  name: "Bark Brigade",       badge: "bark-brigade",       plant: "coralberry", code: "3591", start: 0 },
+    "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "redcedar",   code: "6247", start: 1 },
+    "8":  { slug: "team-8",  name: "Walnut Force",       badge: "walnut-force",       plant: "dogwood",    code: "1938", start: 2 },
+    "9":  { slug: "team-9",  name: "Sassafras Wardens",  badge: "sassafras-wardens",  plant: "sumac",      code: "9405", start: 3 },
+    "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "hackberry",  code: "2679", start: 4 },
+    "11": { slug: "team-11", name: "Sycamore Syndicate", badge: "sycamore-syndicate", plant: "olive",      code: "8314", start: 0 },
+    "12": { slug: "team-12", name: "Thorn Guard",        badge: "thorn-guard",        plant: "elderberry", code: "5162", start: 1 }
+  };
+
+  // Max height as the Let Grow entry shows it, in feet. `checked: false` means nobody has read
+  // it off the LUC app yet: the game then takes ANY number for that team, so a wrong guess here
+  // can never strand a team on the day. Read it in the app, fix `ft`, set `checked: true`.
+  // Buttonbush and elderberry both read 12 ft, so a team scanning the other one still passes.
+  var PLANTS = {
+    buttonbush: { name: "buttonbush",        ft: 12,  checked: true  },  // LUC list id 75, 144 in
+    coralberry: { name: "coralberry",        ft: 0,   checked: false },  // ids 143/455, height not in any export
+    dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Identify reads it as red osier, 120 in
+    blackberry: { name: "blackberry",        ft: 6,   checked: true  },  // Rubus species, 72 in
+    pear:       { name: "Callery pear",      ft: 40,  checked: false },  // NS list 480 in; not in the LUC export
+    redcedar:   { name: "eastern redcedar",  ft: 0,   checked: false },  // not in any export
+    locust:     { name: "black locust",      ft: 100, checked: false },  // NS list 1200 in; not in the LUC export
+    heaven:     { name: "tree of heaven",    ft: 60,  checked: false },  // NS list 720 in; not in the LUC export
+    elderberry: { name: "elderberry",        ft: 12,  checked: true  },  // Sambucus species, 144 in
+    hackberry:  { name: "hackberry",         ft: 0,   checked: false },  // not in any export
+    olive:      { name: "autumn olive",      ft: 16,  checked: true  },  // 192 in
+    sumac:      { name: "smooth sumac",      ft: 15,  checked: true  }   // 180 in
   };
 
   var SPRITE = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">'
@@ -45,20 +66,20 @@
     + '<main class="module-shell">'
     + '<section id="intro" style="display:none">'
     + '<div class="hero">'
-    + '<svg class="ic grass-deco"><use href="#ic-grass"/></svg>'
+    + '<img class="hero-badge" id="introBadge" alt="">'
     + '<span class="eyebrow">Digital escape room</span>'
     + '<h1>Crack the field guide</h1>'
-    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve all six to earn your team\'s finish code.</p>'
+    + '<p class="lede">Welcome, <b id="introTeam">your team</b>. Your clues are hidden inside the Let Grow app. Solve all five to earn your team\'s finish code.</p>'
     + '<ul class="outcome-list">'
-    + '<li>Six stops, each hidden in a part of the Let Grow app</li>'
-    + '<li>Every stop gives you a code that unlocks the next</li>'
-    + '<li>Finish all six and bring your finish code to the facilitator table</li>'
+    + '<li>Five stops, each in a different part of the Let Grow app</li>'
+    + '<li>Each stop asks a question. The app has the answer.</li>'
+    + '<li>Finish all five and bring your finish code to the facilitator table</li>'
     + '</ul>'
     + '</div>'
     + '<div class="card"><h3>What is a digital escape room?</h3>'
-    + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Instead of a room, your clues live in the <b>Let Grow app</b>. Each stop points you to a real part of the app: Messages, the field guide, the plant wall, a video, a chat, a field log. Do the task, the app hands you a <b>code word or number</b>, and typing it here unlocks the next stop.</p></div>'
+    + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Your clues live in the <b>Let Grow app</b>. Each stop sends you to a real part of the app: <b>Search</b>, <b>Identify</b>, a <b>field clip</b>, a <b>field note</b> and a <b>field bite</b>. Find the answer in the app, type it here, and the next stop unlocks.</p></div>'
     + '<div class="card"><h3>The goal: finish fast</h3>'
-    + '<p>Clear all six stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to the <b>facilitator table</b>. Teams are ranked in the order they check in, and nobody has to wait for another team.</p></div>'
+    + '<p>Clear all five stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to the <b>facilitator table</b>. Teams are ranked in the order they check in, and nobody has to wait for another team.</p></div>'
     + '<button class="btn btn-primary btn-block" id="beginBtn" style="margin-top:20px">Start the challenge</button>'
     + '</section>'
     + '<section id="quest">'
@@ -68,9 +89,9 @@
     + '<section id="finale" style="display:none">'
     + '<div class="finale-card">'
     + '<div class="finale-head">'
-    + '<div class="trophy"><svg class="ic"><use href="#ic-trophy"/></svg></div>'
-    + '<h2>All six stops cleared</h2>'
-    + '<p class="sub">You just used every part of the app a Liberty crew works with in the field. Here is your finish code.</p>'
+    + '<img class="finale-badge" id="finaleBadge" alt="">'
+    + '<h2>All five stops cleared</h2>'
+    + '<p class="sub">You just used Search, Identify, a field clip, a field note and a field bite. They are all in the app whenever you need them. Here is your finish code.</p>'
     + '</div>'
     + '<div class="finale-body">'
     + '<div class="fragwrap">'
@@ -98,60 +119,56 @@
     + '</div>';
 
   function buildStops(team) {
-    var t = TEAMS[team];
+    var t = TEAMS[team], p = PLANTS[t.plant];
     return [
       {
-        icon: "ic-talk", feat: "Messages", title: "Radio the crew lead",
-        body: "Open the Let Grow app and tap <b>Messages</b>. Find <b>" + t.trainer + "</b> in your list and send exactly this:"
-          + "<div class='sendblock'><div class='lbl'>Send this message</div><div class='msg'>" + "TEAM " + team + " CHECKING IN</div></div>"
-          + t.trainer + " will message you back a trail word for your team. Type it in below.",
-        accept: [t.word]
-      },
-      {
-        icon: "ic-search", feat: "Field Guide · Search", title: "Name that compatible plant",
-        body: "You do not have this one in hand, just the field notes a crew would jot down. Use <b>Search</b> in the app to find the plant that matches, then type its common name."
+        icon: "ic-search", feat: "Search", title: "Help a homeowner pick a shrub",
+        body: "A homeowner watches your crew take out a tree near the line. They want to plant something in its place, and they love watching birds."
+          + "<br><br>Open <b>Search</b> in the Let Grow app and set these filters:"
           + "<ul class='fieldnotes'>"
-          + "<li>Low, bushy native shrub that stays well under the wires</li>"
-          + "<li>Slender arching stems, small pinkish flowers</li>"
-          + "<li>Tight clusters of coral-pink berries that hang on into winter</li>"
-          + "<li>White-tailed deer browse it hard, a compatible species we keep</li>"
-          + "</ul>",
-        accept: ["coralberry", "coral berry", "buckbrush", "buck brush", "indian currant"]
+          + "<li>Border zone</li>"
+          + "<li>Slow growing</li>"
+          + "<li>Host plant and bird food</li>"
+          + "<li>15 feet tall or less</li>"
+          + "</ul>"
+          + "Only one plant fits. Type its name.",
+        accept: ["holly", "american holly", "ilex", "holly species"]
       },
       {
-        icon: "ic-cam", feat: "Plant Identify · Scan", title: "Scan the wall, read the entry",
-        body: "Look at the <b>plant wall</b>. Most of what is posted are incompatible trees a crew would control \u2014 redcedar, black locust, hedge, callery pear. Mixed in are compatible shrubs."
-          + "<br><br>The sheets are not all leaves \u2014 some are flowers, some fruit, some bark. <b>Identify asks you which one you are photographing.</b> Tell it the right one and it will name the plant; tell it the wrong one and it will struggle."
-          + "<br><br>You want one shrub in particular. It grows with its <b>feet in the water</b> \u2014 swamps, pond edges, ditches that never dry out \u2014 and it carries a flowerhead you cannot mistake: a <b>creamy white ball, like a pincushion</b>. Work the wall with <b>Identify</b> until you find it, then open its <b>Let Grow entry</b>."
-          + "<br><br>Read its height range and enter its <b>maximum height</b>, in feet.",
-        accept: ["12", "144"]
+        icon: "ic-cam", feat: "Identify", title: "Find your plant on the wall",
+        body: "Your team's plant is <b class='target'>" + p.name.toUpperCase() + "</b>."
+          + "<br><br>It is one of the numbered photos on the <b>plant wall</b>, but the photos have no names. Use <b>Identify</b> to scan photos until the app tells you it is " + p.name + "."
+          + "<br><br>Before each scan, tell Identify what the photo shows: <b>leaf, flower, fruit or bark</b>. Pick the wrong one and the app will guess wrong."
+          + "<br><br>Open your plant's page in Let Grow and find its <b>maximum height</b>. Type the number of feet.",
+        number: p.checked ? p.ft : "any"
       },
       {
-        icon: "ic-video", feat: "Field Clips", title: "Watch the field clip",
-        body: "In the app, open <b>Field Clips</b> and play <b>\u201cWhat\u2019s the Tree.\u201d</b>"
-          + "<br><br>Johnny reads one tree out loud, piece by piece \u2014 leaf shape and fine teeth, glossy on top, alternate branching, the weak joints on that fast new growth, smooth bark with little horizontal white specks, and a tree covered in small pear-shaped fruit."
-          + "<br><br>He never says what it is. <b>You name it.</b> It is an incompatible tree, and it is on the plant wall.",
-        accept: ["callery pear", "callerypear", "bradford pear", "bradfordpear", "callery", "pyrus calleryana", "pear"]
+        icon: "ic-video", feat: "Field Clips", title: "Watch the rose clip",
+        body: "You are clearing a fence line and run into a thorny rose. Is it the invasive one or the native one?"
+          + "<br><br>Open <b>Field Clips</b> and watch the clip about <b>multiflora rose and native rose</b>."
+          + "<br><br>Look at the base of each leaf. The clip says the invasive rose's little leaflet is covered in something. Covered in what? Type the word.",
+        accept: ["eyelashes", "eyelash", "eye lashes", "lashes", "little legs", "legs"]
       },
       {
-        icon: "ic-chat", feat: "ChatTrain", title: "The landowner conversation",
-        body: "Open <b>ChatTrain</b> and start <b>“Mrs. Webb – the spraying question.”</b>"
-          + "<br><br>She saw your crew treating brush near her fence and she is worried you are killing everything, including the plants she likes for wildlife. Talk her through it: you run <b>selective treatment</b> to control the tall incompatible trees and <b>keep the compatible, deer-friendly plants</b> like her coralberry."
-          + "<br><br>Work it until ChatTrain says you passed the beat. It shows a pass phrase, type that in.",
-        accept: ["compatible cover", "compatiblecover"]
+        icon: "ic-note", feat: "Field Notes", title: "Read the field note",
+        body: "Along the right-of-way you see a tall, thick grass. Its leaves have a white stripe down the middle."
+          + "<br><br>Open <b>Field Notes</b> and read the one on <b>Johnsongrass</b>."
+          + "<br><br>How many years can its seeds stay alive in the soil? Type the number.",
+        number: 20, accept: ["twenty"]
       },
       {
-        icon: "ic-note", feat: "Field Bites", title: "Finish the field bite",
-        body: "Open <b>Field Bites</b> and work through the microlearning on compatible right-of-way plants."
-          + "<br><br>Read the cards and answer the checks all the way to the end. The <b>last card</b> gives you a keyword. Enter it below.",
-        accept: ["biological control", "biologicalcontrol"]
+        icon: "ic-grass", feat: "Field Bites", title: "Finish the field bite",
+        body: "You find a young tree with leaves like a feather: two rows of small oval leaflets. Is it black locust or false indigo bush?"
+          + "<br><br>Open <b>Field Bites</b> and work through <b>Black Locust vs False Indigo Bush</b>."
+          + "<br><br>The bite says false indigo bush flowers look like little purple what? Type the word.",
+        accept: ["foxtails", "foxtail", "fox tails", "fox tail"]
       }
     ];
   }
 
-  // Every team walks all six stops, but each STARTS at a different one and wraps around.
-  // Without this the whole room messages Hannah in the same minute and then queues at the
-  // plant wall together. The stops are independent puzzles, so order does not matter.
+  // Every team walks all five stops, but each STARTS at a different one and wraps around,
+  // so the room is not all crowding the plant wall at once. The stops are independent
+  // puzzles, so order does not matter.
   function rotate(arr, by) {
     by = ((by % arr.length) + arr.length) % arr.length;
     return arr.slice(by).concat(arr.slice(0, by));
@@ -161,7 +178,8 @@
   var state = { team: null, stop: 0, stops: [] };
 
   function norm(s) { return (s || "").toString().trim().toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " "); }
-  function keyFor(team) { return "luc-escape-" + team; }
+  // v2: the five-stop game. A phone that tested the old six-stop version must not resume mid-way.
+  function keyFor(team) { return "luc-escape-v2-" + team; }
   function save() { try { localStorage.setItem(keyFor(state.team), JSON.stringify({ stop: state.stop })); } catch (e) {} }
   function load(team) { try { var r = localStorage.getItem(keyFor(team)); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
 
@@ -173,16 +191,24 @@
     window.scrollTo(0, 0);
   }
 
+  // Team pages sit one folder down (team-N/), so the badges are one level up.
+  function badgeSrc(t) { return "../badges/" + t.badge + ".png"; }
+
+  function setTeamBadge() {
+    var t = TEAMS[state.team];
+    document.getElementById("teamBadge").innerHTML = "<img src='" + badgeSrc(t) + "' alt=''>" + t.name;
+  }
+
   function renderIntro() {
     var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
+    setTeamBadge();
     document.getElementById("stepCount").textContent = "";
-    document.getElementById("introTeam").textContent = "Team " + state.team;
+    document.getElementById("introTeam").textContent = "the " + t.name;
+    document.getElementById("introBadge").src = badgeSrc(t);
   }
 
   function renderQuest() {
-    var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
+    setTeamBadge();
     document.getElementById("stepCount").textContent = (state.stop + 1) + " / " + state.stops.length;
     document.getElementById("pfill").style.width = Math.round(state.stop / state.stops.length * 100) + "%";
     renderStop();
@@ -195,10 +221,11 @@
       + "<h2>" + s.title + "</h2>"
       + "<div class='body'>" + s.body + "</div>";
     html += "<div class='answer'>"
-      + "<label for='codein'>Enter the code</label>"
-      + "<input id='codein' autocomplete='off' autocapitalize='characters' spellcheck='false' placeholder='type it here'>"
+      + "<label for='codein'>Your answer</label>"
+      + "<input id='codein' autocomplete='off' autocapitalize='characters' spellcheck='false' placeholder='type it here'"
+      + (s.number !== undefined ? " inputmode='" + (s.accept ? "text" : "numeric") + "'" : "") + ">"
       + "<button class='btn btn-primary btn-block' id='goBtn'>Unlock</button>"
-      + "<div class='wrongmsg hidden' id='wrongmsg'>That is not the code. Try again.</div>"
+      + "<div class='wrongmsg hidden' id='wrongmsg'>Not quite. Check the app and try again.</div>"
       + "</div>";
     html += "</div>";
     document.getElementById("stopmount").innerHTML = html;
@@ -215,10 +242,17 @@
     var val = norm(input.value);
     if (!val) return;
     var vns = val.replace(/ /g, "");
-    var ok = s.accept.some(function (a) {
+    var ok = (s.accept || []).some(function (a) {
       var n = norm(a);
       return val.indexOf(n) !== -1 || vns.indexOf(n.replace(/ /g, "")) !== -1;
     });
+    // Numbers match whole, never as a substring: "120" must not pass for 12. The first
+    // number typed counts, so "12 ft 0 in" reads as 12. Feet or inches both pass.
+    var m = val.match(/\d+/);
+    if (!ok && m && s.number !== undefined) {
+      var n = parseInt(m[0], 10);
+      ok = s.number === "any" || n === s.number || n === s.number * 12;
+    }
     if (ok) { playUnlock(advance); }
     else {
       input.classList.remove("wrong"); void input.offsetWidth; input.classList.add("wrong");
@@ -264,11 +298,12 @@
 
   function renderFinale() {
     var t = TEAMS[state.team];
-    document.getElementById("teamBadge").innerHTML = "Team " + state.team;
+    setTeamBadge();
+    document.getElementById("finaleBadge").src = badgeSrc(t);
     document.getElementById("stepCount").textContent = state.stops.length + " / " + state.stops.length;
     document.getElementById("pfill").style.width = "100%";
     document.getElementById("fragnum").textContent = t.code;
-    document.getElementById("boxtag").textContent = "Team " + state.team;
+    document.getElementById("boxtag").textContent = t.name;
   }
 
   function fail(msg) {

@@ -3,15 +3,15 @@
 
 WHY THIS EXISTS
     The wall sheets, QR cards, facilitator sheet and answer key all restate data that
-    lives in app.js — team numbers, slugs, finish codes, reply words, and which stop
-    each team starts on. Hand-maintaining them guarantees the printed pack eventually
+    lives in app.js — team names, badges, slugs, finish codes, each team's wall plant and
+    its height, and which stop each team starts on. Hand-maintaining them guarantees the printed pack eventually
     disagrees with the live game. Everything here is derived from app.js and
     tools/plant-wall.json, so a change to the game is one rerun away from a correct
     print pack. Never hand-edit the generated PDFs.
 
 WHEN TO RUN
-    After ANY change to the TEAMS block in app.js (numbers, words, finish codes,
-    `start` offsets), or to tools/plant-wall.json (which plant, which photo, which organ).
+    After ANY change to the TEAMS or PLANTS block in app.js (names, plants, heights, finish
+    codes, `start` offsets), or to tools/plant-wall.json (which plant, which photo, which organ).
 
 WHERE IT WRITES
     The project Deliverables folder, then an identical copy into every folder in MIRRORS
@@ -21,7 +21,7 @@ WHERE IT WRITES
 USAGE
     python3 tools/build-deliverables.py              # -> the OneDrive Deliverables folder
     python3 tools/build-deliverables.py --out DIR    # -> somewhere else
-    python3 tools/build-deliverables.py --only wall  # wall | qr | facilitator | hannah | roles | key
+    python3 tools/build-deliverables.py --only wall  # wall | qr | facilitator | key
 
 REQUIREMENTS
     pip install qrcode img2pdf pillow python-docx      (all installed as of 2026-09-18)
@@ -36,8 +36,8 @@ GOTCHAS THAT COST REAL TIME — see [[gwt_print_deliverables_toolchain]]
   * Verify QR codes by DECODING THE RENDERED PDF, not the source images:
         pdftoppm -r 200 -png "Team QR Cards.pdf" z && zbarimg -q --raw z-*.png
     then curl each decoded URL. A wrong QR is only discoverable after printing.
-  * Always render the .docx to PDF and LOOK at it. Reading the facilitator sheet as
-    Hannah would is what caught reply words that were two words jammed together.
+  * Always render the .docx to PDF and LOOK at it. Reading the old facilitator sheet as
+    the person holding it is what caught reply words that were two words jammed together.
 """
 
 import argparse, json, os, re, subprocess, sys, glob, shutil
@@ -56,26 +56,42 @@ MIRRORS = [os.path.expanduser(
 FONT_R = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_B = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 GREEN = "#2E7D46"
-STOP_NAMES = ["Messages", "Field Guide", "Scan", "Field Clips", "ChatTrain", "Field Bites"]
+STOP_NAMES = ["Search", "Identify", "Field Clips", "Field Notes", "Field Bites"]
+BADGES = os.path.join(REPO, "badges")
 
 
 def read_teams():
-    """Parse the TEAMS block out of app.js. Single source of truth for every artifact."""
+    """Parse TEAMS and PLANTS out of app.js. Single source of truth for every artifact."""
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     block = re.search(r"var TEAMS = \{(.*?)\n  \};", src, re.S).group(1)
-    pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*'
-           r'trainer: "(\w+)", word: "(\w+)",\s*code: "(\d{4})", start: (\d)')
-    teams = [dict(zip(["name", "slug", "trainer", "word", "code", "start"], m.groups()))
+    pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*name: "([^"]+)",\s*badge: "([\w-]+)",\s*'
+           r'plant: "(\w+)",\s*code: "(\d{4})", start: (\d)')
+    teams = [dict(zip(["num", "slug", "name", "badge", "plant", "code", "start"], m.groups()))
              for m in re.finditer(pat, block)]
-    if not teams:
-        sys.exit("ERROR: could not parse TEAMS out of app.js — did its formatting change?")
+    pblock = re.search(r"var PLANTS = \{(.*?)\n  \};", src, re.S).group(1)
+    plants = {m.group(1): {"name": m.group(2), "ft": int(m.group(3)), "checked": m.group(4) == "true"}
+              for m in re.finditer(r'(\w+):\s*\{ name: "([^"]+)",\s*ft: (\d+),\s*checked: (true|false)', pblock)}
+    if not teams or not plants:
+        sys.exit("ERROR: could not parse TEAMS/PLANTS out of app.js — did its formatting change?")
+    wall = {p["key"]: p["n"] for p in json.load(open(os.path.join(HERE, "plant-wall.json")))}
     for t in teams:
+        if t["plant"] not in plants or t["plant"] not in wall:
+            sys.exit("ERROR: team %s's plant '%s' is missing from PLANTS or plant-wall.json" % (t["name"], t["plant"]))
+        p = plants[t["plant"]]
         t["startname"] = STOP_NAMES[int(t["start"]) % len(STOP_NAMES)]
+        t["plantname"], t["sheet"] = p["name"], wall[t["plant"]]
+        t["height"] = ("%d ft" % p["ft"]) if p["checked"] else "READ IN APP (game takes any number)"
+        t["checked"] = p["checked"]
+    unchecked = [t["plantname"] for t in teams if not t["checked"]]
+    if unchecked:
+        print("  WARNING: heights not yet read off the LUC app, game accepts any number: "
+              + ", ".join(unchecked))
     return teams
 
 
 def build_wall(out):
-    """One page per plant, numbered, deliberately UNLABELLED, orientation-matched."""
+    """One page per plant, numbered, deliberately UNLABELLED, orientation-matched.
+    Each sheet is one team's target, so the wall needs exactly one sheet per team."""
     from PIL import Image
     import img2pdf
     plants = json.load(open(os.path.join(HERE, "plant-wall.json")))
@@ -91,7 +107,7 @@ def build_wall(out):
         fit = "1560x1185" if land else "1185x1560"          # 0.3in margins, maximised
         subprocess.run(["magick", src, "-auto-orient", "-resize", fit,
                         "-background", "white", "-gravity", "center", "-extent", canvas,
-                        "-font", FONT_R, "-pointsize", "80", "-fill", "#444444",
+                        "-font", FONT_R, "-pointsize", "80", "-fill", "#444444", "-undercolor", "white",
                         "-gravity", "southeast", "-annotate", "+55+45", str(p["n"]),
                         "-density", "150", "-units", "PixelsPerInch", "-quality", "94",
                         os.path.join(tmp, "%02d.jpg" % p["n"])], check=True)
@@ -104,9 +120,8 @@ def build_wall(out):
         f.write(img2pdf.convert(files))
     for old in glob.glob(os.path.join(dest, "Individual Sheets", "*.jpg")):
         os.remove(old)
-    tag = {p["n"]: p.get("tag", "") for p in plants}
     for p in plants:
-        extra = " (%s)" % tag[p["n"]] if tag[p["n"]] else ""
+        extra = ""
         shutil.copy(os.path.join(tmp, "%02d.jpg" % p["n"]),
                     os.path.join(dest, "Individual Sheets",
                                  "%02d %s - %s%s [%s].jpg"
@@ -117,7 +132,7 @@ def build_wall(out):
 
 
 def build_qr(teams, out):
-    """One card per team: number, QR, and the plain URL as a fallback."""
+    """One card per team: badge, name, QR, and the plain URL as a fallback."""
     import qrcode, img2pdf
     from PIL import Image, ImageDraw, ImageFont
     tmp = os.path.join(HERE, "_qr"); os.makedirs(tmp, exist_ok=True)
@@ -131,14 +146,17 @@ def build_qr(teams, out):
               .resize((560, 560), Image.NEAREST)
         card = Image.new("RGB", (W, H), "white"); d = ImageDraw.Draw(card)
         d.rectangle([0, 0, W, 18], fill=GREEN)
-        card.paste(qi, (70, 150)); x = 700
-        d.text((x, 160), "Team", font=ImageFont.truetype(FONT_R, 52), fill="#6b7280")
-        d.text((x, 215), t["name"], font=ImageFont.truetype(FONT_B, 150), fill="#111111")
-        d.text((x, 485), "Scan to start your quest.",
-               font=ImageFont.truetype(FONT_R, 38), fill="#374151")
-        d.text((x, 537), "One phone can drive; everyone",
-               font=ImageFont.truetype(FONT_R, 32), fill="#6b7280")
-        d.text((x, 577), "helps solve.", font=ImageFont.truetype(FONT_R, 32), fill="#6b7280")
+        card.paste(qi, (70, 120))
+        badge = Image.open(os.path.join(BADGES, t["badge"] + ".png")).convert("RGBA") \
+                     .resize((300, 300), Image.LANCZOS)
+        cx = 700 + (W - 60 - 700) // 2                # centre of the right-hand column
+        card.paste(badge, (cx - 150, 70), badge)
+        fb = ImageFont.truetype(FONT_B, 54)
+        d.text((cx, 405), t["name"], font=fb, fill="#111111", anchor="mt")
+        d.text((cx, 495), "Scan to start your quest.",
+               font=ImageFont.truetype(FONT_R, 36), fill="#374151", anchor="mt")
+        d.text((cx, 550), "One phone drives; everyone helps.",
+               font=ImageFont.truetype(FONT_R, 30), fill="#6b7280", anchor="mt")
         d.text((70, 745), url, font=ImageFont.truetype(FONT_R, 26), fill="#9ca3af")
         card.save(os.path.join(tmp, "%02d.jpg" % i), quality=92, dpi=(150, 150))
     pages = []
@@ -161,47 +179,6 @@ def build_qr(teams, out):
           "zbarimg -q --raw z-*.png   (then curl each URL)")
 
 
-def build_roles(out):
-    """Scanner / Navigator / Scribe, three to a page. Print one per team and cut."""
-    import img2pdf
-    from PIL import Image, ImageDraw, ImageFont
-    ROLES = [
-        ("SCANNER", "#2E7D46", "Holds the phone.",
-         "You drive the Let Grow app — Identify, search, video, chat.\n"
-         "Before you scan, set what you are photographing:\n"
-         "leaf, flower, fruit or bark. Wrong setting, bad match."),
-        ("NAVIGATOR", "#2563A8", "Reads the clue out loud.",
-         "You keep the team pointed at the right task. Read the whole\n"
-         "clue before anyone touches the app — the detail that\nmatters is usually in the last line."),
-        ("SCRIBE", "#C6841A", "Runs the team's page.",
-         "You type the codes in and keep the page open. Do not close\n"
-         "it — it remembers where you are. One phone drives the whole\nquest, so keep it charged."),
-    ]
-    W, H = 1275, 550
-    page = Image.new("RGB", (1275, 1650), "white")
-    for i, (name, hexc, tag, body) in enumerate(ROLES):
-        c = Image.new("RGB", (W, H), "white"); d = ImageDraw.Draw(c)
-        d.rectangle([0, 0, 22, H], fill=hexc)
-        d.text((70, 60), name, font=ImageFont.truetype(FONT_B, 64), fill=hexc)
-        d.text((70, 140), tag, font=ImageFont.truetype(FONT_B, 30), fill="#111111")
-        y = 200
-        for line in body.split("\n"):
-            d.text((70, y), line, font=ImageFont.truetype(FONT_R, 27), fill="#374151"); y += 40
-        d.text((70, H - 70), "Field Guide Challenge",
-               font=ImageFont.truetype(FONT_R, 22), fill="#9ca3af")
-        page.paste(c, (0, i * 550))
-    d = ImageDraw.Draw(page)
-    for y in (550, 1100):
-        d.line([(0, y), (1275, y)], fill="#cccccc", width=2)
-    tmp = os.path.join(HERE, "_roles.jpg")
-    page.save(tmp, quality=92, dpi=(150, 150))
-    dest = os.path.join(out, "5 Print - Hannah and Roles"); os.makedirs(dest, exist_ok=True)
-    with open(os.path.join(dest, "Role Cards.pdf"), "wb") as f:
-        f.write(img2pdf.convert([tmp]))
-    os.remove(tmp)
-    print("  roles: 3 cards, 1 page (print one per team and cut)")
-
-
 def _docx_to_pdf(path, dest):
     subprocess.run(["/Applications/LibreOffice.app/Contents/MacOS/soffice", "--headless",
                     "--convert-to", "pdf", "--outdir", dest, path],
@@ -221,106 +198,20 @@ def build_facilitator(teams, out):
     print("  facilitator: Facilitator Sheet.docx + .pdf")
 
 
-def build_hannah(teams, out):
-    """Hannah's own one-page card. She must NOT be given the facilitator sheet —
-    it carries every answer in the game and her only job is replying one word."""
-    from docx import Document
-    from docx.shared import Pt, Inches, RGBColor
-    from docx.oxml.ns import qn
-    from docx.oxml import OxmlElement
-    HEAD, BODY = "Plus Jakarta Sans", "Inter"
-    INK, MUTE, GREEN = RGBColor(0x11, 0x11, 0x11), RGBColor(0x6b, 0x72, 0x80), RGBColor(0x2E, 0x7D, 0x46)
-    doc = Document()
-    for s in doc.sections:
-        s.left_margin = s.right_margin = s.top_margin = s.bottom_margin = Inches(0.5)
-    st = doc.styles["Normal"]; st.font.name = BODY; st.font.size = Pt(11); st.font.color.rgb = INK
-    st.paragraph_format.space_after = Pt(5); st.paragraph_format.line_spacing = 1.15
-    st.element.rPr.rFonts.set(qn('w:eastAsia'), BODY)
-
-    def shade(cell, hexc):
-        el = OxmlElement('w:shd'); el.set(qn('w:val'), 'clear'); el.set(qn('w:fill'), hexc)
-        cell._tc.get_or_add_tcPr().append(el)
-
-    def para(t, size=11, color=INK, bold=False, italic=False, after=5, before=0):
-        p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(after)
-        p.paragraph_format.space_before = Pt(before)
-        r = p.add_run(t); r.font.size = Pt(size); r.font.color.rgb = color
-        r.font.bold = bold; r.font.italic = italic
-        return p
-
-    p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(2)
-    r = p.add_run("Hannah — Messages desk"); r.font.name = HEAD; r.font.size = Pt(24)
-    r.font.bold = True; r.font.color.rgb = GREEN
-    r._element.rPr.rFonts.set(qn('w:eastAsia'), HEAD)
-    para("Field Guide Challenge · Tree Line USA · this is your whole job", 10, MUTE,
-         italic=True, after=12)
-    para("Up to %d teams will message you during the game. Each one sends:" % len(teams), 11, after=6)
-    p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(10)
-    r = p.add_run("TEAM 4 CHECKING IN"); r.font.name = "Courier New"; r.font.size = Pt(15)
-    r.font.bold = True
-    para("Read the number. Find it below. Reply with that team's ONE WORD and nothing else. "
-         "That word is what unlocks their next stop.", 11, after=10)
-
-    half = (len(teams) + 1) // 2
-    t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
-    for i, htxt in enumerate(["They send", "You reply", "They send", "You reply"]):
-        c = t.rows[0].cells[i]; shade(c, "1C5230"); c.width = Inches(1.85)
-        c.paragraphs[0].paragraph_format.space_after = Pt(2)
-        rr = c.paragraphs[0].add_run(htxt); rr.font.bold = True; rr.font.size = Pt(10)
-        rr.font.name = HEAD; rr.font.color.rgb = RGBColor(0xff, 0xff, 0xff)
-    for i in range(half):
-        cells = t.add_row().cells
-        pair = [teams[i]] + ([teams[i + half]] if i + half < len(teams) else [])
-        for k, tm in enumerate(pair):
-            for j, val in enumerate(["TEAM %s" % tm["name"], tm["word"].upper()]):
-                c = cells[k * 2 + j]; c.width = Inches(1.85)
-                c.paragraphs[0].paragraph_format.space_after = Pt(3)
-                rr = c.paragraphs[0].add_run(val); rr.font.size = Pt(13); rr.font.bold = (j == 1)
-                if j == 1:
-                    rr.font.name = "Courier New"
-
-    para("", 6, after=6)
-    p = doc.add_paragraph(); p.paragraph_format.space_before = Pt(10)
-    p.paragraph_format.space_after = Pt(4)
-    r = p.add_run("If something goes odd"); r.font.name = HEAD; r.font.size = Pt(14)
-    r.font.bold = True; r.font.color.rgb = INK
-    for k, v in [
-        ("A team sends something else", "Reply: “Say again — send me your team name and CHECKING IN.”"),
-        ("Two or three arrive at once", "Just answer each in turn. They are not racing each other."),
-        ("You get swamped", "Tell Lindsey. The fallback is one shared word for everybody — she can announce it and the game keeps running."),
-        ("A team says the word did not work", "Check you sent the right row. Words are single words, no spaces."),
-    ]:
-        p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(4)
-        r1 = p.add_run(k + " — "); r1.font.bold = True; r1.font.size = Pt(10.5)
-        r2 = p.add_run(v); r2.font.size = Pt(10.5)
-    para("Teams start at different stops on purpose, so the messages will trickle in across the "
-         "whole game rather than all at the start. Stay on your phone until Lindsey calls time.",
-         10, MUTE, before=10)
-
-    dest = os.path.join(out, "5 Print - Hannah and Roles"); os.makedirs(dest, exist_ok=True)
-    src = os.path.join(HERE, "Hannah Card.docx")
-    doc.save(src)
-    shutil.copy(src, os.path.join(dest, "Hannah Card.docx"))
-    _docx_to_pdf(src, dest)
-    os.remove(src)
-    print("  hannah: Hannah Card.docx + .pdf")
-
-
 def read_stops():
     """Feature name and accepted answers per stop, in canonical order, straight from app.js."""
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     body = src[src.index("function buildStops"):src.index("function rotate")]
-    feats = re.findall(r'feat: "([^"]+)"', body)
-    accepts = [re.findall(r'"([^"]+)"', a) for a in re.findall(r'accept: \[([^\]]*)\]', body)]
-    if len(feats) != 6 or len(accepts) != 6:
-        sys.exit("ERROR: could not parse the six stops out of app.js")
-    return list(zip(feats, accepts))
-
-
-# What the answer key says beside an answer. The answers themselves come from app.js.
-KEY_NOTES = {2: "buttonbush max height, wall sheet 1"}
-KEY_FEATS = {4: "ChatTrain (Mrs. Webb)"}
-CODE_PHRASES = (4, 5)          # pass phrases shown in capitals; plant names are not
+    stops = []
+    for chunk in body.split("icon: ")[1:]:
+        feat = re.search(r'feat: "([^"]+)"', chunk).group(1)
+        acc = re.search(r'accept: \[([^\]]*)\]', chunk)
+        num = re.search(r'number: (\d+)', chunk)
+        stops.append((feat, re.findall(r'"([^"]+)"', acc.group(1)) if acc else [],
+                      num.group(1) if num else None))
+    if len(stops) != len(STOP_NAMES):
+        sys.exit("ERROR: expected %d stops in app.js, found %d" % (len(STOP_NAMES), len(stops)))
+    return stops
 
 
 def build_key(teams, out):
@@ -331,44 +222,41 @@ def build_key(teams, out):
     doc = Document()
     st = doc.styles["Normal"]; st.font.name = "Arial"; st.font.size = Pt(10.5)
     doc.add_heading("Field Guide Challenge: Answer Key", 1)
-    doc.add_paragraph("LUC conference icebreaker. Facilitator eyes only; do not give this to "
-                      "Hannah. Answers are not case-sensitive and spaces are ignored.")
-    doc.add_heading("Stops (same for every team)", 2)
+    doc.add_paragraph("LUC Tree Line USA icebreaker. Facilitator eyes only. Answers are not "
+                      "case-sensitive and spaces are ignored.")
+    doc.add_heading("Stops", 2)
     t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
     for c, h in zip(t.rows[0].cells, ["#", "Let Grow feature", "Answer", "Also accepted"]):
         c.text = h
-    for i, (feat, acc) in enumerate(stops):
-        r = t.add_row().cells
-        if i == 0:
-            ans, also = "That team's word from Hannah (see the team table)", "None"
+    for i, (feat, acc, num) in enumerate(stops):
+        if feat == "Identify":
+            ans, also = "That team's plant height (see the team table)", "Feet or inches"
         else:
-            ans = acc[0].upper() if i in CODE_PHRASES else acc[0].capitalize()
-            if i in KEY_NOTES:
-                ans += " (%s)" % KEY_NOTES[i]
-            seen = {acc[0].replace(" ", "")}
-            rest = [a for a in acc[1:] if not (a.replace(" ", "") in seen or seen.add(a.replace(" ", "")))]
-            also = ", ".join(rest) or "None"
-        for c, v in zip(r, [str(i + 1), KEY_FEATS.get(i, feat), ans, also]):
+            words = [a for a in acc]
+            ans = (num if num else words[0]).upper()
+            also = ", ".join(w for w in words if w.upper() != ans) or "None"
+        for c, v in zip(t.add_row().cells, [str(i + 1), feat, ans, also]):
             c.text = v
     doc.add_heading("Teams", 2)
-    doc.add_paragraph("Every team walks all six stops, starting at a different one and wrapping "
-                      "around. The order does not change any answer. Every team finishes on its "
-                      "own: the last screen shows that team's finish code. Check the code against "
-                      "the team number below and write down the order teams arrive.")
-    t = doc.add_table(rows=1, cols=4); t.style = "Table Grid"
-    for c, h in zip(t.rows[0].cells, ["Team", "Starts at", "Hannah's word (Stop 1)", "Finish code"]):
+    doc.add_paragraph("Every team walks all five stops, starting at a different one and wrapping "
+                      "around. Only stop 2 differs by team: each team hunts its own plant on the "
+                      "wall. Check each finish code against the team name and write down the order "
+                      "teams arrive.")
+    t = doc.add_table(rows=1, cols=5); t.style = "Table Grid"
+    for c, h in zip(t.rows[0].cells, ["Team", "Their plant (wall sheet)", "Height answer",
+                                      "Starts at", "Finish code"]):
         c.text = h
     for tm in teams:
-        for c, v in zip(t.add_row().cells, [tm["name"], "Stop %d" % (int(tm["start"]) + 1),
-                                             tm["word"], tm["code"]]):
+        for c, v in zip(t.add_row().cells, [tm["name"], "%s (sheet %d)" % (tm["plantname"], tm["sheet"]),
+                                             tm["height"], "Stop %d, %s" % (int(tm["start"]) + 1, tm["startname"]),
+                                             tm["code"]]):
             c.text = v
     doc.add_heading("Watch for", 2)
-    for b in ["Stop 3 decoy. Elderberry (wall sheet 9) also reads 12 ft in the app, so a team that "
-              "scans it passes without finding buttonbush. The clue points to the creamy white "
-              "pincushion flower.",
+    for b in ["Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, so Pine Patrol and "
+              "Thorn Guard pass even if they scan the other one.",
               "Scan mismatches. If a scan returns the wrong plant, check the leaf / flower / fruit / "
-              "bark selector first. Roughleaf dogwood reads as red osier dogwood; its 10 ft height "
-              "is rejected, which is correct.",
+              "bark selector first. The roughleaf dogwood photo reads as red osier dogwood; either "
+              "name is fine.",
               "Source. Generated from app.js in LUC-GAME-Treeline-DEV by "
               "tools/build-deliverables.py. Do not edit by hand; rerun the script."]:
         doc.add_paragraph(b, style="List Bullet")
@@ -393,19 +281,20 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default=DEFAULT_OUT, help="deliverables folder")
-    ap.add_argument("--only", choices=["wall", "qr", "facilitator", "hannah", "roles", "key"],
+    ap.add_argument("--only", choices=["wall", "qr", "facilitator", "key"],
                     help="build just one artifact")
     ap.add_argument("--no-mirror", action="store_true", help="skip copying to MIRRORS")
     a = ap.parse_args()
     teams = read_teams()
     print("Read %d teams from app.js: %s" % (len(teams), ", ".join(t["name"] for t in teams)))
+    wall = json.load(open(os.path.join(HERE, "plant-wall.json")))
+    if len(wall) != len(teams) or len({t["plant"] for t in teams}) != len(teams):
+        sys.exit("ERROR: the wall needs exactly one sheet per team and no two teams on one plant")
     os.makedirs(a.out, exist_ok=True)
     want = (lambda k: a.only in (None, k))
     if want("wall"): build_wall(a.out)
     if want("qr"): build_qr(teams, a.out)
     if want("facilitator"): build_facilitator(teams, a.out)
-    if want("hannah"): build_hannah(teams, a.out)
-    if want("roles"): build_roles(a.out)
     if want("key"): build_key(teams, a.out)
     if not a.no_mirror and a.out == DEFAULT_OUT:
         mirror(a.out)
