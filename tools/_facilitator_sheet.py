@@ -69,8 +69,8 @@ para(f"Up to {len(TEAMS)} teams. Every team finishes on its own: their last scre
      "finish code. They bring it to you, you check it against their team name below and write "
      "down the order teams arrive. Nobody waits on another team. Use as many QR cards as you have "
      "teams, in any order.", 9.5, after=4)
-para("Every team does all five stops, but they START on different ones and wrap around, so the "
-     "whole room is not at the plant wall at once. Stops 2 to 4 differ by team: each team hunts its "
+para("Every team does all five stops, each in its own order, so the whole room is never at the "
+     "plant wall at once: at any point no stop has more than three teams on it. Stops 2 to 4 differ by team: each team hunts its "
      "own plant on the wall, and gets one of two field clips and one of three field notes, so "
      "neighbouring teams are not chasing the same answer.", 9.5, after=6)
 rows = []
@@ -80,16 +80,17 @@ for t in TEAMS:
                                         t["height"] if t["checked"] else "any number"),
                  "%s: %s" % (t["cliplabel"], t["clipanswer"]),
                  "%s: %s" % (t["notelabel"], t["noteanswer"]),
-                 t["startname"]])
+                 t["ordernames"]])
 table(["Team", "Finish code", "Plant (sheet): height", "Field clip: answer", "Field note: answer",
-       "They START at"],
-      rows, [1.3, 0.65, 1.7, 1.6, 1.45, 0.8])
+       "Their order"],
+      rows, [1.2, 0.6, 1.55, 1.5, 1.4, 1.25])
 para("A code that doesn't match the team means they read it off another team's screen.",
      9, MUTE, space_before=4, after=8)
 
 # ── the five stops ────────────────────────────────────────────────────────
-h("2. The five stops: answers, and how to unstick a team", 14)
-para("Numbered in canonical order, which is NOT the order most teams meet them. Teams type the "
+doc.add_page_break()          # the team table fills page 1; a stop table split across pages is unreadable
+h("2. The five stops: answers, and how to unstick a team", 14, before=0)
+para("Numbered for reference only; each team meets them in its own order (last column above). Teams type the "
      "answer into their own page. If one has been stuck a few minutes, give the nudge, not the "
      "answer. The answer column is your backstop only.", 9.5, after=6)
 

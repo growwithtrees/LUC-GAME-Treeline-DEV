@@ -30,7 +30,7 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 
 Six clip-and-note combinations, each used by two teams, so neighbouring teams are not chasing the same answer, and no team's field note is about its own wall plant. Questions 3 to 5 ask for a detail only the resource gives, so a team of expert botanists still has to open it (Lindsey's ask: trainers and advanced ID people are spread across the teams).
 
-Every team does all five but starts at a different one and wraps around. Progress is saved per team in `localStorage` (key `luc-escape-v2-N`), so a refresh or dropped signal keeps their place. Words match case- and punctuation-insensitively. **Numbers match whole**: the first number typed must equal the answer in feet or inches, so 120 never passes for 12.
+Every team walks the five stops in **its own order** (`order` in `TEAMS`). No two teams share an order, and at any step no stop has more than three teams on it. Progress is saved per team in `localStorage` (key `luc-escape-v3-N`), so a refresh or dropped signal keeps their place. Words match case- and punctuation-insensitively. **Numbers match whole**: the first number typed must equal the answer in feet or inches, so 120 never passes for 12.
 
 ### Plant heights
 
@@ -38,7 +38,7 @@ Every team does all five but starts at a different one and wraps around. Progres
 
 ## Changing teams
 
-1. Edit the `TEAMS` block in `app.js` (slug, name, badge, plant, code, start). Each plant needs a matching `PLANTS` entry and a sheet in `tools/plant-wall.json`; the build refuses to run if two teams share a plant.
+1. Edit the `TEAMS` block in `app.js` (slug, name, badge, plant, clip, note, code, order). Each plant needs a matching `PLANTS` entry and a sheet in `tools/plant-wall.json`; the build refuses to run if two teams share a plant.
 2. Add or remove the matching `team-N/index.html` and its row in `index.html`.
 3. Run `python3 tools/build-deliverables.py`. It rebuilds every printed piece and the answer key into the project Deliverables folder and mirrors the lot to the LUC client folder (`1. GWT Clients/LUC/LUC Presentations and Projects/2026 Treeline USA/Field Guide Challenge/`). Never hand-edit either copy.
 4. Decode the QR PDF and curl every URL before printing (command in the script's docstring).

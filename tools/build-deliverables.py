@@ -57,6 +57,7 @@ FONT_R = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_B = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 GREEN = "#2E7D46"
 STOP_NAMES = ["Search", "Identify", "Field Clips", "Field Notes", "Field Bites"]
+SHORT = ["Search", "Identify", "Clip", "Note", "Bite"]
 BADGES = os.path.join(REPO, "badges")
 
 
@@ -65,8 +66,8 @@ def read_teams():
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     block = re.search(r"var TEAMS = \{(.*?)\n  \};", src, re.S).group(1)
     pat = (r'"(\d+)":\s*\{ slug: "([\w-]+)",\s*name: "([^"]+)",\s*badge: "([\w-]+)",\s*'
-           r'plant: "(\w+)",\s*clip: "(\w+)",\s*note: "(\w+)",\s*code: "(\d{4})", start: (\d)')
-    teams = [dict(zip(["num", "slug", "name", "badge", "plant", "clip", "note", "code", "start"], m.groups()))
+           r'plant: "(\w+)",\s*clip: "(\w+)",\s*note: "(\w+)",\s*code: "(\d{4})", order: "([0-4]{5})"')
+    teams = [dict(zip(["num", "slug", "name", "badge", "plant", "clip", "note", "code", "order"], m.groups()))
              for m in re.finditer(pat, block)]
     pblock = re.search(r"var PLANTS = \{(.*?)\n  \};", src, re.S).group(1)
     plants = {m.group(1): {"name": m.group(2), "ft": int(m.group(3)), "checked": m.group(4) == "true"}
@@ -78,7 +79,10 @@ def read_teams():
         if t["plant"] not in plants or t["plant"] not in wall:
             sys.exit("ERROR: team %s's plant '%s' is missing from PLANTS or plant-wall.json" % (t["name"], t["plant"]))
         p = plants[t["plant"]]
-        t["startname"] = STOP_NAMES[int(t["start"]) % len(STOP_NAMES)]
+        if sorted(t["order"]) != list("01234"):
+            sys.exit("ERROR: team %s's order %s is not each stop once" % (t["name"], t["order"]))
+        t["startname"] = STOP_NAMES[int(t["order"][0])]
+        t["ordernames"] = ", ".join(SHORT[int(i)] for i in t["order"])
         t["plantname"], t["sheet"] = p["name"], wall[t["plant"]]
         t["height"] = ("%d ft" % p["ft"]) if p["checked"] else "READ IN APP (game takes any number)"
         t["checked"] = p["checked"]
@@ -227,7 +231,7 @@ def build_facilitator(teams, out):
 def read_stops():
     """Feature name and accepted answers per stop, in canonical order, straight from app.js."""
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
-    body = src[src.index("function buildStops"):src.index("function rotate")]
+    body = src[src.index("function buildStops"):src.index("function ordered")]
     stops = []
     for chunk in body.split("icon: ")[1:]:
         feat = re.search(r'feat: "([^"]+)"', chunk).group(1)
@@ -267,20 +271,19 @@ def build_key(teams, out):
         for c, v in zip(t.add_row().cells, [str(i + 1), feat, ans, also]):
             c.text = v
     doc.add_heading("Teams", 2)
-    doc.add_paragraph("Every team walks all five stops, starting at a different one and wrapping "
-                      "around. Stops 2 to 4 differ by team: each team hunts its own plant on the "
+    doc.add_paragraph("Every team walks all five stops in its own order. Stops 2 to 4 differ by team: each team hunts its own plant on the "
                       "wall and gets one of two field clips and one of three field notes. Check each finish code against the team name and write down the order "
                       "teams arrive.")
     t = doc.add_table(rows=1, cols=6); t.style = "Table Grid"
     for c, h in zip(t.rows[0].cells, ["Team", "Their plant (wall sheet) and height", "Field clip",
-                                      "Field note", "Starts at", "Finish code"]):
+                                      "Field note", "Stop order", "Finish code"]):
         c.text = h
     for tm in teams:
         for c, v in zip(t.add_row().cells, [tm["name"],
                                              "%s (sheet %d): %s" % (tm["plantname"], tm["sheet"], tm["height"]),
                                              "%s: %s" % (tm["cliplabel"], tm["clipanswer"]),
                                              "%s: %s" % (tm["notelabel"], tm["noteanswer"]),
-                                             "Stop %d, %s" % (int(tm["start"]) + 1, tm["startname"]),
+                                             tm["ordernames"],
                                              tm["code"]]):
             c.text = v
     doc.add_heading("Watch for", 2)
@@ -320,6 +323,8 @@ def main():
     teams = read_teams()
     print("Read %d teams from app.js: %s" % (len(teams), ", ".join(t["name"] for t in teams)))
     wall = json.load(open(os.path.join(HERE, "plant-wall.json")))
+    if len({t["order"] for t in teams}) != len(teams):
+        sys.exit("ERROR: two teams share a stop order")
     if len(wall) != len(teams) or len({t["plant"] for t in teams}) != len(teams):
         sys.exit("ERROR: the wall needs exactly one sheet per team and no two teams on one plant")
     os.makedirs(a.out, exist_ok=True)

@@ -21,22 +21,22 @@ Lindsey's goal: get everyone logged in to Let Grow and show them the resources a
 
 ## 2. The teams
 
-| Team | Slug | Finish code | Wall plant | Starts at |
+| Team | Slug | Finish code | Wall plant | Stop order |
 |---|---|---|---|---|
-| Oak Titans | `/team-1` | `4712` | Callery pear (5) | Search |
-| Pine Patrol | `/team-2` | `5836` | Buttonbush (1) | Identify |
-| Cedar Command | `/team-3` | `2964` | Black locust (7) | Field Clips |
-| Maple Marauders | `/team-4` | `8153` | Blackberry (4) | Field Notes |
-| Root Raiders | `/team-5` | `7026` | Tree of heaven (8) | Field Bites |
-| Bark Brigade | `/team-6` | `3591` | Coralberry (2) | Search |
-| Dogwood Legion | `/team-7` | `6247` | Eastern redcedar (6) | Identify |
-| Walnut Force | `/team-8` | `1938` | Dogwood (3) | Field Clips |
-| Sassafras Wardens | `/team-9` | `9405` | Smooth sumac (12) | Field Notes |
-| Redbud Rangers | `/team-10` | `2679` | Hackberry (10) | Field Bites |
-| Sycamore Syndicate | `/team-11` | `8314` | Autumn olive (11) | Search |
-| Thorn Guard | `/team-12` | `5162` | Elderberry (9) | Identify |
+| Oak Titans | `/team-1` | `4712` | Callery pear (5) | Search > Bite > Note > Clip > Identify |
+| Pine Patrol | `/team-2` | `5836` | Buttonbush (1) | Clip > Identify > Note > Bite > Search |
+| Cedar Command | `/team-3` | `2964` | Black locust (7) | Bite > Note > Clip > Identify > Search |
+| Maple Marauders | `/team-4` | `8153` | Blackberry (4) | Identify > Bite > Clip > Note > Search |
+| Root Raiders | `/team-5` | `7026` | Tree of heaven (8) | Bite > Clip > Identify > Search > Note |
+| Bark Brigade | `/team-6` | `3591` | Coralberry (2) | Note > Clip > Search > Bite > Identify |
+| Dogwood Legion | `/team-7` | `6247` | Eastern redcedar (6) | Identify > Note > Search > Bite > Clip |
+| Walnut Force | `/team-8` | `1938` | Dogwood (3) | Identify > Note > Bite > Search > Clip |
+| Sassafras Wardens | `/team-9` | `9405` | Smooth sumac (12) | Search > Identify > Bite > Clip > Note |
+| Redbud Rangers | `/team-10` | `2679` | Hackberry (10) | Clip > Search > Identify > Note > Bite |
+| Sycamore Syndicate | `/team-11` | `8314` | Autumn olive (11) | Search > Clip > Bite > Note > Identify |
+| Thorn Guard | `/team-12` | `5162` | Elderberry (9) | Bite > Search > Identify > Clip > Note |
 
-Slugs stayed `team-1` to `team-12`, so the URLs did not change; only the cards were reprinted. No team got its namesake plant (Cedar Command is not on the redcedar, Dogwood Legion is not on the dogwood).
+Every team walks the stops in its own order. The 12 orders came from a random search over all 120 orders of five stops, keeping a set where no two teams match and no stop ever has more than three teams on it at the same step (Mike, 27 Oct: "make sure they don't go all in the same order"). Slugs stayed `team-1` to `team-12`, so the URLs did not change; only the cards were reprinted. No team got its namesake plant (Cedar Command is not on the redcedar, Dogwood Legion is not on the dogwood).
 
 ## 3. The stops and their sources
 
