@@ -60,7 +60,7 @@ Clips and notes vary by team (Mike, 27 Oct) so neighbouring teams are not chasin
 The photos are a mix of flower, fruit, leaf and bark. Identify asks which one you are photographing, and setting that correctly is the skill the stop teaches. Mix: 2 flower, 3 fruit, 5 leaf, 2 bark.
 
 - **Sheets 1 to 10** were all confirmed in the app by Mike on 15 Sep.
-- **Sheets 11 (autumn olive fruit) and 12 (smooth sumac leaf) were added 27 Oct and are not yet tested.** Scan both off the printed sheet before the day.
+- **Sheets 11 (autumn olive fruit) and 12 (smooth sumac leaf)** were added 27 Oct and confirmed in the app by Mike the same day. All 12 sheets now scan.
 - **Buttonbush (1) and elderberry (9) both read 12 ft**, so Pine Patrol and Thorn Guard pass even if they scan the other. Harmless now that each team is told its plant by name.
 - **Roughleaf dogwood (3) reads as red osier dogwood**, 10 ft. Walnut Force is told to find "dogwood", so either name is right.
 - **Bark is the fragile mode.** Black locust bark read as salt cedar, so its leaf went up instead. Redcedar and hackberry bark both work.
