@@ -87,7 +87,7 @@ para("Every team does all five stops, each in its own order, so the room starts 
      "are the same for everyone.", 9.5, after=6)
 table(["Team", "Plant ID: plant (sheet), height", "Field Clips: answer", "Field Notes: answer"],
       [[(t["name"], True, None),
-        "%s (sheet %d): %s" % (t["plantname"], t["sheet"], t["height"] if t["checked"] else "any number"),
+        "%s, sheet %d: %s" % (t["plantname"], t["sheet"], t["height"] if t["checked"] else "any number"),
         "%s: %s" % (t["cliplabel"], t["clipanswer"]),
         "%s: %s" % (t["notelabel"], t["noteanswer"])] for t in TEAMS],
       [1.55, 2.2, 1.95, 1.8])
@@ -107,11 +107,11 @@ STOPS = [
  ("Plant ID",
   "Find their own plant on the wall (named on their screen) by taking pictures with Plant ID, then read its max height off its plant profile.",
   "That team's height (section 2)",
-  "Ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. They type the feet (12 ft 0 in reads as 12). Use the height on the plant profile, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
+  "Ask which plant part they chose (leaf, flower, fruit or bark); most bad matches are the wrong part. They type the feet (12 ft 0 in reads as 12). Use the height on the plant profile, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
  ("Field Clips",
   "Rose clip: the invasive rose's little leaflet at the base of each leaf is covered in what?\nVine clip: Virginia creeper's tendrils end in sticky what?",
   "Rose: EYELASHES\nVine: PADS",
-  "Rose: \u201cWatch the part about the base of the leaf, about two-thirds of the way in.\u201d\nVine: \u201cListen for how each vine climbs.\u201d"),
+  "Rose: \u201cWatch the part about the base of the leaf, about two-thirds of the way in.\u201d\nVine: \u201cIt comes right after the part about poison ivy\u2019s hairy roots.\u201d"),
  ("Field Notes",
   "Johnsongrass: how far can its rhizomes travel from the mother plant, in feet?\nElderberry Bloom: the note names bees, flies and what other insect?\nAutumn Olive: wanted dead or what?",
   "Johnsongrass: 200\nElderberry: BEETLES\nAutumn Olive: CONTROLLED",
@@ -119,7 +119,7 @@ STOPS = [
  ("Field Bites",
   "Work through Black Locust vs False Indigo Bush. False indigo bush flowers look like little purple what?",
   "FOXTAILS",
-  "\u201cIt's on the card about flowers.\u201d"),
+  "\u201cOn the Flowers card, read the line under the heading, not the heading.\u201d"),
 ]
 table(["Section", "What they have to do", "Answer", "If they\u2019re stuck"],
       [[(s[0], True, None), s[1], (s[2], True, None), s[3]] for s in STOPS],
@@ -133,8 +133,8 @@ h("4. Plant wall key", 14, before=0)
 para(f"{len(TEAMS)} sheets, one plant each, numbered but deliberately NOT labeled. Each sheet is "
      "one team's target. This is the only key.", 9.5, after=4)
 para("The photos are a MIX of flower, fruit, leaf and bark, because Plant ID asks which one you are "
-     "photographing. Getting that selector right is the skill this stop teaches. The \u201cPhoto is "
-     "a\u201d column is what they should select.", 9.5, after=6)
+     "photographing. Choosing the right plant part is the skill this stop teaches. The \u201cPhoto is "
+     "a\u201d column is the plant part they should choose.", 9.5, after=6)
 owner = {t["sheet"]: t["name"] for t in TEAMS}
 WALL = json.load(open("_wallkey.json"))
 table(["Sheet", "What it is", "Photo is a", "Whose plant", "Notes"],
@@ -148,8 +148,9 @@ h("5. If something goes wrong", 14)
 for problem, fix in [
   ("A team's QR won't scan", "Type the address on the bottom of their card straight into the browser."),
   ("They closed the page / phone died", "Reopening the same link puts them back where they were; progress is saved on that phone. If they switch phones they start over, so keep one phone driving."),
-  ("The app won't identify a printed plant", "Nine times out of ten the flower/fruit/leaf/bark selector is on the wrong setting. Check that first. If it still will not match, tell them which sheet is theirs; the stop only needs the height off the plant profile."),
+  ("The app won't identify a printed plant", "Nine times out of ten they chose the wrong plant part (leaf, flower, fruit or bark). Check that first. If it still will not match, give them their plant's height from section 2 and move them on."),
   ("They're not logged in to Let Grow", "That is the point of the game. Get them logged in before they start."),
+  ("A team is on another team's page", "Their team name is in the bar at the top of every screen. If it isn't theirs, have them scan their own card or type the address printed on it. If they already finished, write the finish under their real team."),
   ("A team is miles behind", "Give them the answer to a stop and move them on so they still finish."),
   ("Two teams arrive at once", "Check both codes and write them down in the order they reached you."),
 ]:

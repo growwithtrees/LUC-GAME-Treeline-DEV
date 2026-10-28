@@ -16,7 +16,7 @@ Lindsey's goal: get everyone logged in to Let Grow and show them the resources a
 - **Plant ID is per team.** Each team hunts its own plant on the wall and reads its max height. Lindsey's version: "go scan the blackberry and enter the maximum height."
 - **Field Clips, Field Notes and Field Bites** each ask for a detail only that resource gives. Experts are spread across teams, so a question they could answer from memory would let them skip the resource.
 - **Team names** come from Lindsey's badge set (Oak Titans to Thorn Guard). No name is a puzzle answer.
-- **Prizes:** everybody gets PPE (gloves, safety glasses, hard hat stickers). Finish order is kept for bragging rights; nobody has to keep score in the background.
+- **Prizes:** everybody gets PPE (gloves, safety glasses, hard hat stickers). The bragging-rights line came off the player screens on 28 Oct (Lindsey); the facilitator sheet still has a blank Finished # column if she wants it.
 - **No role cards** (Lindsey: "that's too much").
 
 ## 2. The teams
@@ -55,11 +55,11 @@ Clips and notes vary by team (Mike, 27 Oct) so neighbouring teams are not chasin
 
 ## 4. The plant wall
 
-**Twelve sheets, one per team, numbered but deliberately UNLABELLED.** The key is section 3 of the facilitator sheet.
+**Twelve sheets, one per team, numbered but deliberately UNLABELLED.** The key is section 4 of the facilitator sheet.
 
 The photos are a mix of flower, fruit, leaf and bark. Plant ID asks which one you are photographing, and setting that correctly is the skill the stop teaches. Mix: 2 flower, 3 fruit, 6 leaf, 1 bark.
 
-- **Sheets 1 to 10** were all confirmed in the app by Mike on 15 Sep.
+- **Sheets 1 to 10** were all confirmed in the app by Mike on 15 Sep, except sheet 6, which became burning bush on 27 Oct and was confirmed then.
 - **Sheets 11 (autumn olive fruit) and 12 (smooth sumac leaf)** were added 27 Oct and confirmed in the app by Mike the same day. All 12 sheets now scan.
 - **Buttonbush (1) and elderberry (9) both read 12 ft**, so Pine Patrol and Thorn Guard pass even if they scan the other. Harmless now that each team is told its plant by name.
 - **Roughleaf dogwood (3) reads as red osier dogwood**, 10 ft. Walnut Force is told to find "dogwood", so either name is right.
@@ -74,7 +74,7 @@ Pairs that share a height, so a team scanning the other one still passes: button
 ## 5. Setup and finale
 
 - **On site, under 30 minutes:** tape up the plant wall, set one QR card per team on the tables, hand Lindsey the facilitator sheet.
-- **Finish:** each team's last screen shows its finish code. They bring it to the facilitator table; the facilitator checks it against the team name and writes down the order.
+- **Finish:** each team's last screen shows its finish code. They bring it to Lindsey, who checks it against the team name.
 
 ## 6. Before printing
 
@@ -101,3 +101,12 @@ Sent by text after the review call, applied as she wrote them:
 3. "Welcome, the Thorn Guard" is now "Welcome, Thorn Guard".
 4. "Facilitator table" is now "Lindsey" on the intro and finish screens.
 5. "We note the order teams finish, for bragging rights. Nobody waits for another team." removed. The finish screen line about writing down the finish stays; the check-in table still has its blank "Finished #" column if she wants it.
+
+## 9. Final adversarial pass, October 28
+
+Two fresh reviewers (consistency and sources; first-time player and Lindsey on the day). No blockers; every answer, code, order, height and sheet number matched across all surfaces. Fixed:
+- **Stops opened scrolled down** (focus() jumped to the answer box, so Plant ID opened below the team's plant name). Each stop now opens at the top.
+- Long team names were clipped in the top bar at 320-390 px; they wrap now.
+- Wrong-answer message: "Check the app, then type just the word or number" (a correct answer typed as a sentence was rejected with no hint why).
+- Facilitator sheet: "plant part" instead of "selector"; a dead-end "won't match" fallback now says to give the height and move on; new row for a team on another team's page; sharper Field Bites and vine-clip nudges; "blackberry (Rubus), sheet 4" instead of double brackets.
+- Intro card "Finish fast" renamed "Your finish code"; answer key says "Number only" instead of "None" for Johnsongrass.

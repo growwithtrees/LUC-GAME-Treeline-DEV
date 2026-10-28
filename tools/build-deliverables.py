@@ -269,7 +269,7 @@ def build_key(teams, out):
         elif feat in ("Field Clips", "Field Notes"):
             v = variants["clip" if feat == "Field Clips" else "note"]
             ans = "\n".join("%s: %s" % (lab, a) for lab, a, _ in v.values())
-            also = "\n".join("%s: %s" % (lab, ", ".join(al) or "None") for lab, a, al in v.values())
+            also = "\n".join("%s: %s" % (lab, ", ".join(al) or ("Number only (%s ft reads as %s)" % (a, a) if a.isdigit() else "None")) for lab, a, al in v.values())
         else:
             words = [a for a in acc]
             ans = (num if num else words[0]).upper()
@@ -287,7 +287,7 @@ def build_key(teams, out):
         c.text = h
     for tm in teams:
         for c, v in zip(t.add_row().cells, [tm["name"],
-                                             "%s (sheet %d): %s" % (tm["plantname"], tm["sheet"], tm["height"]),
+                                             "%s, sheet %d: %s" % (tm["plantname"], tm["sheet"], tm["height"]),
                                              "%s: %s" % (tm["cliplabel"], tm["clipanswer"]),
                                              "%s: %s" % (tm["notelabel"], tm["noteanswer"]),
                                              tm["ordernames"],
@@ -297,8 +297,8 @@ def build_key(teams, out):
     for b in ["Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, and tree of heaven "
               "(sheet 8) and hackberry (sheet 10) both read 60 ft, so those teams pass even if they "
               "scan the other one of the pair.",
-              "Scan mismatches. If a scan returns the wrong plant, check the leaf / flower / fruit / "
-              "bark selector first. The roughleaf dogwood photo reads as red osier dogwood; either "
+              "Scan mismatches. If a scan returns the wrong plant, check which plant part they "
+              "chose (leaf, flower, fruit or bark) first. The roughleaf dogwood photo reads as red osier dogwood; either "
               "name is fine.",
               "Black locust. Black Locust vs False Indigo Bush says it can reach 60 feet; its plant "
               "profile says 100. The game wants the plant profile's number."]:

@@ -300,7 +300,10 @@ ol.reminders li b { color: var(--ink); }
 }
 
 /* ─── Team badges (Lindsey's emblem set, badges/*.png) ──── */
-.team-badge { padding: 3px 11px 3px 4px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.team-badge { padding: 3px 11px 3px 4px; max-width: 100%; }
+/* Wrap long names (Sycamore Syndicate) onto two lines instead of clipping them at 320-390 px:
+   the bar is where a team checks it is on its own page. */
+.topbar .team-badge { white-space: normal; line-height: 1.15; }
 .team-badge img { width: 26px; height: 26px; flex: none; }
 .hero-badge {
   float: right; width: 112px; height: 112px; margin: -6px -6px 6px 12px;

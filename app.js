@@ -126,7 +126,7 @@
     + '</div>'
     + '<div class="card"><h3>What is a digital escape room?</h3>'
     + '<p>In a regular escape room you hunt for clues to get out of a locked room. This one is digital. Your clues live in the <b>Let Grow app</b>. Each stop sends you to a real part of the app: <b>Search</b>, <b>Plant ID</b>, <b>Field Clips</b>, <b>Field Notes</b> and <b>Field Bites</b>. Find the answer in the app, type it here, and the next stop unlocks.</p></div>'
-    + '<div class="card"><h3>Finish fast</h3>'
+    + '<div class="card"><h3>Your finish code</h3>'
     + '<p>Clear all five stops and you get your team\'s own 4-digit <b>finish code</b>. Bring it to <b>Lindsey</b>.</p></div>'
     + '<button class="btn btn-primary btn-block" id="beginBtn" style="margin-top:20px">Start the challenge</button>'
     + '</section>'
@@ -256,6 +256,7 @@
   }
 
   function renderQuest() {
+    window.scrollTo(0, 0);
     setTeamBadge();
     document.getElementById("stepCount").textContent = (state.stop + 1) + " / " + state.stops.length;
     document.getElementById("pfill").style.width = Math.round(state.stop / state.stops.length * 100) + "%";
@@ -273,7 +274,7 @@
       + "<input id='codein' autocomplete='off' autocapitalize='characters' spellcheck='false' placeholder='type it here'"
       + (s.number !== undefined ? " inputmode='" + (s.accept ? "text" : "numeric") + "'" : "") + ">"
       + "<button class='btn btn-primary btn-block' id='goBtn'>Unlock</button>"
-      + "<div class='wrongmsg hidden' id='wrongmsg' role='alert'>Not quite. Check the app and try again.</div>"
+      + "<div class='wrongmsg hidden' id='wrongmsg' role='alert'>Not quite. Check the app, then type just the word or number.</div>"
       + "</div>";
     html += "</div>";
     document.getElementById("stopmount").innerHTML = html;
@@ -281,7 +282,8 @@
     var input = document.getElementById("codein");
     document.getElementById("goBtn").addEventListener("click", check);
     input.addEventListener("keydown", function (e) { if (e.key === "Enter") check(); });
-    input.focus();
+    // preventScroll: a plain focus() scrolled long stops (Plant ID) past the team's plant name.
+    input.focus({ preventScroll: true });
   }
 
   // True while the unlock animation runs. Without it a double tap on Unlock (or Enter then

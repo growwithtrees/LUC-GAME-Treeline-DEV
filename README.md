@@ -18,7 +18,7 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 ## The five stops
 
 1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters, in the app's order: slow growing, wire zone no / border zone yes (the zone filter is a single choice, Mike 27 Oct), host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
-2. **Plant ID**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
+2. **Plant ID**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from its plant profile.
 3. **Field Clips**, one of two by team (`clip` in `TEAMS`, alternating):
    - multiflora rose vs native rose: the invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.
    - poison ivy vs Virginia creeper: Virginia creeper's tendrils "end in sticky pads." Answer `PADS`. (Not the rope-like roots: "hairy rope, don't be a dope" lets an expert answer without watching.)
