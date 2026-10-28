@@ -38,7 +38,7 @@
   var PLANTS = {
     buttonbush: { name: "buttonbush",        ft: 12,  checked: true  },  // LUC list id 75, 144 in
     coralberry: { name: "coralberry",        ft: 5,   checked: true  },  // read off the LUC app by Mike, 27 Oct
-    dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Identify reads it as red osier, 120 in
+    dogwood:    { name: "dogwood",           ft: 10,  checked: true  },  // Plant ID reads it as red osier, 120 in
     blackberry: { name: "blackberry (Rubus)", ft: 6,   checked: true  },  // Rubus species, 72 in
     pear:       { name: "Callery pear",      ft: 40,  checked: true  },  // read off the LUC app by Mike, 27 Oct
     burningbush:{ name: "burning bush",      ft: 20,  checked: true  },  // LUC list id 61, 240 in. Replaced eastern redcedar 27 Oct: no redcedar page in the LUC app

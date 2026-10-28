@@ -301,7 +301,7 @@ def build_key(teams, out):
               "bark selector first. The roughleaf dogwood photo reads as red osier dogwood; either "
               "name is fine.",
               "Black locust. Black Locust vs False Indigo Bush says it can reach 60 feet; its plant "
-              "page says 100. The game wants the plant page's number."]:
+              "profile says 100. The game wants the plant profile's number."]:
         doc.add_paragraph(b, style="List Bullet")
     path = os.path.join(os.path.dirname(out.rstrip("/")), "Field Guide Challenge Answer Key.docx")
     doc.save(path)

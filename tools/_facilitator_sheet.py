@@ -66,8 +66,8 @@ para("Liberty Utilities Central · Tree Line USA, October 2026 · keep this shee
 # ── check-in ──────────────────────────────────────────────────────────────
 h("1. Check-in: finish codes", 14)
 para("Every team finishes on its own: their last screen shows a 4-digit finish code. Check it "
-     "against the team name, then write the next number in the Finished column. Nobody waits on "
-     "another team. Use as many QR cards as you have teams, in any order.", 9.5, after=6)
+     "against the team name, then write the next number in the Finished column. Use as many"
+     " QR cards as you have teams, in any order.", 9.5, after=6)
 ck = table(["Team", "Finish code", "Finished #", "Stop order"],
            [[(t["name"], True, None), (t["code"], True, None), "", t["ordernames"]] for t in TEAMS],
            [1.9, 1.1, 1.1, 3.4])
@@ -105,9 +105,9 @@ STOPS = [
   "HOLLY",
   "\u201cDid you set all four filters?\u201d Leaving one off brings up more than one plant. The zone filter is one choice: wire zone no, border zone yes."),
  ("Plant ID",
-  "Find their own plant on the wall (named on their screen) by taking pictures with Plant ID, then read its max height off its Let Grow page.",
+  "Find their own plant on the wall (named on their screen) by taking pictures with Plant ID, then read its max height off its plant profile.",
   "That team's height (section 2)",
-  "Ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. They type the feet (12 ft 0 in reads as 12). Use the height on the plant's page, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
+  "Ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. They type the feet (12 ft 0 in reads as 12). Use the height on the plant profile, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
  ("Field Clips",
   "Rose clip: the invasive rose's little leaflet at the base of each leaf is covered in what?\nVine clip: Virginia creeper's tendrils end in sticky what?",
   "Rose: EYELASHES\nVine: PADS",
@@ -148,7 +148,7 @@ h("5. If something goes wrong", 14)
 for problem, fix in [
   ("A team's QR won't scan", "Type the address on the bottom of their card straight into the browser."),
   ("They closed the page / phone died", "Reopening the same link puts them back where they were; progress is saved on that phone. If they switch phones they start over, so keep one phone driving."),
-  ("The app won't identify a printed plant", "Nine times out of ten the flower/fruit/leaf/bark selector is on the wrong setting. Check that first. If it still will not match, tell them which sheet is theirs; the stop only needs the height off the plant's page."),
+  ("The app won't identify a printed plant", "Nine times out of ten the flower/fruit/leaf/bark selector is on the wrong setting. Check that first. If it still will not match, tell them which sheet is theirs; the stop only needs the height off the plant profile."),
   ("They're not logged in to Let Grow", "That is the point of the game. Get them logged in before they start."),
   ("A team is miles behind", "Give them the answer to a stop and move them on so they still finish."),
   ("Two teams arrive at once", "Check both codes and write them down in the order they reached you."),
