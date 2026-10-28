@@ -1,6 +1,6 @@
 # Liberty ROW Field Guide Challenge
 
-A digital escape room for the Let Grow app, built for the Liberty Utilities Central (LUC) icebreaker at Tree Line USA 2026, central Missouri. Each team scans a QR code that opens its own quest. Every stop sends the team into a part of the Let Grow app they already have, asks one question, and unlocks the next stop when they type the answer. Finish all five and the page shows that team's own 4-digit **finish code**, which they bring to the facilitator table. No team waits on another.
+A digital escape room for the Let Grow app, built for the Liberty Utilities Central (LUC) icebreaker at Tree Line USA 2026, central Missouri. Each team scans a QR code that opens its own quest. Every stop sends the team into a part of the Let Grow app they already have, asks one question, and unlocks the next stop when they type the answer. Finish all five and the page shows that team's own 4-digit **finish code**, which they bring to Lindsey. No team waits on another.
 
 Lindsey's goal for the game (27 Oct call): get every attendee logged in to Let Grow and show them the resources already in it. Nothing in the game needs new app content.
 
@@ -17,8 +17,8 @@ Live: https://growwithtrees.github.io/LUC-GAME-Treeline-DEV/ (organizer hub). Th
 
 ## The five stops
 
-1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters: wire zone no / border zone yes (the zone filter is a single choice, Mike 27 Oct), slow growing, host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
-2. **Identify**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
+1. **Search**: a homeowner wants a bird-friendly replacement shrub. Filters, in the app's order: slow growing, wire zone no / border zone yes (the zone filter is a single choice, Mike 27 Oct), host plant and bird food, 15 ft or less. Answer `HOLLY`. Lindsey ran the filters live on the 27 Oct call and only holly came up.
+2. **Plant ID**: each team gets **its own plant** on the plant wall, finds it by scanning the unlabelled photos, and types its max height from the Let Grow entry.
 3. **Field Clips**, one of two by team (`clip` in `TEAMS`, alternating):
    - multiflora rose vs native rose: the invasive rose's leaf base is "covered in like eyelashes." Answer `EYELASHES`.
    - poison ivy vs Virginia creeper: Virginia creeper's tendrils "end in sticky pads." Answer `PADS`. (Not the rope-like roots: "hairy rope, don't be a dope" lets an expert answer without watching.)

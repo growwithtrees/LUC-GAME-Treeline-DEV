@@ -85,7 +85,7 @@ para("Every team does all five stops, each in its own order, so the room starts 
      "plant on the wall and gets one of two field clips and one of three field notes, so "
      "neighboring teams are not chasing the same answer. Search (HOLLY) and Field Bites (FOXTAILS) "
      "are the same for everyone.", 9.5, after=6)
-table(["Team", "Identify: plant (sheet), height", "Field Clips: answer", "Field Notes: answer"],
+table(["Team", "Plant ID: plant (sheet), height", "Field Clips: answer", "Field Notes: answer"],
       [[(t["name"], True, None),
         "%s (sheet %d): %s" % (t["plantname"], t["sheet"], t["height"] if t["checked"] else "any number"),
         "%s: %s" % (t["cliplabel"], t["clipanswer"]),
@@ -101,11 +101,11 @@ para("Teams count stops in their own order, so \u201cwe\u2019re stuck on stop 2\
 
 STOPS = [
  ("Search",
-  "Homeowner wants a bird-friendly shrub off to the side of the line. Filters: wire zone no / border zone yes, slow growing, host plant and bird food, 15 ft or less. One plant fits.",
+  "Homeowner wants a bird-friendly shrub off to the side of the line. Filters, in the app's order: slow growing, wire zone no / border zone yes, host plant and bird food, 15 ft or less. One plant fits.",
   "HOLLY",
   "\u201cDid you set all four filters?\u201d Leaving one off brings up more than one plant. The zone filter is one choice: wire zone no, border zone yes."),
- ("Identify",
-  "Find their own plant on the wall (named on their screen) by scanning photos with Identify, then read its max height off its Let Grow page.",
+ ("Plant ID",
+  "Find their own plant on the wall (named on their screen) by taking pictures with Plant ID, then read its max height off its Let Grow page.",
   "That team's height (section 2)",
   "Ask what they set the leaf/flower/fruit/bark selector to; most bad matches are the wrong setting. They type the feet (12 ft 0 in reads as 12). Use the height on the plant's page, not a number from a field bite. If they truly cannot find it, tell them the sheet number."),
  ("Field Clips",
@@ -132,7 +132,7 @@ doc.add_page_break()
 h("4. Plant wall key", 14, before=0)
 para(f"{len(TEAMS)} sheets, one plant each, numbered but deliberately NOT labeled. Each sheet is "
      "one team's target. This is the only key.", 9.5, after=4)
-para("The photos are a MIX of flower, fruit, leaf and bark, because Identify asks which one you are "
+para("The photos are a MIX of flower, fruit, leaf and bark, because Plant ID asks which one you are "
      "photographing. Getting that selector right is the skill this stop teaches. The \u201cPhoto is "
      "a\u201d column is what they should select.", 9.5, after=6)
 owner = {t["sheet"]: t["name"] for t in TEAMS}

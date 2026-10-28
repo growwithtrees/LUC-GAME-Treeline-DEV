@@ -92,3 +92,12 @@ Two read-only reviewer passes (source alignment; strict editor plus first-time p
 - Print pack: page 1 is a check-in table with a write-in "Finished #" column; stops are named by section, not number (each team counts in its own order); answer key lists every accepted alternate instead of "see app.js"; QR card says "Have Let Grow open and signed in" and the URL is darker; folders renumbered 1 to 3; US spelling and dates.
 
 Rejected: answer-key heading order (an artifact of the reviewer's text export, the .docx is in order); unused SVG icons in app.js (never shown); "tap the match to open its page" (the app's exact UI is unverified).
+
+## 8. Lindsey's text changes, October 28
+
+Sent by text after the review call, applied as she wrote them:
+1. The plant wall stop now uses her wording, including the "How to use Plant ID" steps. The stop is labeled **Plant ID** (the app's own button name) everywhere: game, facilitator sheet and answer key.
+2. Search filters are listed in the app's order: growth speed, growth zone, special characteristics, mature size.
+3. "Welcome, the Thorn Guard" is now "Welcome, Thorn Guard".
+4. "Facilitator table" is now "Lindsey" on the intro and finish screens.
+5. "We note the order teams finish, for bragging rights. Nobody waits for another team." removed. The finish screen line about writing down the finish stays; the check-in table still has its blank "Finished #" column if she wants it.

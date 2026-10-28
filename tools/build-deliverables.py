@@ -56,8 +56,8 @@ MIRRORS = [os.path.expanduser(
 FONT_R = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_B = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 GREEN = "#2E7D46"
-STOP_NAMES = ["Search", "Identify", "Field Clips", "Field Notes", "Field Bites"]
-SHORT = ["Search", "Identify", "Clip", "Note", "Bite"]
+STOP_NAMES = ["Search", "Plant ID", "Field Clips", "Field Notes", "Field Bites"]
+SHORT = ["Search", "Plant ID", "Clip", "Note", "Bite"]
 BADGES = os.path.join(REPO, "badges")
 
 
@@ -264,7 +264,7 @@ def build_key(teams, out):
     src = open(os.path.join(REPO, "app.js"), encoding="utf-8").read()
     variants = read_variants(src)
     for i, (feat, acc, num) in enumerate(stops):
-        if feat == "Identify":
+        if feat == "Plant ID":
             ans, also = "That team's plant height (see the team table)", "Feet only (12 ft 0 in reads as 12)"
         elif feat in ("Field Clips", "Field Notes"):
             v = variants["clip" if feat == "Field Clips" else "note"]
