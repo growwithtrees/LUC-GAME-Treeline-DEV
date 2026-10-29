@@ -124,7 +124,8 @@ def read_variants(src):
 
 def build_wall(out):
     """One page per plant, numbered, deliberately UNLABELLED, orientation-matched.
-    Each sheet is one team's target, so the wall needs exactly one sheet per team."""
+    Sheets keep their numbers when one comes off (4 and 10 were pulled on 29 Oct), so a wall
+    already taped up stays right."""
     from PIL import Image
     import img2pdf
     plants = json.load(open(os.path.join(HERE, "plant-wall.json")))
@@ -278,7 +279,7 @@ def build_key(teams, out):
             c.text = v
     doc.add_heading("Teams", 2)
     doc.add_paragraph("Every team walks all five stops in its own order. Three stops differ by "
-                      "team: each team hunts its own plant on the wall and gets one of two field "
+                      "team: each team hunts its plant on the wall (two pairs share one) and gets one of two field "
                       "clips and one of three field notes. Check each finish code against the team "
                       "name and write down the order teams arrive.")
     t = doc.add_table(rows=1, cols=6); t.style = "Table Grid"
@@ -294,9 +295,11 @@ def build_key(teams, out):
                                              tm["code"]]):
             c.text = v
     doc.add_heading("Watch for", 2)
-    for b in ["Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, and tree of heaven "
-              "(sheet 8) and hackberry (sheet 10) both read 60 ft, so those teams pass even if they "
-              "scan the other one of the pair.",
+    for b in ["Sheets 4 and 10 came off the wall on October 29; they did not scan reliably. Maple "
+              "Marauders now share coralberry (sheet 2) with Bark Brigade, and Redbud Rangers share "
+              "burning bush (sheet 6) with Dogwood Legion.",
+              "Buttonbush (sheet 1) and elderberry (sheet 9) both read 12 ft, so those teams pass "
+              "even if they scan the other one.",
               "Scan mismatches. If a scan returns the wrong plant, check which plant part they "
               "chose (leaf, flower, fruit or bark) first. The roughleaf dogwood photo reads as red osier dogwood; either "
               "name is fine.",
@@ -338,8 +341,8 @@ def main():
     wall = json.load(open(os.path.join(HERE, "plant-wall.json")))
     if len({t["order"] for t in teams}) != len(teams):
         sys.exit("ERROR: two teams share a stop order")
-    if len(wall) != len(teams) or len({t["plant"] for t in teams}) != len(teams):
-        sys.exit("ERROR: the wall needs exactly one sheet per team and no two teams on one plant")
+    if {p["key"] for p in wall} != {t["plant"] for t in teams}:
+        sys.exit("ERROR: every wall sheet needs a team and every team's plant needs a sheet")
     os.makedirs(a.out, exist_ok=True)
     want = (lambda k: a.only in (None, k))
     if want("wall"): build_wall(a.out)

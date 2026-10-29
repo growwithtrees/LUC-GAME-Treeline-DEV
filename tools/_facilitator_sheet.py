@@ -81,8 +81,8 @@ para("A code that doesn't match the team means they read it off another team's s
 doc.add_page_break()          # check-in is the page Lindsey keeps on top; answers go underneath
 h("2. Each team's answers", 14, before=0)
 para("Every team does all five stops, each in its own order, so the room starts spread out and the "
-     "plant wall never gets everyone at once. Three stops differ by team: each team hunts its own "
-     "plant on the wall and gets one of two field clips and one of three field notes, so "
+     "plant wall never gets everyone at once. Three stops differ by team: each team hunts its "
+     "plant on the wall (two pairs share one) and gets one of two field clips and one of three field notes, so "
      "neighboring teams are not chasing the same answer. Search (HOLLY) and Field Bites (FOXTAILS) "
      "are the same for everyone.", 9.5, after=6)
 table(["Team", "Plant ID: plant (sheet), height", "Field Clips: answer", "Field Notes: answer"],
@@ -130,13 +130,16 @@ doc.add_page_break()
 
 # ── plant wall ────────────────────────────────────────────────────────────
 h("4. Plant wall key", 14, before=0)
-para(f"{len(TEAMS)} sheets, one plant each, numbered but deliberately NOT labeled. Each sheet is "
-     "one team's target. This is the only key.", 9.5, after=4)
+WALL = json.load(open("_wallkey.json"))
+para(f"{len(WALL)} sheets, one plant each, numbered but deliberately NOT labeled. Sheets 4 and 10 "
+     "came off the wall on October 29 (they did not scan reliably), so two sheets are shared by two "
+     "teams. This is the only key.", 9.5, after=4)
 para("The photos are a MIX of flower, fruit, leaf and bark, because Plant ID asks which one you are "
      "photographing. Choosing the right plant part is the skill this stop teaches. The \u201cPhoto is "
      "a\u201d column is the plant part they should choose.", 9.5, after=6)
-owner = {t["sheet"]: t["name"] for t in TEAMS}
-WALL = json.load(open("_wallkey.json"))
+owner = {}
+for t in TEAMS:
+    owner[t["sheet"]] = owner[t["sheet"]] + " and " + t["name"] if t["sheet"] in owner else t["name"]
 table(["Sheet", "What it is", "Photo is a", "Whose plant", "Notes"],
       [[(str(w["n"]), True, None), (w["name"], True, None), (w["organ"], True, None),
         owner.get(w["n"], ""), w.get("note", "")] for w in WALL],

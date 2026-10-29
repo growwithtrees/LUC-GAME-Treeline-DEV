@@ -110,3 +110,7 @@ Two fresh reviewers (consistency and sources; first-time player and Lindsey on t
 - Wrong-answer message: "Check the app, then type just the word or number" (a correct answer typed as a sentence was rejected with no hint why).
 - Facilitator sheet: "plant part" instead of "selector"; a dead-end "won't match" fallback now says to give the height and move on; new row for a team on another team's page; sharper Field Bites and vine-clip nudges; "blackberry (Rubus), sheet 4" instead of double brackets.
 - Intro card "Finish fast" renamed "Your finish code"; answer key says "Number only" instead of "None" for Johnsongrass.
+
+## 10. Sheets 4 and 10 pulled, October 29 (morning of the event)
+
+Lindsey tested every photo the night before: sheet 4 (blackberry, which she called raspberry) and sheet 10 (hackberry bark) did not scan reliably. Both came off the wall. The remaining sheets keep their numbers so the wall already taped up stays right. Maple Marauders now share coralberry (sheet 2, 5 ft) with Bark Brigade; Redbud Rangers share burning bush (sheet 6, 20 ft) with Dogwood Legion. Both new plants had their heights read off the app. Each pair reaches Plant ID at least two steps apart (Marauders first, Brigade last; Legion first, Rangers third).

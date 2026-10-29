@@ -8,6 +8,10 @@
 
   // Every team finishes on its own: the last stop shows that team's own 4-digit finish code,
   // which they bring to Lindsey. No team ever waits on another.
+  // 29 Oct (Lindsey, after testing every photo): sheets 4 (blackberry) and 10 (hackberry bark) did not
+  // scan reliably and came off the wall. Maple Marauders now share coralberry (sheet 2) with Bark
+  // Brigade, and Redbud Rangers share burning bush (sheet 6) with Dogwood Legion. Each pair reaches
+  // Plant ID at least two steps apart, so they are not at the same photo at once.
   // `plant` is that team's target on the plant wall. `clip` and `note` pick which field clip and
   // which field note the team gets, so neighbouring teams are not chasing the same answer.
   // Clips alternate and notes cycle every three, which gives six combinations, each used twice.
@@ -19,13 +23,13 @@
     "1":  { slug: "team-1",  name: "Oak Titans",         badge: "oak-titans",         plant: "pear",        clip: "roses",  note: "johnson", code: "4712", order: "04321" },
     "2":  { slug: "team-2",  name: "Pine Patrol",        badge: "pine-patrol",        plant: "buttonbush",  clip: "ivy",    note: "elder",   code: "5836", order: "21340" },
     "3":  { slug: "team-3",  name: "Cedar Command",      badge: "cedar-command",      plant: "locust",      clip: "roses",  note: "olive",   code: "2964", order: "43210" },
-    "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "blackberry",  clip: "ivy",    note: "johnson", code: "8153", order: "14230" },
+    "4":  { slug: "team-4",  name: "Maple Marauders",    badge: "maple-marauders",    plant: "coralberry",  clip: "ivy",    note: "johnson", code: "8153", order: "14230" },
     "5":  { slug: "team-5",  name: "Root Raiders",       badge: "root-raiders",       plant: "heaven",      clip: "roses",  note: "elder",   code: "7026", order: "42103" },
     "6":  { slug: "team-6",  name: "Bark Brigade",       badge: "bark-brigade",       plant: "coralberry",  clip: "ivy",    note: "olive",   code: "3591", order: "32041" },
     "7":  { slug: "team-7",  name: "Dogwood Legion",     badge: "dogwood-legion",     plant: "burningbush", clip: "roses",  note: "johnson", code: "6247", order: "13042" },
     "8":  { slug: "team-8",  name: "Walnut Force",       badge: "walnut-force",       plant: "dogwood",     clip: "ivy",    note: "elder",   code: "1938", order: "13402" },
     "9":  { slug: "team-9",  name: "Sassafras Wardens",  badge: "sassafras-wardens",  plant: "sumac",       clip: "roses",  note: "olive",   code: "9405", order: "01423" },
-    "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "hackberry",   clip: "ivy",    note: "johnson", code: "2679", order: "20134" },
+    "10": { slug: "team-10", name: "Redbud Rangers",     badge: "redbud-rangers",     plant: "burningbush",   clip: "ivy",    note: "johnson", code: "2679", order: "20134" },
     "11": { slug: "team-11", name: "Sycamore Syndicate", badge: "sycamore-syndicate", plant: "olive",       clip: "roses",  note: "elder",   code: "8314", order: "02431" },
     "12": { slug: "team-12", name: "Thorn Guard",        badge: "thorn-guard",        plant: "elderberry",  clip: "ivy",    note: "olive",   code: "5162", order: "40123" }
   };
